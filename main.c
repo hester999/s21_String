@@ -7,7 +7,8 @@
 int main() {
 
 
-
+    char s1[10] = "abdefzxc";
+    char s2[10] = "z";
 
 
     return 0;

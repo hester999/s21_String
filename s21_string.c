@@ -100,3 +100,56 @@ int s21_strncmp(const char *str1, const char *str2, s21_size_t n){
     }
     return flag;
 }
+
+
+char* s21_strncpy(char *dest, const char *src, s21_size_t n) {
+    s21_size_t i;
+    for (i = 0; i < n && src[i] != '\0'; i++)
+        dest[i] = src[i];
+    dest[i] = '\0';//     узнать почему не работает  dest[i+1] ='\0'
+    return dest;
+}
+
+s21_size_t s21_strcspn(const char *str1, const char *str2){
+    s21_size_t len = 0;
+    while(*str1){
+        if(s21_strchr(str2,*str1)){
+            break;
+        }
+        else{
+            len++;
+            str1++;
+        }
+    }
+    return len;
+}
+
+//char *strerror(int errnum){
+//
+//}
+
+s21_size_t s21_strlen(const char *str){
+    s21_size_t count =0;
+    s21_size_t i;
+
+    for(i =0; str[i] !='\0';i++){
+        count++;
+    }
+    return  count;
+}
+
+char *s21_strpbrk(const char *str1, const char *str2){
+    s21_size_t i;
+    s21_size_t k;
+    int str1_len = s21_strlen(str1);
+    int str2_len = s21_strlen(str2);
+
+    for(i=0;i< str1_len; i++){
+        for(k= 0; k< str2_len; k++){
+            if(str1[i] == str2[k]) {
+                return (char *)&str1[i];
+            }
+        }
+    }
+    return NULL;
+}
