@@ -1,5 +1,5 @@
 #include "s21_string.h"
-#include "string.h"
+
 
 
 void *s21_memchr(const void *arr, int c, s21_size_t n){
@@ -60,9 +60,7 @@ void *s21_memset(void *str, int c, s21_size_t n){
 }
 
 char *s21_strncat(char *dest, const char *src, s21_size_t n) {
-    s21_size_t len_dest = strlen(dest); // заменить strlen на s21_strlen
-    s21_size_t len_src = strlen(src);
-
+    s21_size_t len_dest = s21_strlen(dest);
     s21_size_t i;
     for (i = 0; i < n && src[i] != '\0'; i++) {
         dest[len_dest + i] = src[i];
@@ -143,13 +141,81 @@ char *s21_strpbrk(const char *str1, const char *str2){
     s21_size_t k;
     int str1_len = s21_strlen(str1);
     int str2_len = s21_strlen(str2);
-
+    char *res = s21_NULL;
     for(i=0;i< str1_len; i++){
         for(k= 0; k< str2_len; k++){
             if(str1[i] == str2[k]) {
-                return (char *)&str1[i];
+                res =  (char *)&str1[i];
+                return res;
             }
         }
     }
-    return NULL;
+    return res;
+}
+char *s21_strrchr(const char *str, int c) {
+    int  len = (int)s21_strlen(str);
+    char *res = s21_NULL;
+
+    for (int i = len; i >= 0; i--) {
+        if (str[i] == c) {
+            res = (char *)&str[i];
+            break;
+        }
+    }
+    return res;
+}
+
+char *s21_strstr(const char *haystack, const char *needle) {
+    if (!*needle) {
+        return (char *)haystack;
+    }
+
+    for (; *haystack; haystack++) {
+        const char *h = haystack;
+        const char *n = needle;
+
+        while (*h && *n && *h == *n) {
+            h++;
+            n++;
+        }
+
+        if (!*n) {
+            return (char *)haystack;
+        }
+    }
+
+    return s21_NULL;
+}
+
+
+char *s21_strtok(char *str, const char *delim) {
+    static char* last_token = s21_NULL;
+
+    if (str == s21_NULL) {
+        str = last_token;
+    }
+    if (str == s21_NULL || *str == '\0' || delim == s21_NULL) {
+        return s21_NULL;
+    }
+
+    while (*str &&  s21_strchr(delim, *str) != NULL) {
+        str++;
+    }
+
+    if (*str == '\0') {
+        last_token = s21_NULL;
+        return s21_NULL;
+    }
+
+    char *start_token = str;
+    str += s21_strcspn(str, delim);
+
+    if (*str != '\0') {
+        *str = '\0';
+        last_token = str + 1;
+    } else {
+        last_token = s21_NULL;
+    }
+
+    return start_token;
 }
