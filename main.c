@@ -16,6 +16,10 @@ int main() {
         res = s21_strtok(NULL, s2);
     }
 
+    for (int i = 0; i < 140; i++) {
+        printf("%s\n", s21_strerror(i));
+    }
+
     return 0;
 }
 
