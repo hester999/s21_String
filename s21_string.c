@@ -1,7 +1,6 @@
 #include "s21_string.h"
 
 
-
 void *s21_memchr(const void *arr, int c, s21_size_t n){
     int flag = 0;
     s21_size_t i;
@@ -191,7 +190,9 @@ char *s21_strstr(const char *haystack, const char *needle) {
 char *s21_strtok(char *str, const char *delim) {
     static char* last_token = s21_NULL;
 
-    if (str == s21_NULL) {
+    if (str == s21_NULL) { // Если str равно NULL, это означает, что функция вызывается повторно для продолжения разбиения исходной строки.
+                            // В этом случае мы устанавливаем str равным last_token,
+                            // чтобы продолжить разбиение строки с того места, где остановились в прошлый раз.
         str = last_token;
     }
     if (str == s21_NULL || *str == '\0' || delim == s21_NULL) {
@@ -219,3 +220,7 @@ char *s21_strtok(char *str, const char *delim) {
 
     return start_token;
 }
+
+
+
+
