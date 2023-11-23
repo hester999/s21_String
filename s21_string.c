@@ -1,11 +1,10 @@
 #include "s21_string.h"
-#include "errlist.h"
 
-void *s21_memchr(const void *arr, int c, s21_size_t n){
+void *s21_memchr(const void *arr, int c, s21_size_t n) {
     int flag = 0;
     s21_size_t i;
-    for( i =0; i<n; i++){
-        if (*((char*)arr + i) == c){
+    for( i =0; i<n; i++) {
+        if (*((char*)arr + i) == c) {
             flag =1;
         }
     }
@@ -18,21 +17,21 @@ void *s21_memchr(const void *arr, int c, s21_size_t n){
 }
 
 
-int s21_memcmp(const void *arr1, const void *arr2, s21_size_t n){
+int s21_memcmp(const void *arr1, const void *arr2, s21_size_t n) {
     s21_size_t  i;
     int flag = 0;
     const unsigned char *a1 = arr1;
     const unsigned char *a2 = arr2;
 
-    for (i = 0; i < n; i++){
-        if (a1[i] == a2[i]){
+    for (i = 0; i < n; i++) {
+        if (a1[i] == a2[i]) {
             flag =0;
         }
-        if (a1[i]> a2[i]){
+        if (a1[i] > a2[i]) {
             flag = a1[i] - a2[i];
             break;
         }
-        if (a2[i]> a1[i]){
+        if (a2[i] > a1[i]) {
             flag = a1[i] - a2[i];
             break;
         }
@@ -49,10 +48,10 @@ void *s21_memcpy(void *dest, const void *src, s21_size_t n) {
     return mem_dest;
 }
 
-void *s21_memset(void *str, int c, s21_size_t n){
+void *s21_memset(void *str, int c, s21_size_t n) {
     unsigned char *a1 = str;
 
-    for(s21_size_t i = 0; i<n;i++){
+    for(s21_size_t i = 0; i < n;i++) {
         a1[i] = (char)c;
     }
     return a1;
@@ -70,7 +69,7 @@ char *s21_strncat(char *dest, const char *src, s21_size_t n) {
 }
 
 
-char *s21_strchr(const char *str, int c){
+char *s21_strchr(const char *str, int c) {
     do {
         if (*str == c) {
             return (char*)str;
@@ -80,17 +79,17 @@ char *s21_strchr(const char *str, int c){
 }
 
 
-int s21_strncmp(const char *str1, const char *str2, s21_size_t n){
+int s21_strncmp(const char *str1, const char *str2, s21_size_t n) {
     int flag=0;
-    for (s21_size_t i =0; i< n; i++){
-        if (str1[i] == str2[i]){
+    for (s21_size_t i =0; i< n; i++) {
+        if (str1[i] == str2[i]) {
             flag =0;
         }
-        if (str1[i] > str2[i]){
+        if (str1[i] > str2[i]) {
             flag = str1[i] - str2[i];
             break;
         }
-        if (str2[i] > str1[i]){
+        if (str2[i] > str1[i]) {
             flag = str1[i] - str2[i];
             break;
         }
@@ -106,9 +105,9 @@ char* s21_strncpy(char *dest, const char *src, s21_size_t n) {
     return dest;
 }
 
-s21_size_t s21_strcspn(const char *str1, const char *str2){
+s21_size_t s21_strcspn(const char *str1, const char *str2) {
     s21_size_t len = 0;
-    while (*str1){
+    while (*str1) {
         if (s21_strchr(str2,*str1)) {
             break;
         }
@@ -120,16 +119,7 @@ s21_size_t s21_strcspn(const char *str1, const char *str2){
     return len;
 }
 
-int digits_count(int number) {
-    int res = 0;
-    if (number == 0)
-        return 1;
-    while (number > 0) {
-        res++;
-        number /= 10;
-    }
-    return res;
-}
+
 
 char *s21_strerror(int errnum) {
     static char *errlist[] = ERRLIST;
@@ -143,7 +133,7 @@ char *s21_strerror(int errnum) {
         #elif defined (__linux__)
         s21_strncpy(unknown_error, "Unknown error ", (s21_size_t)14);
         #endif
-        char unknown_error_code[10] = {0};
+        char unknown_error_code[10];
         s21_sprintf(unknown_error_code, "%d", errnum);
         s21_strncat(unknown_error, unknown_error_code, digits_count(errnum));
         error = unknown_error;
@@ -151,7 +141,7 @@ char *s21_strerror(int errnum) {
     return error;
 }
 
-s21_size_t s21_strlen(const char *str){
+s21_size_t s21_strlen(const char *str) {
     s21_size_t count =0;
     s21_size_t i;
 
@@ -161,13 +151,13 @@ s21_size_t s21_strlen(const char *str){
     return  count;
 }
 
-char *s21_strpbrk(const char *str1, const char *str2){
+char *s21_strpbrk(const char *str1, const char *str2) {
     s21_size_t i;
     s21_size_t k;
     int str1_len = s21_strlen(str1);
     int str2_len = s21_strlen(str2);
     char *res = s21_NULL;
-    for (i=0;i< str1_len; i++) {
+    for (i = 0; i < str1_len; i++) {
         for (k= 0; k< str2_len; k++) {
             if (str1[i] == str2[k]) {
                 res =  (char *)&str1[i];
@@ -243,4 +233,42 @@ char *s21_strtok(char *str, const char *delim) {
     }
 
     return start_token;
+}
+
+void *s21_to_upper(const char *str) {
+    s21_size_t length = 0;
+    s21_size_t i = 0;
+    char* buff = s21_NULL;
+    if (str) {
+        length = s21_strlen(str);
+        buff = (char *)custom_calloc(length + 1, 1);
+    }
+    if (str) {
+        for (; i < length; i++)
+            if (str[i] >= 'a' && str[i] <= 'z') {
+                buff[i] = str[i] - 32;
+            } else {
+                buff[i] = str[i];
+            }
+        }
+    return buff;
+}
+
+void *s21_to_lower(const char *str) {
+    s21_size_t length = 0;
+    s21_size_t i = 0;
+    char* buff = s21_NULL;
+    if (str) {
+        length = s21_strlen(str);
+        buff = (char *)custom_calloc(length + 1, 1);
+    }
+    if (str) {
+        for (; i < length; i++)
+            if (str[i] >= 'A' && str[i] <= 'Z') {
+                buff[i] = str[i] + 32;
+            } else {
+                buff[i] = str[i];
+            }
+        }
+    return buff;
 }
