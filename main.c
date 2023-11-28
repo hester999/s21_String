@@ -4,7 +4,8 @@
 #include "s21_string.h"
 #include <stdlib.h>
 #include <math.h>
-
+#include "stdarg.h"
+#include "s21_convert.h"
 
 
 typedef enum {
@@ -33,28 +34,25 @@ typedef struct {
 
 } FormatSpecifier;
 
-int test_sscnaf(char* buff, char* spec,FormatSpecifier specs,...);
-int parse(const char* format,FormatSpecifier *specs,int maxSpecs);
+
+
+void s21_sscanf( char *input, const char *formatStr, ...);
 
 int main() {
 
-    FormatSpecifier specs;
-    char str[80];
-    int i;
-    char *buff = "123 1";
+    float res;
+    float res1;
+    float res2;
 
 
-    printf("%d", sscanf(buff, "%s", str));
+
+    s21_sscanf("3.14 4.45 1.1555", "%f %f %f", &res,&res1,&res2); // ожидаемый вывод 3.14 56.12
+    printf("res1:%f res2:%f res3:%f\n", res,res1,res2);
+
 
     return 0;
 }
 
-
-int test_sscnaf(char* buff, char* spec,FormatSpecifier specs,...){
-
-    int count_param=0;
-
-}
 
 int parse(const char* format,FormatSpecifier *specs,int maxSpecs){
 
@@ -140,4 +138,47 @@ int parse(const char* format,FormatSpecifier *specs,int maxSpecs){
         *format++;
     }
     return numSpecs;
+}
+
+void s21_sscanf( char *input, const char *formatStr, ...) {
+    FormatSpecifier specs[16];
+    int numSpecs = parse(formatStr, specs, 16);
+
+    va_list args;
+    va_start(args, formatStr);
+
+    char* pos;
+    for (int i = 0; i < numSpecs; i++) {
+        switch (specs[i].type) {
+
+            case SPEC_INT: {
+                int *p = va_arg(args, int*);
+                *p = strtol(input, (char **)&input, 10); // Преобразование строки в целое число
+                break;
+            }
+            case SPEC_FLOAT: {
+                float *p = va_arg(args, float*);
+                *p = s21_strtof(input,&pos);
+                input = pos;
+
+                break;
+            }
+            case SPEC_CHAR: {
+                char *p = va_arg(args, char*);
+                *p = *input++; // Считывание одного символа
+                break;
+            }
+            case SPEC_STRING: {
+                char *p = va_arg(args, char*);
+                *p = *input++;
+
+                break;
+            }
+        }
+
+        while (*input == ' ') input++;
+    }
+
+    va_end(args);
+
 }
