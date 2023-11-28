@@ -28,6 +28,16 @@ int main() {
     s4 = s21_trim(s4, " kb");
     printf("%s\n", s4);
     free(s4);
+
+    printf("%d\n", atoi("123"));
+    printf("%d\n", atoi("123.21"));
+    printf("%d\n", atoi("12s3.21"));
+    printf("%d\n", atoi("asfwg3r12s3.21"));
+    printf("---------------------------------\n");
+    printf("%d\n", s21_atoi("123"));
+    printf("%d\n", s21_atoi("123.21"));
+    printf("%d\n", s21_atoi("12s3.21"));
+    printf("%d\n", s21_atoi("asfwg3r12s3.21"));
     return 0;
 }
 

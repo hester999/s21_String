@@ -31,5 +31,7 @@ void *s21_trim(const char *src, const char *trim_chars);
 
 s21_size_t s21_strspn(const char *str1, const char *str2);
 s21_size_t s21_trim_strspn_reverse(const char *str1, const char *str2);
+int s21_atoi(const char *str);
+int atoi_counter(const char *str);
 
 #endif

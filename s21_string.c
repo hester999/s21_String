@@ -354,3 +354,38 @@ void *s21_trim(const char *src, const char *trim_char) {
     }
     return buffer;
 }
+
+
+int atoi_counter(const char *str) {
+    int flag = 1;
+    int i = 0;
+    int counter = 0;
+    while ((flag) && (i < s21_strlen(str))) {
+        if (!(str[i] >= '0' && str[i] <= '9')) {
+            flag = 0;
+        }
+        if (flag) {
+            counter++;
+        }
+        i++;
+    }
+    return counter;
+}
+
+int s21_atoi(const char *str) {
+    int counter = atoi_counter(str);
+    if (!counter) {
+        return 0;
+    }
+    char *s = malloc(counter + 1);
+    s = s21_strncpy(s, str, counter);
+    s[counter] = 0;
+    int number = 0;
+    int degree = 1;
+    for (int i = s21_strlen(s) - 1; i >= 0; i--) {
+        number += ((s[i] - '0') * degree);
+        degree *= 10;
+    }
+    free(s);
+    return number;
+}
