@@ -16,10 +16,18 @@ int main() {
         res = s21_strtok(NULL, s2);
     }
 
-    for (int i = 0; i < 140; i++) {
+    for (int i = 132; i < 135; i++) {
         printf("%s\n", s21_strerror(i));
     }
 
+    char *s3 = "123Q";
+    s3 = s21_insert(s3, "abobu$", 2);
+    printf("%s\n", s3);
+    free(s3);
+    char *s4 = "bk1 2 3 hoee abbbbbbbbkkkk ";
+    s4 = s21_trim(s4, " kb");
+    printf("%s\n", s4);
+    free(s4);
     return 0;
 }
 
