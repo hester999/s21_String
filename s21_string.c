@@ -1,5 +1,5 @@
 #include "s21_string.h"
-
+#include <stdlib.h>
 
 void *s21_memchr(const void *arr, int c, s21_size_t n){
     int flag = 0;
@@ -138,8 +138,8 @@ s21_size_t s21_strlen(const char *str){
 char *s21_strpbrk(const char *str1, const char *str2){
     s21_size_t i;
     s21_size_t k;
-    int str1_len = s21_strlen(str1);
-    int str2_len = s21_strlen(str2);
+    s21_size_t str1_len = s21_strlen(str1);
+    s21_size_t str2_len = s21_strlen(str2);
     char *res = s21_NULL;
     for(i=0;i< str1_len; i++){
         for(k= 0; k< str2_len; k++){
@@ -220,7 +220,6 @@ char *s21_strtok(char *str, const char *delim) {
 
     return start_token;
 }
-
 
 
 
