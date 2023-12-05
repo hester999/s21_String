@@ -276,7 +276,19 @@ START_TEST(strcspn_test5) {
   ck_assert_int_eq(s21_strcspn(str1, str2), strcspn(str1, str2));
 }
 
-// TESTS FOR STRERROR!! 
+// TESTS FOR STRERROR
+START_TEST(strerror_test1) {
+  #if defined (__APPLE__)
+  for (int i = 0; i < 107; i++) {
+    ck_assert_str_eq(s21_strerror(i), strerror(i));
+  }
+
+  #elif defined (__linux__)
+    for (int i = 0; i < 133; i++) {
+    ck_assert_str_eq(s21_strerror(i), strerror(i));
+  }
+  #endif
+}
 
 
 // TESTS FOR STRLEN
@@ -429,15 +441,129 @@ START_TEST(strtok_test5) {
 }
 
 
+// TESTS FOR TO_UPPER
+START_TEST(to_upper_test1) {
+ char str[20] = "to_upper_test";
+ ck_assert_str_eq(s21_to_upper(str), "TO_UPPER_TEST");
+}
+
+START_TEST(to_upper_test2) {
+  char str[20] = "123 aBc 456";
+  ck_assert_str_eq(s21_to_upper(str), "123 ABC 456");
+}
+
+START_TEST(to_upper_test3) {
+  char str[20] = "";
+  ck_assert_str_eq(s21_to_upper(str), "");
+}
+
+START_TEST(to_upper_test4) {
+  char str[20] = "\n\n\n";
+  ck_assert_str_eq(s21_to_upper(str), "\n\n\n");
+}
+
+START_TEST(to_upper_test5) {
+  char str[20] = "Hello, World!";
+  ck_assert_str_eq(s21_to_upper(str), "HELLO, WORLD!");
+}
+
+
+// TESTS FOR TO_LOWER
+START_TEST(to_lower_test1) {
+ char str[20] = "TO_LOWER_TEST";
+ ck_assert_str_eq(s21_to_lower(str), "to_lower_test");
+}
+
+START_TEST(to_lower_test2) {
+  char str[20] = "123 AbC 456";
+  ck_assert_str_eq(s21_to_lower(str), "123 abc 456");
+}
+
+START_TEST(to_lower_test3) {
+  char str[20] = "";
+  ck_assert_str_eq(s21_to_lower(str), "");
+}
+
+START_TEST(to_lower_test4) {
+  char str[20] = "\n\n\n";
+  ck_assert_str_eq(s21_to_lower(str), "\n\n\n");
+}
+
+START_TEST(to_lower_test5) {
+  char str[20] = "Hello, World!";
+  ck_assert_str_eq(s21_to_lower(str), "hello, world!");
+}
+
+
+// TESTS FOR INSERT
+START_TEST(insert_test1) {
+ char src[20] = "insert_test";
+ ck_assert_str_eq(s21_insert(src, "test_", 0), "test_insert_test");
+}
+
+START_TEST(insert_test2) {
+ char src[20] = "insert_test";
+ ck_assert_str_eq(s21_insert(src, "1234", 1), "i1234nsert_test");
+}
+
+START_TEST(insert_test3) {
+ char src[20] = "insert_test";
+ ck_assert_str_eq(s21_insert(src, "1234", 11), "insert_test1234");
+}
+
+START_TEST(insert_test4) {
+ char src[20] = "\n\n\n";
+ ck_assert_str_eq(s21_insert(src, "1234", 2), "\n\n1234\n");
+}
+
+START_TEST(insert_test5) {
+ char src[20] = "";
+ ck_assert_msg(s21_insert(src, "1234", 2) == s21_NULL, "Fail s21_insert == NULL");
+}
+
+
+// TESTS FOR TRIM
+START_TEST(trim_test1) {
+ char src[20] = "123trim_456test789";
+ char trim_char[20] = "123456789";
+ ck_assert_str_eq(s21_trim(src, trim_char), "trim_456test"); 
+}
+
+START_TEST(trim_test2) {
+ char src[20] = "   trim_test   ";
+ char trim_char[20] = " 1234";
+ ck_assert_str_eq(s21_trim(src, trim_char), "trim_test"); 
+}
+
+START_TEST(trim_test3) {
+ char src[20] = "\n\n\ntrim_test*\n*\n\n";
+ char trim_char[20] = "\n";
+ ck_assert_str_eq(s21_trim(src, trim_char), "trim_test*\n*"); 
+
+}
+
+START_TEST(trim_test4) {
+ char src[20] = "trim_test";
+ char trim_char[20] = "trimes";
+ ck_assert_str_eq(s21_trim(src, trim_char), "_"); 
+}
+
+START_TEST(trim_test5) {
+ char src[20] = "trim_test***";
+ char trim_char[20] = "*!=";
+ ck_assert_str_eq(s21_trim(src, trim_char), "trim_test"); 
+}
+
+
 
 Suite *string_suite() {
   Suite *s1 = suite_create("STRING_TESTS");
   TCase *memchr_tests = tcase_create("MEMCHR");
   suite_add_tcase(s1, memchr_tests);
-  tcase_add_test(memchr_tests, memchr_test1); // error 
+  tcase_add_test(memchr_tests, memchr_test1);
   tcase_add_test(memchr_tests, memchr_test2);
   tcase_add_test(memchr_tests, memchr_test3);
-  tcase_add_test(memchr_tests, memchr_test4); // error
+  tcase_add_test(memchr_tests, memchr_test4); 
   tcase_add_test(memchr_tests, memchr_test5);
 
   TCase *memcmp_tests = tcase_create("MEMCMP");
@@ -512,8 +638,9 @@ Suite *string_suite() {
   tcase_add_test(strlen_tests, strlen_test4);
   tcase_add_test(strlen_tests, strlen_test5);
 
-  // TCase *strerror_tests = tcase_create("STRERROR");
-  // suite_add_tcase(s1, strerror_tests);
+  TCase *strerror_tests = tcase_create("STRERROR");
+  suite_add_tcase(s1, strerror_tests);
+  tcase_add_test(strerror_tests, strerror_test1);
 
   TCase *strpbrk_tests = tcase_create("STRPBRK");
   suite_add_tcase(s1, strpbrk_tests);
@@ -550,15 +677,58 @@ Suite *string_suite() {
   return s1;
 }
 
+Suite *string_sharp_suite() {
+  Suite *s2 = suite_create("STRING_C#_TESTS");
+  TCase *to_upper_tests = tcase_create("TO_UPPER");
+  suite_add_tcase(s2, to_upper_tests);
+  tcase_add_test(to_upper_tests, to_upper_test1);
+  tcase_add_test(to_upper_tests, to_upper_test2);
+  tcase_add_test(to_upper_tests, to_upper_test3);
+  tcase_add_test(to_upper_tests, to_upper_test4);
+  tcase_add_test(to_upper_tests, to_upper_test5);
+
+  TCase *to_lower_tests = tcase_create("TO_LOWER");
+  suite_add_tcase(s2, to_lower_tests);
+  tcase_add_test(to_lower_tests, to_lower_test1);
+  tcase_add_test(to_lower_tests, to_lower_test2);
+  tcase_add_test(to_lower_tests, to_lower_test3);
+  tcase_add_test(to_lower_tests, to_lower_test4);
+  tcase_add_test(to_lower_tests, to_lower_test5);
+
+  TCase *insert_tests = tcase_create("INSERT");
+  suite_add_tcase(s2, insert_tests);
+  tcase_add_test(insert_tests, insert_test1);
+  tcase_add_test(insert_tests, insert_test2);
+  tcase_add_test(insert_tests, insert_test3);
+  tcase_add_test(insert_tests, insert_test4);
+  tcase_add_test(insert_tests, insert_test5);
+
+  TCase *trim_tests = tcase_create("TRIM");
+  suite_add_tcase(s2, trim_tests);
+  tcase_add_test(trim_tests, trim_test1);
+  tcase_add_test(trim_tests, trim_test2);
+  tcase_add_test(trim_tests, trim_test3);
+  tcase_add_test(trim_tests, trim_test4);
+  tcase_add_test(trim_tests, trim_test5);
+
+  return s2;
+}
+
 int main() {
   Suite *s1 = string_suite();
+  Suite *s2 = string_sharp_suite();
 
   SRunner *runner_string = srunner_create(s1);
+  SRunner *runner_c_sharp = srunner_create(s2);
 
   int number_fails;
   srunner_run_all(runner_string, CK_NORMAL);
   number_fails = srunner_ntests_failed(runner_string);
   srunner_free(runner_string);
+
+  srunner_run_all(runner_c_sharp, CK_NORMAL);
+  number_fails += srunner_ntests_failed(runner_c_sharp);
+  srunner_free(runner_c_sharp);
 
   return number_fails == 0 ? 0 : 1;
 }
