@@ -8,6 +8,7 @@ void *s21_memchr(const void *arr, int c, s21_size_t n){
     for( i =0; i<n; i++){
         if (*((char*)arr + i) == c){
             flag =1;
+            break;
         }
     }
     if(flag ==1){

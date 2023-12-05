@@ -6,10 +6,10 @@
 #include "s21_string.h"
 
 // TESTS FOR MEMCHR
-// START_TEST(memchr_test1) {
-//   char str[20] = "memchr_test";
-//   ck_assert_mem_eq(s21_memchr(str, 'c', 11), memchr(str, 'c', 11), 11);
-// }
+START_TEST(memchr_test1) {
+  char str[20] = "memchr_test";
+  ck_assert_mem_eq(s21_memchr(str, 'c', 20), memchr(str, 'c', 20), 20);
+}
 
 START_TEST(memchr_test2) {
   char str[20] = "memchr_test";
@@ -21,10 +21,10 @@ START_TEST(memchr_test3) {
   ck_assert_msg(s21_memchr(str, 'F', 11) == s21_NULL, "Fail: s21_memchr == s21_NULL");
 }
 
-// START_TEST(memchr_test4) {
-//   char str[20] = "memchr_test";
-//   ck_assert_mem_eq(s21_memchr(str, 'm', 11), memchr(str, 'm', 11), 11);
-// }
+START_TEST(memchr_test4) {
+  char str[20] = "memchr_test";
+  ck_assert_mem_eq(s21_memchr(str, 'm', 20), memchr(str, 'm', 20), 20);
+}
 
 START_TEST(memchr_test5) {
   char str[20] = "memchr_test";
@@ -313,11 +313,11 @@ START_TEST(strpbrk_test1) {
   ck_assert_str_eq(s21_strpbrk(str1, str2), strpbrk(str1, str2));
 }
 
-// START_TEST(strpbrk_test2) {
-//   char str1[20] = "strpbrk_test1";
-//   char str2[20] = "STR";
-//   ck_assert_str_eq(s21_strpbrk(str1, str2), strpbrk(str1, str2)); 
-// }
+START_TEST(strpbrk_test2) {
+  char str1[20] = "strpbrk_test1";
+  char str2[20] = "STR";
+  ck_assert_msg(s21_strpbrk(str1, str2) == strpbrk(str1, str2), "Fail s21_strpbrk = (null)"); 
+}
 
 START_TEST(strpbrk_test3) {
   char str1[20] = "strpbrk\ntest1";
@@ -325,17 +325,17 @@ START_TEST(strpbrk_test3) {
   ck_assert_str_eq(s21_strpbrk(str1, str2), strpbrk(str1, str2));
 }
 
-// START_TEST(strpbrk_test4) {
-//   char str1[20] = "strpbrk_test1";
-//   char str2[20] = "";
-//   ck_assert_str_eq(s21_strpbrk(str1, str2), strpbrk(str1, str2));
-// }
+START_TEST(strpbrk_test4) {
+  char str1[20] = "strpbrk_test1";
+  char str2[20] = "";
+  ck_assert_msg(s21_strpbrk(str1, str2) == strpbrk(str1, str2), "Fail s21_strpbrk = (null)"); 
+}
 
-// START_TEST(strpbrk_test5) {
-//   char str1[20] = "";
-//   char str2[20] = "0123\n";
-//   ck_assert_str_eq(s21_strpbrk(str1, str2), strpbrk(str1, str2));
-// }
+START_TEST(strpbrk_test5) {
+  char str1[20] = "";
+  char str2[20] = "0123\n";
+  ck_assert_msg(s21_strpbrk(str1, str2) == strpbrk(str1, str2), "Fail s21_strpbrk = (null)"); 
+}
 
 
 // TESTS FOR STRRCHR
@@ -378,11 +378,11 @@ START_TEST(strstr_test2) {
   ck_assert_str_eq(s21_strstr(haystack, needle), strstr(haystack, needle));
 }
 
-// START_TEST(strstr_test3) {
-//   char haystack[20] = "";
-//   char needle[20] = "s";
-//   ck_assert_str_eq(s21_strstr(haystack, needle), strstr(haystack, needle));
-// }
+START_TEST(strstr_test3) {
+  char haystack[20] = "";
+  char needle[20] = "s";
+  ck_assert_msg(s21_strstr(haystack, needle) == strstr(haystack, needle), "Fail s21_strstr == (null)");
+}
 
 START_TEST(strstr_test4) {
   char haystack[20] = "strstr_test";
@@ -390,42 +390,42 @@ START_TEST(strstr_test4) {
   ck_assert_str_eq(s21_strstr(haystack, needle), strstr(haystack, needle));
 }
 
-// START_TEST(strstr_test5) {
-//   char haystack[20] = "strstr_test";
-//   char needle[20] = "lalala";
-//   ck_assert_str_eq(s21_strstr(haystack, needle), strstr(haystack, needle));
-// }
+START_TEST(strstr_test5) {
+  char haystack[20] = "strstr_test";
+  char needle[20] = "lalala";
+  ck_assert_msg(s21_strstr(haystack, needle) == strstr(haystack, needle), "Fail s21_strstr == (null)");
+}
 
 
 // TESTS FOR STRTOK
 START_TEST(strtok_test1) {
   char str[20] = "strtok_test";
   char delim[20] = "_";
-  ck_assert_str_eq(s21_strstr(str, delim), strstr(str, delim));
+  ck_assert_str_eq(s21_strtok(str, delim), strtok(str, delim));
 }
 
 START_TEST(strtok_test2) {
   char str[20] = "strtok_test";
   char delim[20] = "tok";
-  ck_assert_str_eq(s21_strstr(str, delim), strstr(str, delim));
+  ck_assert_str_eq(s21_strtok(str, delim), strtok(str, delim));
 }
 
 START_TEST(strtok_test3) {
   char str[20] = "strtok_test";
   char delim[20] = "";
-  ck_assert_str_eq(s21_strstr(str, delim), strstr(str, delim));
+  ck_assert_str_eq(s21_strtok(str, delim), strtok(str, delim));
 }
 
-// START_TEST(strtok_test4) {
-//   char str[20] = "";
-//   char delim[20] = "tok";
-//   ck_assert_str_eq(s21_strstr(str, delim), strstr(str, delim));
-// }
+START_TEST(strtok_test4) {
+  char str[20] = "";
+  char delim[20] = "tok";
+  ck_assert_msg(s21_strtok(str, delim) == strtok(str, delim), "Fail s21_strtok == (null)");
+}
 
 START_TEST(strtok_test5) {
   char str[20] = "strtok_test";
   char delim[20] = "strtok_test";
-  ck_assert_str_eq(s21_strstr(str, delim), strstr(str, delim));
+  ck_assert_msg(s21_strtok(str, delim) == strtok(str, delim), "Fail s21_strtok == (null)");
 }
 
 
@@ -434,10 +434,10 @@ Suite *string_suite() {
   Suite *s1 = suite_create("STRING_TESTS");
   TCase *memchr_tests = tcase_create("MEMCHR");
   suite_add_tcase(s1, memchr_tests);
-  // tcase_add_test(memchr_tests, memchr_test1);
+  tcase_add_test(memchr_tests, memchr_test1); // error 
   tcase_add_test(memchr_tests, memchr_test2);
   tcase_add_test(memchr_tests, memchr_test3);
-  // tcase_add_test(memchr_tests, memchr_test4);
+  tcase_add_test(memchr_tests, memchr_test4); // error
   tcase_add_test(memchr_tests, memchr_test5);
 
   TCase *memcmp_tests = tcase_create("MEMCMP");
@@ -518,10 +518,10 @@ Suite *string_suite() {
   TCase *strpbrk_tests = tcase_create("STRPBRK");
   suite_add_tcase(s1, strpbrk_tests);
   tcase_add_test(strpbrk_tests, strpbrk_test1);
-  // tcase_add_test(strpbrk_tests, strpbrk_test2);
+  tcase_add_test(strpbrk_tests, strpbrk_test2); 
   tcase_add_test(strpbrk_tests, strpbrk_test3);
-  // tcase_add_test(strpbrk_tests, strpbrk_test4);
-  // tcase_add_test(strpbrk_tests, strpbrk_test5);
+  tcase_add_test(strpbrk_tests, strpbrk_test4); 
+  tcase_add_test(strpbrk_tests, strpbrk_test5); 
 
   TCase *strrchr_tests = tcase_create("STRRCHR");
   suite_add_tcase(s1, strrchr_tests);
@@ -535,16 +535,16 @@ Suite *string_suite() {
   suite_add_tcase(s1, strstr_tests);
   tcase_add_test(strstr_tests, strstr_test1);
   tcase_add_test(strstr_tests, strstr_test2);
-  // tcase_add_test(strstr_tests, strstr_test3);
+  tcase_add_test(strstr_tests, strstr_test3); 
   tcase_add_test(strstr_tests, strstr_test4);
-  // tcase_add_test(strstr_tests, strstr_test5);
+  tcase_add_test(strstr_tests, strstr_test5); 
 
   TCase *strtok_tests = tcase_create("STRTOK");
   suite_add_tcase(s1, strtok_tests);
   tcase_add_test(strtok_tests, strtok_test1);
   tcase_add_test(strtok_tests, strtok_test2);
   tcase_add_test(strtok_tests, strtok_test3);
-  // tcase_add_test(strtok_tests, strtok_test4);
+  tcase_add_test(strtok_tests, strtok_test4); 
   tcase_add_test(strtok_tests, strtok_test5);
 
   return s1;
