@@ -11,7 +11,7 @@ int main() {
     int a =0 ;
     int a1 =0 ;
 
-//    char str[100];
+
     s21_sscanf("123    32","%d%d%n",&a,&a1,&n);
     printf("%d",n);
     return 0;
