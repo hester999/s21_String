@@ -4,80 +4,96 @@
 #include <stdlib.h>
 #include <math.h>
 
-float s21_strtof(const char *str, char** pos) {
-    int negative_num = 1;
-    float res = 0.0;
-    int a = 0;
-    int point_found = 0;
-    int e_found = 0;
-    int e_sign = 1;
-    int e_value = 0;
 
-    int i = 0;
-    // Пропуск начальных пробелов
-    while (str[i] == ' ') {
-        i++;
+#include <math.h>
+
+long double s21_strtof(const char *str,char **pos,int *count_char) {
+    long double result = 0.0;
+    long double fraction = 1.0;
+    int decimal_point = 0;
+    int exp_part = 0;
+    int exp_sign = 1;
+    int negative = 0;
+
+    // Пропуск пробелов
+    while (*str == 32) {
+        str++;
+        (*count_char)++;
     }
 
     // Обработка знака
-    if (str[i] == '-') {
-        negative_num = -1;
-        i++;
-    } else if (str[i] == '+') {
-        i++;
+    if (*str == '-') {
+        negative = 1;
+        str++;
+        (*count_char)++;
+    } else if (*str == '+') {
+        str++;
+        (*count_char)++;
     }
 
-
-    for (; str[i] != '\0'; i++) {
-        if (str[i] == '.' && !e_found) {
-            point_found = 1;
-            continue;
-        }
-
-        if ((str[i] == 'e' || str[i] == 'E') && !e_found) {
-            e_found = 1;
-            i++;
-            if (str[i] == '-') {
-                e_sign = -1;
-                i++;
-            } else if (str[i] == '+') {
-                i++;
+    // Чтение числа до точки или экспоненциальной части
+    for (; *str; str++) {
+        if (*str >= 48 && *str <= 57) {
+            result = result * 10.0 + (*str - 48);
+            if (decimal_point) fraction *= 10.0;
+        } else if (*str == '.' && !exp_part) {
+            decimal_point = 1;
+        } else if ((*str == 'e' || *str == 'E') && !exp_part) {
+            exp_part = 1;
+            str++;
+            if (*str == '-') {
+                exp_sign = -1;
+                str++;
+            } else if (*str == '+') {
+                str++;
             }
-            continue;
-        }
-
-        if (e_found) {
-            if (str[i] < '0' || str[i] > '9') break;
-            e_value = e_value * 10 + (str[i] - '0');
+            break;
         } else {
-            if (str[i] < '0' || str[i] > '9') break;
-            res = res * 10.0 + (str[i] - '0');
-            if (point_found) {
-                a++;
-            }
+            break;
         }
+        (*count_char)++;
     }
 
-    *pos = (char*)(str + i);
-
-    while (a--) {
-        res /= 10.0;
+    // Чтение экспоненциальной части
+    if (exp_part) {
+        int exp_value = 0;
+        for (; *str; str++) {
+            if (*str >= 48 && *str <= 57) {
+                exp_value = exp_value * 10 + (*str - 48);
+            } else {
+                break;
+            }
+            (*count_char)++;
+        }
+        result *= powl(10, exp_sign * exp_value);
     }
-
-    if (e_found) {
-        res *= pow(10, e_sign * e_value);
-    }
-
-    res *= negative_num;
-    return res;
+    *pos = (char*)(str+1);
+    if (negative) result = -result;
+    return result / fraction;
 }
 
 
 
-int atoi_counter(const char *str) {
+
+
+
+
+long long int s21_atoi(const char *str, char **pos,int *count_char) {
+    s21_size_t counter = 0;
     int flag = 1;
-    s21_size_t i= 0;
-    int counter = 0;
+    s21_size_t i = 0;
+
+    // Обработка опционального знака
+    int sign = 1;
+    if (str[i] == '-') {
+        sign = -1;
+        i++;
+        (*count_char)++;
+    }else{
+        (*count_char)++;
+    }
+
+
     while ((flag) && (i < s21_strlen(str))) {
         if (!(str[i] >= '0' && str[i] <= '9')) {
             flag = 0;
@@ -86,42 +102,48 @@ int atoi_counter(const char *str) {
             counter++;
         }
         i++;
+        (*count_char)++;
     }
-    return counter;
-}
 
-int s21_atoi(const char *str,char** pos) {
-    int counter = atoi_counter(str);
     if (!counter) {
         return 0;
     }
-    char *s = calloc(counter + 1,sizeof (char*));
-    s = s21_strncpy(s, str, counter);
-    s[counter] = 0;
-    int number = 0;
-    int degree = 1;
-    int c =0;
-    for (int i = s21_strlen(s) - 1; i >= 0; i--) {
-        number += ((s[i] - '0') * degree);
-        degree *= 10;
-        c++;
+
+    long long int number = 0;
+
+    for (i = 0; i < counter; i++) {
+        number = number * 10 + (str[i] - '0');
     }
-    *pos = (char*)(str + c);
-    free(s);
+
+    number *= sign;
+    *pos = (char *)(str + counter);
+
     return number;
 }
 
-int hex_convert(const char *str, char **pos) {
+
+int s21_hex_convert(const char *str, char **pos,int *count_char) {
     int res = 0;
     int num = 0;
     int i = 0;
+    int negative_num =1;
 
     // Пропуск начальных пробелов и знаков
-    while (str[i] == ' ' || str[i] == '+' || str[i] == '-') {
+    while (str[i] == ' ') {
         i++;
+        (*count_char)++;
+    }
+    if (str[i] == '-') {
+        negative_num = -1;
+        i++;
+        (*count_char)++;
+    } else if (str[i] == '+') {
+        i++;
+        (*count_char)++;
     }
     if (str[i] == '0' && (str[i + 1] == 'x' || str[i + 1] == 'X')) {
         i += 2;
+        (*count_char)+=2;
     }
     for (; str[i] != '\0' && str[i] != ' '; i++) {
         if (str[i] >= '0' && str[i] <= '9') {
@@ -134,22 +156,33 @@ int hex_convert(const char *str, char **pos) {
             // Некорректный символ, прерываем обработку
             break;
         }
+        (*count_char)++;
         res = res * 16 + num;
     }
 
     *pos = (char *)(str + i);
+    res*=negative_num;
     return res;
 }
 
-int octal_convert(const char *str, char **pos) {
+int s21_octal_convert(const char *str, char **pos,int *count_char) {
     int res = 0;
     int num = 0;
     int i = 0;
-
+    int negative_num = 1;
     // Пропуск начальных пробелов и знаков
     while (str[i] == ' ' || str[i] == '+' || str[i] == '-') {
         i++;
+        (*count_char)++;
     }
+
+    if (str[i] == '-') {
+        negative_num = -1;
+        i++;
+    } else if (str[i] == '+') {
+        i++;
+    }
+
     for (; str[i] != '\0' && str[i] != ' '; i++) {
         if (str[i] >= '0' && str[i] <= '7') {
             num = str[i] - '0';
@@ -157,15 +190,17 @@ int octal_convert(const char *str, char **pos) {
             // Некорректный символ, прерываем обработку
             break;
         }
+        (*count_char)++;
         res = res * 8 + num;
     }
 
     *pos = (char *)(str + i);
+    res *=negative_num;
     return res;
 }
 
 
-unsigned long  long  get_pointer(const char*str,char **pos ){
+unsigned long  long  s21_get_pointer(const char*str,char **pos,int *count_char){
 
     unsigned long long res = 0;
         int num = 0;
@@ -174,9 +209,11 @@ unsigned long  long  get_pointer(const char*str,char **pos ){
         // Пропуск начальных пробелов и знаков
         while (str[i] == ' ' || str[i] == '+' || str[i] == '-') {
             i++;
+            (*count_char)++;
         }
         if (str[i] == '0' && (str[i + 1] == 'x' || str[i + 1] == 'X')) {
             i += 2;
+            (*count_char)+=2;
         }
         for (; str[i] != '\0' && str[i] != ' '; i++) {
             if (str[i] >= '0' && str[i] <= '9') {
@@ -189,6 +226,7 @@ unsigned long  long  get_pointer(const char*str,char **pos ){
                 // Некорректный символ, прерываем обработку
                 break;
             }
+            (*count_char)++;
             res = res * 16 + num;
         }
 
@@ -197,19 +235,23 @@ unsigned long  long  get_pointer(const char*str,char **pos ){
 }
 
 
-int convert_str_to_int_auto_base(char* str, char **pos){
+int s21_convert_str_to_int_auto_base(const char* str, char **pos,int *count_char){
     int result = 0;
     if (str[0] == '0') {
         if (str[1] == 'x' || str[1] == 'X') {
             // Число в шестнадцатеричной системе
-            result = hex_convert(str, pos);
+            result = s21_hex_convert(str, pos,count_char);
         } else {
             // Число в восьмеричной системе
-            result = octal_convert(str, pos);
+            result = s21_octal_convert(str, pos,count_char);
         }
     } else {
         // Число в десятичной системе
-        result = s21_atoi(str, pos);
+        result = s21_atoi(str, pos,count_char);
     }
     return result;
 }
+
+//unsigned long long get_unsigned_num(const char*str,char **pos){
+//
+//}

@@ -1,11 +1,26 @@
 #include "s21_parse.h"
+#include "s21_string.h"
 int parse(const char* format,FormatSpecifier *specs,int maxSpecs){
 
     int numSpecs = 0;
 
     while(*format != '\0' && numSpecs < maxSpecs) {
+
         if (*format == '%') {
             format++;
+            if(s21_strchr("lLh",*format)!= s21_NULL){
+                specs[numSpecs].lenghtmode = 0;
+                if(*format =='h'){
+                    specs[numSpecs].lenghtmode  = 1;
+                }
+                if(*format=='l' ){
+                    specs[numSpecs].lenghtmode= 2;
+                }
+                if(*format == 'L'){
+                    specs[numSpecs].lenghtmode =3;
+                }
+            }
+
         }
         switch (*format) {
             case 'c':
@@ -68,17 +83,6 @@ int parse(const char* format,FormatSpecifier *specs,int maxSpecs){
                 specs[numSpecs++].type = SPEC_COUNT_SIMBOL;
                 break;
 
-            case 'h':
-                specs[numSpecs++].type = SPEC_short;
-                break;
-
-            case 'l':
-                specs[numSpecs++].type = SPEC_long;
-                break;
-
-            case 'L':
-                specs[numSpecs++].type = SPEC_LONG;
-                break;
         }
         format++;
     }

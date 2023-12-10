@@ -7,6 +7,6 @@
 #include "s21_convert.h"
 
 
-void s21_sscanf( char *input, const char *formatStr, ...);
+void s21_sscanf( const char *str, const char *format, ...);
 
 #endif

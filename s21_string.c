@@ -7,6 +7,7 @@ void *s21_memchr(const void *arr, int c, s21_size_t n){
     for( i =0; i<n; i++){
         if (*((char*)arr + i) == c){
             flag =1;
+            break;
         }
     }
     if(flag ==1){
@@ -121,9 +122,6 @@ s21_size_t s21_strcspn(const char *str1, const char *str2){
     return len;
 }
 
-//char *strerror(int errnum){
-//
-//}
 
 s21_size_t s21_strlen(const char *str){
     s21_size_t count =0;
