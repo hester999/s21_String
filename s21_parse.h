@@ -26,6 +26,6 @@ typedef struct {
 
 } FormatSpecifier;
 
-int parse(const char* format,FormatSpecifier *specs,int maxSpecs);
+int parse(const char* format,FormatSpecifier **specs,int *len);
 
 #endif

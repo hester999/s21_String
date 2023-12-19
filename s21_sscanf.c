@@ -1,10 +1,12 @@
 #include "s21_sscanf.h"
 #include "stdio.h"
 void s21_sscanf( const char *str, const char *format, ...) {
-    FormatSpecifier specs[16];
+    int size = 10;
+    FormatSpecifier *specs = calloc(size, sizeof (FormatSpecifier));
 
-    int numSpecs = parse(format, specs, 16);
-    int count_char =0;
+    int numSpecs = parse(format, &specs, &size);
+    char const * begin = str;
+
     va_list args;
     va_start(args, format);
     char* pos;
@@ -14,17 +16,17 @@ void s21_sscanf( const char *str, const char *format, ...) {
 
                 if(specs[i].lenghtmode ==0 ){
                     int *p = va_arg(args, int*);
-                    *p = s21_atoi(str,&pos,&count_char);
+                    *p = s21_atoi(str,&pos);
 
                 }
                 if(specs[i].lenghtmode ==1){
                     short int *p = va_arg(args, short int*);
-                    *p = s21_atoi(str,&pos,&count_char);
+                    *p = s21_atoi(str,&pos);
 
                 }
                 if(specs[i].lenghtmode ==2){
                     long int *p = va_arg(args, long int*);
-                    *p = s21_atoi(str,&pos,&count_char);
+                    *p = s21_atoi(str,&pos);
                 }
 
                 str = pos;
@@ -34,17 +36,17 @@ void s21_sscanf( const char *str, const char *format, ...) {
 
                 if(specs[i].lenghtmode ==0 ){
                     float *p = va_arg(args, float *);
-                    *p = s21_strtof(str,&pos,&count_char);
+                    *p = s21_strtof(str,&pos);
 
                 }
                 if(specs[i].lenghtmode ==2){
                     double *p = va_arg(args, double*);
-                    *p = s21_strtof(str,&pos,&count_char);
+                    *p = s21_strtof(str,&pos);
 
                 }
                 if(specs[i].lenghtmode ==3){
                     long double *p = va_arg(args, long double*);
-                    *p = s21_strtof(str,&pos,&count_char);
+                    *p = s21_strtof(str,&pos);
                 }
                 str = pos;
                 break;
@@ -53,7 +55,7 @@ void s21_sscanf( const char *str, const char *format, ...) {
 
                 char *p = va_arg(args, char*);
                 *p = *str++; // Считывание одного символа
-                count_char++;
+
                 break;
             }
             case SPEC_STRING: {
@@ -63,17 +65,18 @@ void s21_sscanf( const char *str, const char *format, ...) {
                 while (str[j] != ' ' && str[j] != '\0') {
                     p[j] = str[j];
                     j++;
-                    count_char++;
+
                 }
                 p[j] = '\0';
 
                 str += j;
+                pos = (char*)str;
                 break;
             }
             case SPEC_SIGNED_INT: {
 
                 int *p = va_arg(args, int *);
-                *p = s21_convert_str_to_int_auto_base(str, &pos,&count_char);
+                *p = s21_convert_str_to_int_auto_base(str, &pos);
                 str = pos;
                 break;
             }
@@ -86,46 +89,56 @@ void s21_sscanf( const char *str, const char *format, ...) {
             case SPEC_UNSIGNED_8X8_INT:{
 
                 int *p = va_arg(args, int*);
-                *p = s21_octal_convert(str, &pos,&count_char);
+                *p = s21_octal_convert(str, &pos);
                 str = pos;
                 break;
             }
-            case SPEC_UNSIGNED_INT:
+            case SPEC_UNSIGNED_INT:{
+
+                unsigned long long *p = va_arg(args, unsigned long long *);
+                *p = s21_get_unsigned_num(str, &pos);
+                str = pos;
                 break;
+
+
+            }
+
             case SPEC_UNSIGNED_16X16_INT: {
 
                 int *p = va_arg(args, int*);
-                *p = s21_hex_convert(str, &pos,&count_char);
+                *p = s21_hex_convert(str, &pos);
                 str = pos;
                 break;
             }
             case SPEC_UNSIGNED_16X16_INT_UPPER: {
 
                 int *p = va_arg(args, int*);
-                *p = s21_hex_convert(str, &pos,&count_char);
+                *p = s21_hex_convert(str, &pos);
                 str = pos;
                 break;
             }
             case SPEC_POINTER:{
-
                 void **p = va_arg(args, void**);
-                *(void **)p = (void*)s21_get_pointer(str, &pos,&count_char);
+                *(void **)p = (void*)s21_get_pointer(str, &pos);
+                str = pos;
                 break;
             }
             case SPEC_COUNT_SIMBOL:{
                 int *p = va_arg(args, int*);
-                *p =  count_char;
+                *p =  pos - begin;
                 break;
             }
 
         }
         while (*str == ' ') {
             str++;
-            count_char++;
+            pos++;
+
+
         }
     }
 
+    free(specs);
     va_end(args);
-
 }
 
