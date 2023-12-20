@@ -3,11 +3,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-
+#include <math.h>
 
 #include <math.h>
 
-long double s21_strtof(const char *str,char **pos) {
+long double s21_strtof(const char *str, char **pos) {
     long double result = 0.0;
     long double fraction = 1.0;
     int decimal_point = 0;
@@ -16,61 +16,81 @@ long double s21_strtof(const char *str,char **pos) {
     int negative = 0;
 
     // Пропуск пробелов
-    while (*str == 32) {
+    while (*str == ' ') {
         str++;
-
     }
 
-    // Обработка знака
-    if (*str == '-') {
-        negative = 1;
-        str++;
+    // Обработка специальных строк (inf, infinity, nan)
+    if ((str[0] == 'i' || str[0] == 'I') &&
+        (str[1] == 'n' || str[1] == 'N') &&
+        (str[2] == 'f' || str[2] == 'F')) {
+        result = INFINITY;
+        str += 3;
 
-    } else if (*str == '+') {
-        str++;
-
-    }
-
-    // Чтение числа до точки или экспоненциальной части
-    for (; *str; str++) {
-        if (*str >= 48 && *str <= 57) {
-            result = result * 10.0 + (*str - 48);
-            if (decimal_point) fraction *= 10.0;
-        } else if (*str == '.' && !exp_part) {
-            decimal_point = 1;
-        } else if ((*str == 'e' || *str == 'E') && !exp_part) {
-            exp_part = 1;
+        // Проверка на "infinity"
+        if ((str[0] == 'i' || str[0] == 'I') &&
+            (str[1] == 'n' || str[1] == 'N') &&
+            (str[2] == 'i' || str[2] == 'I') &&
+            (str[3] == 't' || str[3] == 'T') &&
+            (str[4] == 'y' || str[4] == 'Y')) {
+            str += 5;
+        }
+    } else if ((str[0] == 'n' || str[0] == 'N') &&
+               (str[1] == 'a' || str[1] == 'A') &&
+               (str[2] == 'n' || str[2] == 'N')) {
+        result = NAN;
+        str += 3;
+    } else {
+        // Обработка знака
+        if (*str == '-') {
+            negative = 1;
             str++;
-            if (*str == '-') {
-                exp_sign = -1;
-                str++;
-            } else if (*str == '+') {
-                str++;
-            }
-            break;
-        } else {
-            break;
+        } else if (*str == '+') {
+            str++;
         }
 
-    }
-
-    // Чтение экспоненциальной части
-    if (exp_part) {
-        int exp_value = 0;
+        // Чтение числа до точки или экспоненциальной части
         for (; *str; str++) {
-            if (*str >= 48 && *str <= 57) {
-                exp_value = exp_value * 10 + (*str - 48);
+            if (*str >= '0' && *str <= '9') {
+                result = result * 10.0 + (*str - '0');
+                if (decimal_point) fraction *= 10.0;
+            } else if (*str == '.' && !exp_part) {
+                decimal_point = 1;
+            } else if ((*str == 'e' || *str == 'E') && !exp_part) {
+                exp_part = 1;
+                str++;
+                if (*str == '-') {
+                    exp_sign = -1;
+                    str++;
+                } else if (*str == '+') {
+                    str++;
+                }
+                break;
             } else {
                 break;
             }
-
         }
-        result *= powl(10, exp_sign * exp_value);
+
+        // Чтение экспоненциальной части
+        if (exp_part) {
+            int exp_value = 0;
+            for (; *str; str++) {
+                if (*str >= '0' && *str <= '9') {
+                    exp_value = exp_value * 10 + (*str - '0');
+                } else {
+                    break;
+                }
+            }
+            result *= powl(10, exp_sign * exp_value);
+        }
+        if (negative) result = -result;
+        result = result / fraction;
     }
-    *pos = (char*)(str+1);
-    if (negative) result = -result;
-    return result / fraction;
+
+    *pos = (char *)str;
+    return result;
 }
+
 
 
 
@@ -87,9 +107,6 @@ long long int s21_atoi(const char *str, char **pos) {
     int sign = 1;
     if (str[i] == '-') {
         sign = -1;
-        i++;
-
-    }else{
         i++;
     }
 
