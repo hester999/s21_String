@@ -840,6 +840,13 @@ Suite *string_sharp_suite() {
   return s2;
 }
 
+/* 
+
+~~~ Часть 3 ~~~
+Ширина: (число) *
+Длина: h l L
+
+*/
 Suite *sscanf_suite() {
   Suite *s3 = suite_create("SSCANF_TESTS");
   TCase *sscanf_c_tests = tcase_create("SPEC c (SSCANF)");
@@ -878,38 +885,54 @@ Suite *sscanf_suite() {
   return s3;
 }
 
+
+/* 
+
+~~~ Часть 2 ~~~
+Флаги: - + (пробел)
+Ширина: (число)
+Точность: .(число)
+Длина: h l 
+
+~~~ Дополнительно ~~~
+Флаги: # 0
+Ширина: *
+Точность: .*
+Длина: L 
+
+*/
 Suite *sprintf_suite() {
   Suite *s4 = suite_create("SPRINTF_TESTS");
-  TCase *sprintf_c_tests = tcase_create("SPEC c (SPRINTF)");
+  TCase *sprintf_c_tests = tcase_create("SPEC c (SPRINTF)"); // part 2
   suite_add_tcase(s4, sprintf_c_tests);
 
-  TCase *sprintf_d_tests = tcase_create("SPEC d (SPRINTF)");
+  TCase *sprintf_d_tests = tcase_create("SPEC d (SPRINTF)"); // part 2
 
-  TCase *sprintf_i_tests = tcase_create("SPEC i (SPRINTF)");
+  // TCase *sprintf_i_tests = tcase_create("SPEC i (SPRINTF)");
 
-  TCase *sprintf_e_tests = tcase_create("SPEC e (SPRINTF)");
+  TCase *sprintf_e_tests = tcase_create("SPEC e (SPRINTF)"); // dop
 
-  TCase *sprintf_E_tests = tcase_create("SPEC E (SPRINTF)");
+  TCase *sprintf_E_tests = tcase_create("SPEC E (SPRINTF)"); // dop
 
-  TCase *sprintf_f_tests = tcase_create("SPEC f (SPRINTF)");
+  TCase *sprintf_f_tests = tcase_create("SPEC f (SPRINTF)"); // part 2
 
-  TCase *sprintf_g_tests = tcase_create("SPEC g (SPRINTF)");
+  TCase *sprintf_g_tests = tcase_create("SPEC g (SPRINTF)"); // dop
 
-  TCase *sprintf_G_tests = tcase_create("SPEC G (SPRINTF)");
+  TCase *sprintf_G_tests = tcase_create("SPEC G (SPRINTF)"); // dop
 
-  TCase *sprintf_o_tests = tcase_create("SPEC o (SPRINTF)");
+  TCase *sprintf_o_tests = tcase_create("SPEC o (SPRINTF)"); // dop
 
-  TCase *sprintf_s_tests = tcase_create("SPEC s (SPRINTF)");
+  TCase *sprintf_s_tests = tcase_create("SPEC s (SPRINTF)"); // part 2
 
-  TCase *sprintf_u_tests = tcase_create("SPEC u (SPRINTF)");
+  TCase *sprintf_u_tests = tcase_create("SPEC u (SPRINTF)"); // part 2
 
-  TCase *sprintf_x_tests = tcase_create("SPEC x (SPRINTF)");
+  TCase *sprintf_x_tests = tcase_create("SPEC x (SPRINTF)"); // dop
 
-  TCase *sprintf_X_tests = tcase_create("SPEC X (SPRINTF)");
+  TCase *sprintf_X_tests = tcase_create("SPEC X (SPRINTF)"); // dop
 
-  TCase *sprintf_p_tests = tcase_create("SPEC p (SPRINTF)");
+  TCase *sprintf_p_tests = tcase_create("SPEC p (SPRINTF)"); // dop
 
-  TCase *sprintf_n_tests = tcase_create("SPEC n (SPRINTF)");
+  // TCase *sprintf_n_tests = tcase_create("SPEC n (SPRINTF)");
 
   return s4;
 }
