@@ -1,6 +1,7 @@
 #include "s21_string.h"
 #include "errlist.h"
 #include "extra.h"
+#include "s21_convert.h"
 
 
 
@@ -373,22 +374,4 @@ int atoi_counter(const char *str) {
         i++;
     }
     return counter;
-}
-
-int s21_atoi(const char *str) {
-    int counter = atoi_counter(str);
-    if (!counter) {
-        return 0;
-    }
-    char *s = malloc(counter + 1);
-    s = s21_strncpy(s, str, counter);
-    s[counter] = 0;
-    int number = 0;
-    int degree = 1;
-    for (int i = s21_strlen(s) - 1; i >= 0; i--) {
-        number += ((s[i] - '0') * degree);
-        degree *= 10;
-    }
-    free(s);
-    return number;
 }
