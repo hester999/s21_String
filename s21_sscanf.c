@@ -13,7 +13,6 @@ void s21_sscanf( const char *str, const char *format, ...) {
     for (int i = 0; i < numSpecs; i++) {
         switch (specs[i].type) {
             case SPEC_INT: {
-
                 if(specs[i].lenghtmode ==0 ){
                     int *p = va_arg(args, int*);
                     *p = s21_atoi(str,&pos);
@@ -26,6 +25,10 @@ void s21_sscanf( const char *str, const char *format, ...) {
                 }
                 if(specs[i].lenghtmode ==2){
                     long int *p = va_arg(args, long int*);
+                    *p = s21_atoi(str,&pos);
+                }
+                if(specs[i].lenghtmode ==3){
+                    long long int *p = va_arg(args, long long  int*);
                     *p = s21_atoi(str,&pos);
                 }
 
@@ -44,7 +47,7 @@ void s21_sscanf( const char *str, const char *format, ...) {
                     *p = s21_strtof(str,&pos);
 
                 }
-                if(specs[i].lenghtmode ==3){
+                if(specs[i].lenghtmode ==4){
                     long double *p = va_arg(args, long double*);
                     *p = s21_strtof(str,&pos);
                 }
@@ -55,7 +58,7 @@ void s21_sscanf( const char *str, const char *format, ...) {
 
                 char *p = va_arg(args, char*);
                 *p = *str++; // Считывание одного символа
-
+                pos = (char*)str;
                 break;
             }
             case SPEC_STRING: {
@@ -80,12 +83,61 @@ void s21_sscanf( const char *str, const char *format, ...) {
                 str = pos;
                 break;
             }
-            case SPEC_EXP:
+            case SPEC_EXP:{
+                if(specs[i].lenghtmode ==0 ){
+                    float *p = va_arg(args, float *);
+                    *p = s21_strtof(str,&pos);
+
+                }
+                if(specs[i].lenghtmode ==2){
+                    double *p = va_arg(args, double*);
+                    *p = s21_strtof(str,&pos);
+
+                }
+                if(specs[i].lenghtmode ==4){
+                    long double *p = va_arg(args, long double*);
+                    *p = s21_strtof(str,&pos);
+                }
+                str = pos;
                 break;
-            case SPEC_EXP_WITH_E:
+        }
+            case SPEC_EXP_WITH_E:{
+                if(specs[i].lenghtmode ==0 ){
+                    float *p = va_arg(args, float *);
+                    *p = s21_strtof(str,&pos);
+
+                }
+                if(specs[i].lenghtmode ==2){
+                    double *p = va_arg(args, double*);
+                    *p = s21_strtof(str,&pos);
+
+                }
+                if(specs[i].lenghtmode ==4){
+                    long double *p = va_arg(args, long double*);
+                    *p = s21_strtof(str,&pos);
+                }
+                str = pos;
                 break;
-            case SPEC_SORT_DEC:
+            }
+            case SPEC_SORT_DEC:{
+                if(specs[i].lenghtmode ==0 ){
+                    float *p = va_arg(args, float *);
+                    *p = s21_strtof(str,&pos);
+
+                }
+                if(specs[i].lenghtmode ==2){
+                    double *p = va_arg(args, double*);
+                    *p = s21_strtof(str,&pos);
+
+                }
+                if(specs[i].lenghtmode ==4){
+                    long double *p = va_arg(args, long double*);
+                    *p = s21_strtof(str,&pos);
+                }
+                str = pos;
                 break;
+            }
+
             case SPEC_UNSIGNED_8X8_INT:{
 
                 int *p = va_arg(args, int*);
@@ -94,9 +146,25 @@ void s21_sscanf( const char *str, const char *format, ...) {
                 break;
             }
             case SPEC_UNSIGNED_INT:{
+                if(specs[i].lenghtmode == 0){
+                    unsigned int *p = va_arg(args, unsigned int *);
+                    *p = s21_get_unsigned_num(str, &pos);
+                }
+                if(specs[i].lenghtmode == 1){
+                    unsigned short int *p = va_arg(args, unsigned short int *);
+                    *p = s21_get_unsigned_num(str, &pos);
+                }
 
-                unsigned long long *p = va_arg(args, unsigned long long *);
-                *p = s21_get_unsigned_num(str, &pos);
+                if(specs[i].lenghtmode == 2){
+                    unsigned long int *p = va_arg(args,unsigned long int * );
+                    *p = s21_get_unsigned_num(str, &pos);
+                }
+
+                if(specs[i].lenghtmode == 3){
+                    unsigned long long int *p = va_arg(args,unsigned long long  int * );
+                    *p = s21_get_unsigned_num(str, &pos);
+                }
+
                 str = pos;
                 break;
 

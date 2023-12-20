@@ -3,7 +3,6 @@
 #include "stdlib.h"
 int parse(const char* format,FormatSpecifier **specs, int *len){
     int numSpecs = 0;
-
     while(*format != '\0') {
         if (numSpecs >= *len) {
             *len *= 2;
@@ -18,18 +17,36 @@ int parse(const char* format,FormatSpecifier **specs, int *len){
 
         if (*format == '%') {
             format++;
+            (*specs)[numSpecs].is_star_flag = 0;
+            int incrementFormat = 0;
             if(s21_strchr("lLh*",*format)!= s21_NULL){
                 (*specs)[numSpecs].lenghtmode = 0;
                 if(*format =='h'){
                     (*specs)[numSpecs].lenghtmode  = 1;
                 }
-                if(*format=='l' ){
-                    (*specs)[numSpecs].lenghtmode= 2;
-                }
-                if(*format == 'L'){
-                    (*specs)[numSpecs].lenghtmode =3;
+
+
+                if (*format == '*') {
+                    (*specs)[numSpecs].is_star_flag = 1;
+                    continue;
                 }
 
+
+                if (*format == 'l') {
+                    if (*(format + 1) == 'l') { // Правильная проверка второго символа
+                        (*specs)[numSpecs].lenghtmode = 3;
+                        incrementFormat = 1;
+                        format++;
+                    } else {
+                        (*specs)[numSpecs].lenghtmode = 2;
+                    }
+                }
+                if(*format == 'L'){
+                    (*specs)[numSpecs].lenghtmode =4;
+                }
+                if(incrementFormat == 0){
+                        format++;
+                }
             }
 
         }

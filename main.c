@@ -7,12 +7,12 @@
 int main() {
 
 
+    double a,b,c;
 
-    unsigned long long a;
-    int n =0;
-    s21_sscanf("18446744073709551615", "%llu %n", &a,&n);
-
-    printf("%d", n);
+    s21_sscanf("12345e6","%lg",&a);
+    s21_sscanf("123.456","%lf",&b);
+    s21_sscanf("3.14e-2","%le",&c);
+    printf("%lf %lf %lf",a,b,c);
 
 
 

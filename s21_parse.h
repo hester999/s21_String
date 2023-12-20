@@ -23,7 +23,7 @@ typedef struct {
     SpecifierType type;
     int width;
     int lenghtmode;
-
+    int is_star_flag;
 } FormatSpecifier;
 
 int parse(const char* format,FormatSpecifier **specs,int *len);
