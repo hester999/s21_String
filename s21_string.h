@@ -1,5 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "errlist.h"
+#include "extra.h"
+#include "s21_convert.h"
+
 #ifndef S21_STRING_H
 #define S21_STRING_H
 
