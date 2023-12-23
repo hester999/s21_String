@@ -20,6 +20,14 @@ long double s21_strtof(const char *str, char **pos) {
         str++;
     }
 
+    // Проверка на отрицательный знак
+    if (*str == '-') {
+        negative = 1;
+        str++;
+    } else if (*str == '+') {
+        str++;
+    }
+
     // Обработка специальных строк (inf, infinity, nan)
     if ((str[0] == 'i' || str[0] == 'I') &&
         (str[1] == 'n' || str[1] == 'N') &&
@@ -42,11 +50,9 @@ long double s21_strtof(const char *str, char **pos) {
         str += 3;
     } else {
         // Обработка знака
-        if (*str == '-') {
-            negative = 1;
-            str++;
-        } else if (*str == '+') {
-            str++;
+        if (negative) {
+            negative = 0; // Сброс флага отрицательного знака
+            str--;
         }
 
         // Чтение числа до точки или экспоненциальной части
@@ -87,15 +93,10 @@ long double s21_strtof(const char *str, char **pos) {
         result = result / fraction;
     }
 
+
     *pos = (char *)str;
     return result;
 }
-
-
-
-
-
-
 
 
 long long int s21_atoi(const char *str, char **pos) {

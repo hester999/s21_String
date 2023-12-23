@@ -24,14 +24,10 @@ int parse(const char* format,FormatSpecifier **specs, int *len){
                 if(*format =='h'){
                     (*specs)[numSpecs].lenghtmode  = 1;
                 }
-
-
                 if (*format == '*') {
                     (*specs)[numSpecs].is_star_flag = 1;
                     continue;
                 }
-
-
                 if (*format == 'l') {
                     if (*(format + 1) == 'l') { // Правильная проверка второго символа
                         (*specs)[numSpecs].lenghtmode = 3;
@@ -45,8 +41,9 @@ int parse(const char* format,FormatSpecifier **specs, int *len){
                     (*specs)[numSpecs].lenghtmode =4;
                 }
                 if(incrementFormat == 0){
-                        format++;
+                    format++;
                 }
+
             }
 
         }

@@ -6,17 +6,10 @@
 #include "float.h"
 int main() {
 
-
-    double a,b,c;
-
-    s21_sscanf("12345e6","%lg",&a);
-    s21_sscanf("123.456","%lf",&b);
-    s21_sscanf("3.14e-2","%le",&c);
-    printf("%lf %lf %lf",a,b,c);
-
-
-
-
+    char c[10];
+    int a;
+    sscanf("10","%100d",&a);
+    printf("%d",a);
     return 0;
 
 }
