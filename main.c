@@ -2,22 +2,16 @@
 #include "s21_string.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "s21_sscanf.h"
 
 
 
 int main() {
-    char s1[] = "qwe-zxc"; // Используем массив символов, а не строковый литерал
-    char *s2 = "-";
+    int aaa;
 
-    char *res = s21_strtok(s1, s2);
+    s21_sscanf("-10", "%d", &aaa);
 
-    while (res != NULL) {
-        printf("%s\n", res);
-        res = s21_strtok(NULL, s2);
-    }
+    printf("%d", aaa);
 
     return 0;
 }
-
-
-
