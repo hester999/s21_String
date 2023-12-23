@@ -1,5 +1,7 @@
 #include "s21_sscanf.h"
 #include "stdio.h"
+#include "s21_string.h"
+
 void s21_sscanf( const char *str, const char *format, ...) {
     int size = 10;
 
@@ -80,18 +82,18 @@ void s21_sscanf( const char *str, const char *format, ...) {
                 break;
             }
             case SPEC_STRING: {
-                char *p = NULL;
+                char *p = s21_NULL;
                 if (specs[i].is_star_flag != 1) {
                     p = va_arg(args, char*);
                 }
                 int j = 0;
                 while (str[j] != ' ' && str[j] != '\0') {
-                    if (p != NULL) {
+                    if (p != s21_NULL) {
                         p[j] = str[j];
                     }
                     j++;
                 }
-                if (p != NULL) {
+                if (p != s21_NULL) {
                     p[j] = '\0';
                 }
                 str += j;
@@ -243,9 +245,7 @@ void s21_sscanf( const char *str, const char *format, ...) {
                 break;
             }
             case SPEC_COUNT_SIMBOL:{
-                if (specs[i].is_star_flag ==1 ){
-                    pos - begin;
-                }else {
+                if (specs[i].is_star_flag !=1 ){
                     int *p = va_arg(args, int*);
                     *p = pos - begin;
                 }

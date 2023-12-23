@@ -34,7 +34,6 @@ long double s21_strtof(const char *str, char **pos) {
         (str[2] == 'f' || str[2] == 'F')) {
         result = INFINITY;
         str += 3;
-
         // Проверка на "infinity"
         if ((str[0] == 'i' || str[0] == 'I') &&
             (str[1] == 'n' || str[1] == 'N') &&
@@ -49,12 +48,6 @@ long double s21_strtof(const char *str, char **pos) {
         result = NAN;
         str += 3;
     } else {
-        // Обработка знака
-        if (negative) {
-            negative = 0; // Сброс флага отрицательного знака
-            str--;
-        }
-
         // Чтение числа до точки или экспоненциальной части
         for (; *str; str++) {
             if (*str >= '0' && *str <= '9') {
@@ -93,7 +86,6 @@ long double s21_strtof(const char *str, char **pos) {
         result = result / fraction;
     }
 
-
     *pos = (char *)str;
     return result;
 }
@@ -129,8 +121,8 @@ long long int s21_atoi(const char *str, char **pos) {
 
     long long int number = 0;
 
-    for (i = 0; i < counter; i++) {
-        number = number * 10 + (str[i] - '0');
+    for (s21_size_t j = (sign == -1 ? 1 : 0); j < counter + (sign == -1 ? 1 : 0); j++) {
+        number = number * 10 + (str[j] - '0');
     }
 
     number *= sign;

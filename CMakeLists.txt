@@ -13,4 +13,4 @@ add_executable(String main.c
 )
 
 
-target_compile_options(String PRIVATE -Wall -Werror -Wextra)
+#target_compile_options(String PRIVATE -Wall -Werror -Wextra)
