@@ -12,55 +12,63 @@ void s21_sscanf( const char *str, const char *format, ...) {
 
     va_list args;
     va_start(args, format);
+    int width = 0;
     char* pos;
     for (int i = 0; i < numSpecs; i++) {
-
         switch (specs[i].type) {
             case SPEC_INT: {
                 if(specs[i].is_star_flag == 1){
-                    s21_atoi(str,&pos);
+                    s21_atoi(str,&pos,width);
 //                    str = pos;
                 }
                 else if(specs[i].lenghtmode == 0){
                     int *p = va_arg(args, int*);
-                    *p = s21_atoi(str, &pos);
-
+                    width = specs[i].width;
+                    *p = s21_atoi(str, &pos,width);
                 }
                 else if(specs[i].lenghtmode ==1){
                     short int *p = va_arg(args, short int*);
-                    *p = s21_atoi(str,&pos);
+                    width = specs[i].width;
+
+                    *p = s21_atoi(str,&pos,width);
 
                 }
                 else if(specs[i].lenghtmode ==2){
                     long int *p = va_arg(args, long int*);
-                    *p = s21_atoi(str,&pos);
+                    width = specs[i].width;
+
+                    *p = s21_atoi(str,&pos,width);
                 }
                 if(specs[i].lenghtmode ==3){
                     long long int *p = va_arg(args, long long  int*);
-                    *p = s21_atoi(str,&pos);
+                    width = specs[i].width;
+                    *p = s21_atoi(str,&pos,width);
                 }
-
                 str = pos;
+
                 break;
             }
             case SPEC_FLOAT: {
                 if(specs[i].is_star_flag == 1){
-                    s21_strtof(str,&pos);
+                    s21_strtof(str,&pos,width);
 //                    str = pos;
                 }
                 else if(specs[i].lenghtmode ==0 ){
                     float *p = va_arg(args, float *);
-                    *p = s21_strtof(str,&pos);
+                    width = specs[i].width;
+                    *p = s21_strtof(str,&pos,width);
 
                 }
                 else if(specs[i].lenghtmode ==2){
                     double *p = va_arg(args, double*);
-                    *p = s21_strtof(str,&pos);
+                    width = specs[i].width;
+                    *p = s21_strtof(str,&pos,width);
 
                 }
                 else if(specs[i].lenghtmode ==4){
                     long double *p = va_arg(args, long double*);
-                    *p = s21_strtof(str,&pos);
+                    width = specs[i].width;
+                    *p = s21_strtof(str,&pos,width);
                 }
                 str = pos;
                 break;
@@ -117,62 +125,71 @@ void s21_sscanf( const char *str, const char *format, ...) {
             }
             case SPEC_EXP:{
                 if(specs[i].is_star_flag==1){
-                    s21_strtof(str,&pos);
+                    s21_strtof(str,&pos,width);
                 }
                 else if(specs[i].lenghtmode ==0 ){
                     float *p = va_arg(args, float *);
-                    *p = s21_strtof(str,&pos);
+                    width = specs[i].width;
+                    *p = s21_strtof(str,&pos,width);
 
                 }
                 else if(specs[i].lenghtmode ==2){
                     double *p = va_arg(args, double*);
-                    *p = s21_strtof(str,&pos);
+                    width = specs[i].width;
+                    *p = s21_strtof(str,&pos,width);
 
                 }
                 else if(specs[i].lenghtmode ==4){
                     long double *p = va_arg(args, long double*);
-                    *p = s21_strtof(str,&pos);
+                    width = specs[i].width;
+                    *p = s21_strtof(str,&pos,width);
                 }
                 str = pos;
                 break;
             }
             case SPEC_EXP_WITH_E:{
                 if(specs[i].is_star_flag == 1){
-                    s21_strtof(str,&pos);
+                    s21_strtof(str,&pos,width);
                 }
                 else if(specs[i].lenghtmode ==0 ){
                     float *p = va_arg(args, float *);
-                    *p = s21_strtof(str,&pos);
+                    width = specs[i].width;
+                    *p = s21_strtof(str,&pos,width);
 
                 }
                 else if(specs[i].lenghtmode ==2){
                     double *p = va_arg(args, double*);
-                    *p = s21_strtof(str,&pos);
+                    width = specs[i].width;
+                    *p = s21_strtof(str,&pos,width);
 
                 }
                 else if(specs[i].lenghtmode ==4){
                     long double *p = va_arg(args, long double*);
-                    *p = s21_strtof(str,&pos);
+                    width = specs[i].width;
+                    *p = s21_strtof(str,&pos,width);
                 }
                 str = pos;
                 break;
             }
             case SPEC_SORT_DEC:{
                 if(specs[i].is_star_flag==1){
-                    s21_strtof(str,&pos);
+                    s21_strtof(str,&pos,width);
                 }
                 else if(specs[i].lenghtmode ==0 ){
                     float *p = va_arg(args, float *);
-                    *p = s21_strtof(str,&pos);
+                    width = specs[i].width;
+                    *p = s21_strtof(str,&pos,width);
                 }
                 else if(specs[i].lenghtmode ==2){
                     double *p = va_arg(args, double*);
-                    *p = s21_strtof(str,&pos);
+                    width = specs[i].width;
+                    *p = s21_strtof(str,&pos,width);
 
                 }
                 else if(specs[i].lenghtmode ==4){
                     long double *p = va_arg(args, long double*);
-                    *p = s21_strtof(str,&pos);
+                    width = specs[i].width;
+                    *p = s21_strtof(str,&pos,width);
                 }
                 str = pos;
                 break;

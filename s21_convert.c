@@ -7,75 +7,90 @@
 
 #include <math.h>
 
-long double s21_strtof(const char *str, char **pos) {
+long double s21_strtof(const char *str, char **pos, int width) {
     long double result = 0.0;
     long double fraction = 1.0;
     int decimal_point = 0;
     int exp_part = 0;
     int exp_sign = 1;
     int negative = 0;
+    int temp =0;
 
+    while(str[temp] != ' ' && str[temp] !='\0'){
+        temp++;
+    }
+    if(width<=0){
+        width = temp;
+    }
+
+
+    int i=0;
     // Пропуск пробелов
-    while (*str == ' ') {
-        str++;
+    while (str[i] == ' ' && (width == -1 || i < (s21_size_t)width)) {
+        i++;
     }
 
     // Проверка на отрицательный знак
-    if (*str == '-') {
-        negative = 1;
-        str++;
-    } else if (*str == '+') {
-        str++;
+    if ((str[i] == '-' || *str == '+') && (width == -1 || i < (s21_size_t)width)) {
+        negative = (*str == '-');
+        i++;
+
     }
 
     // Обработка специальных строк (inf, infinity, nan)
     if ((str[0] == 'i' || str[0] == 'I') &&
         (str[1] == 'n' || str[1] == 'N') &&
-        (str[2] == 'f' || str[2] == 'F')) {
+        (str[2] == 'f' || str[2] == 'F') &&
+        (width == -1 || i + 3 <= (s21_size_t)width)) {
         result = INFINITY;
-        str += 3;
+        i += 3;
         // Проверка на "infinity"
         if ((str[0] == 'i' || str[0] == 'I') &&
             (str[1] == 'n' || str[1] == 'N') &&
             (str[2] == 'i' || str[2] == 'I') &&
             (str[3] == 't' || str[3] == 'T') &&
-            (str[4] == 'y' || str[4] == 'Y')) {
-            str += 5;
+            (str[4] == 'y' || str[4] == 'Y') &&
+            (width == -1 || i + 5 <= (s21_size_t)width)) {
+            i += 5;
+
         }
     } else if ((str[0] == 'n' || str[0] == 'N') &&
                (str[1] == 'a' || str[1] == 'A') &&
-               (str[2] == 'n' || str[2] == 'N')) {
+               (str[2] == 'n' || str[2] == 'N') &&
+               (width == -1 || i + 3 <= (s21_size_t)width)) {
         result = NAN;
-        str += 3;
+        i += 3;
     } else {
         // Чтение числа до точки или экспоненциальной части
-        for (; *str; str++) {
-            if (*str >= '0' && *str <= '9') {
-                result = result * 10.0 + (*str - '0');
+        while (str[i] && (width == -1 || i < (s21_size_t)width)) {
+            if (str[i] >= '0' && str[i] <= '9') {
+                result = result * 10.0 + (str[i] - '0');
                 if (decimal_point) fraction *= 10.0;
-            } else if (*str == '.' && !exp_part) {
+            } else if (str[i] == '.' && !exp_part) {
                 decimal_point = 1;
-            } else if ((*str == 'e' || *str == 'E') && !exp_part) {
+            } else if ((str[i] == 'e' || str[i] == 'E') && !exp_part) {
                 exp_part = 1;
-                str++;
-                if (*str == '-') {
-                    exp_sign = -1;
-                    str++;
-                } else if (*str == '+') {
-                    str++;
+                i++;
+
+                if ((str[i] == '-' || str[i] == '+') && (width == -1 || i < (s21_size_t)width)) {
+                    i++;
                 }
                 break;
             } else {
                 break;
             }
+            i++;
+
         }
 
         // Чтение экспоненциальной части
         if (exp_part) {
             int exp_value = 0;
-            for (; *str; str++) {
-                if (*str >= '0' && *str <= '9') {
-                    exp_value = exp_value * 10 + (*str - '0');
+            while (str[i] && (width == -1 || i < (s21_size_t)width)) {
+                if (str[i] >= '0' && str[i] <= '9') {
+                    exp_value = exp_value * 10 + (str[i] - '0');
+                    i++;
+
                 } else {
                     break;
                 }
@@ -86,50 +101,49 @@ long double s21_strtof(const char *str, char **pos) {
         result = result / fraction;
     }
 
-    *pos = (char *)str;
+    *pos = (char *)str+temp;
+
+
     return result;
 }
 
 
-long long int s21_atoi(const char *str, char **pos) {
-    s21_size_t counter = 0;
-    int flag = 1;
-    s21_size_t i = 0;
-
-    // Обработка опционального знака
+long long int s21_atoi(const char *str, char **pos, int width) {
+    long long int number = 0;
     int sign = 1;
+    s21_size_t i = 0;
+    int temp = 0;
+
+    while (str[temp] != '\0' && (str[temp] >= '0' && str[temp] <= '9' || str[temp] == '+' || str[temp] == '-')) {
+        temp++;
+    }
+
+    if (width <= 0 || width > temp) {
+        width = temp;
+    }
+
     if (str[i] == '-') {
         sign = -1;
         i++;
+        if (width > 0) {
+            width--;
+        }
     }
 
+    s21_size_t digits_count = 0;
 
-    while ((flag) && (i < s21_strlen(str))) {
-        if (!(str[i] >= '0' && str[i] <= '9')) {
-            flag = 0;
-        }
-        if (flag) {
-            counter++;
-        }
+    while (str[i] >= '0' && str[i] <= '9' && digits_count < width) {
+        number = number * 10 + (str[i] - '0');
         i++;
-
+        digits_count++;
     }
 
-    if (!counter) {
-        return 0;
-    }
 
-    long long int number = 0;
+    *pos = (char *)(str + temp);
 
-    for (s21_size_t j = (sign == -1 ? 1 : 0); j < counter + (sign == -1 ? 1 : 0); j++) {
-        number = number * 10 + (str[j] - '0');
-    }
-
-    number *= sign;
-    *pos = (char *)(str + counter);
-
-    return number;
+    return number * sign;
 }
+
 
 
 int s21_hex_convert(const char *str, char **pos) {
@@ -257,7 +271,7 @@ int s21_convert_str_to_int_auto_base(const char* str, char **pos){
         }
     } else {
         // Число в десятичной системе
-        result = s21_atoi(str, pos);
+//        result = s21_atoi(str, pos,width);
     }
     return result;
 }
