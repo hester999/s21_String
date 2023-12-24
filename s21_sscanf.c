@@ -19,7 +19,6 @@ void s21_sscanf( const char *str, const char *format, ...) {
             case SPEC_INT: {
                 if(specs[i].is_star_flag == 1){
                     s21_atoi(str,&pos,width);
-//                    str = pos;
                 }
                 else if(specs[i].lenghtmode == 0){
                     int *p = va_arg(args, int*);
@@ -114,11 +113,11 @@ void s21_sscanf( const char *str, const char *format, ...) {
 
             case SPEC_SIGNED_INT: {
                 if(specs[i].is_star_flag == 1){
-                    s21_convert_str_to_int_auto_base(str, &pos);
+                    s21_convert_str_to_int_auto_base(str, &pos,width);
                     str = pos;
                 }else{
                     int *p = va_arg(args, int *);
-                    *p = s21_convert_str_to_int_auto_base(str, &pos);
+                    *p = s21_convert_str_to_int_auto_base(str, &pos,width);
                     str = pos;
                 }
                 break;
@@ -230,27 +229,29 @@ void s21_sscanf( const char *str, const char *format, ...) {
             }
 
             case SPEC_UNSIGNED_16X16_INT: {
+
                 if(specs[i].is_star_flag==1){
-                    s21_hex_convert(str, &pos);
+
+                    s21_hex_convert(str, &pos,width);
                     str = pos;
                 }
                 else{
                     int *p = va_arg(args, int*);
-                    *p = s21_hex_convert(str, &pos);
+                    width = specs[i].width;
+                    *p = s21_hex_convert(str, &pos,width);
                     str = pos;
                 }
-
                 break;
             }
             case SPEC_UNSIGNED_16X16_INT_UPPER: {
 
                 if(specs[i].is_star_flag==1){
-                    s21_hex_convert(str, &pos);
+                    s21_hex_convert(str, &pos, width);
                     str = pos;
                 }
                 else{
                     int *p = va_arg(args, int*);
-                    *p = s21_hex_convert(str, &pos);
+                    *p = s21_hex_convert(str, &pos,width);
                     str = pos;
                 }
                 break;
@@ -262,7 +263,7 @@ void s21_sscanf( const char *str, const char *format, ...) {
                 break;
             }
             case SPEC_COUNT_SIMBOL:{
-                if (specs[i].is_star_flag !=1 ){
+                if (specs[i].is_star_flag !=1  ){
                     int *p = va_arg(args, int*);
                     *p = pos - begin;
                 }

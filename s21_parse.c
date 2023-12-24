@@ -18,6 +18,7 @@ int parse(const char* format,FormatSpecifier **specs, int *len){
             format++;
             (*specs)[numSpecs].is_star_flag = 0;
             int incrementFormat = 0;
+
             if (*format >= '0' && *format <= '9') {
                 (*specs)[numSpecs].width = 0;
                 while (*format >= '0' && *format <= '9') {
@@ -25,7 +26,7 @@ int parse(const char* format,FormatSpecifier **specs, int *len){
                     format++;
                 }
             }
-            if(s21_strchr("lLh*",*format)!= s21_NULL){
+            if(s21_strchr("lLh*0123456789",*format)!= s21_NULL){
 
                 (*specs)[numSpecs].lenghtmode = 0;
                 if(*format =='h'){

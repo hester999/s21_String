@@ -3,9 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <math.h>
+#include "limits.h"
 
-#include <math.h>
 
 long double s21_strtof(const char *str, char **pos, int width) {
     long double result = 0.0;
@@ -19,6 +18,7 @@ long double s21_strtof(const char *str, char **pos, int width) {
     while(str[temp] != ' ' && str[temp] !='\0'){
         temp++;
     }
+
     if(width<=0){
         width = temp;
     }
@@ -101,7 +101,7 @@ long double s21_strtof(const char *str, char **pos, int width) {
         result = result / fraction;
     }
 
-    *pos = (char *)str+temp;
+    *pos = (char *)str+i;
 
 
     return result;
@@ -134,42 +134,66 @@ long long int s21_atoi(const char *str, char **pos, int width) {
 
     while (str[i] >= '0' && str[i] <= '9' && digits_count < width) {
         number = number * 10 + (str[i] - '0');
+        if (number > (LLONG_MAX - number) / 10) {
+
+            number = (sign == 1) ? LLONG_MAX : LLONG_MIN;
+            break; //
+        }
         i++;
         digits_count++;
     }
 
 
-    *pos = (char *)(str + temp);
+    *pos = (char *)(str + i);
 
     return number * sign;
 }
 
 
 
-int s21_hex_convert(const char *str, char **pos) {
-    int res = 0;
+int s21_hex_convert(const char *str, char **pos, int width) {
+    unsigned int res = 0;
     int num = 0;
     int i = 0;
-    int negative_num =1;
+    int hex_digits_read = 0;
+    int temp = 0;
+    int negative = 1;
+    while(str[temp]!= ' ' && str[temp] != '\0'){
+        temp ++;
+    }
 
-    // Пропуск начальных пробелов и знаков
+    if(width  <= 0){
+        width =temp;
+    }
+
+    // Пропуск начальных пробелов
     while (str[i] == ' ') {
         i++;
-
     }
     if (str[i] == '-') {
-        negative_num = -1;
+        negative = -1;
         i++;
 
     } else if (str[i] == '+') {
         i++;
 
     }
-    if (str[i] == '0' && (str[i + 1] == 'x' || str[i + 1] == 'X')) {
-        i += 2;
-
+    // Проверка на префикс 0x или 0X
+    int prefix = (str[i] == '0' && (str[i + 1] == 'x' || str[i + 1] == 'X'));
+    if (prefix) {
+        i += 2; // Пропускаем "0x" или "0X"
     }
-    for (; str[i] != '\0' && str[i] != ' '; i++) {
+
+    // Если ширина позволяет прочитать только префикс (или не весь префикс), возвращаем 0
+     if (prefix &&  width <= 2)  {
+        if (pos != NULL) {
+            *pos = (char *)(str + i);
+        }
+        return 0;
+    }
+
+    // Обработка шестнадцатеричных символов
+    while (str[i] != '\0' && (width == -1 || hex_digits_read < width - (prefix ? 2 : 0))) {
         if (str[i] >= '0' && str[i] <= '9') {
             num = str[i] - '0';
         } else if (str[i] >= 'a' && str[i] <= 'f') {
@@ -177,17 +201,22 @@ int s21_hex_convert(const char *str, char **pos) {
         } else if (str[i] >= 'A' && str[i] <= 'F') {
             num = 10 + (str[i] - 'A');
         } else {
-            // Некорректный символ, прерываем обработку
-            break;
+            break; // Некорректный символ, прерываем обработку
         }
 
         res = res * 16 + num;
+        i++;
+        hex_digits_read++;
     }
 
-    *pos = (char *)(str + i);
-    res*=negative_num;
+    if (pos != NULL) {
+        *pos = (char *)(str + i);
+    }
+
+    res*=negative;
     return res;
 }
+
 
 int s21_octal_convert(const char *str, char **pos) {
     int res = 0;
@@ -259,19 +288,19 @@ unsigned long  long  s21_get_pointer(const char*str,char **pos){
 }
 
 
-int s21_convert_str_to_int_auto_base(const char* str, char **pos){
+int s21_convert_str_to_int_auto_base(const char* str, char **pos,int width){
     int result = 0;
     if (str[0] == '0') {
         if (str[1] == 'x' || str[1] == 'X') {
             // Число в шестнадцатеричной системе
-            result = s21_hex_convert(str, pos);
+            result = s21_hex_convert(str, pos,width);
         } else {
             // Число в восьмеричной системе
             result = s21_octal_convert(str, pos);
         }
     } else {
         // Число в десятичной системе
-//        result = s21_atoi(str, pos,width);
+        result = s21_atoi(str, pos,width);
     }
     return result;
 }
