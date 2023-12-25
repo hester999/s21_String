@@ -27,6 +27,7 @@ typedef struct {
     int hash;
     int zero;
     int width;
+    int accuracy;
     int number_system;
     int lenghtmode;
     int upper_case;
