@@ -3,8 +3,9 @@
 #include "stdlib.h"
 int parse(const char* format,FormatSpecifier **specs, int *len){
     int numSpecs = 0;
-    (*specs)[numSpecs].width = -1;
+
     while(*format != '\0') {
+
         if (numSpecs >= *len) {
             *len *= 2;
             FormatSpecifier *tmp = (FormatSpecifier *)realloc(*specs, sizeof (FormatSpecifier) * *len);
@@ -18,10 +19,10 @@ int parse(const char* format,FormatSpecifier **specs, int *len){
             format++;
             (*specs)[numSpecs].is_star_flag = 0;
             int incrementFormat = 0;
-
+            (*specs)[numSpecs].width = -100;
             if (*format >= '0' && *format <= '9') {
-                (*specs)[numSpecs].width = 0;
                 while (*format >= '0' && *format <= '9') {
+                    (*specs)[numSpecs].width = 0;
                     (*specs)[numSpecs].width = (*specs)[numSpecs].width * 10 + (*format - '0');
                     format++;
                 }

@@ -15,6 +15,7 @@ long double s21_strtof(const char *str, char **pos, int width) {
     int negative = 0;
     int temp =0;
 
+
     while(str[temp] != ' ' && str[temp] !='\0'){
         temp++;
     }
@@ -135,7 +136,6 @@ long long int s21_atoi(const char *str, char **pos, int width) {
     while (str[i] >= '0' && str[i] <= '9' && digits_count < width) {
         number = number * 10 + (str[i] - '0');
         if (number > (LLONG_MAX - number) / 10) {
-
             number = (sign == 1) ? LLONG_MAX : LLONG_MIN;
             break; //
         }
@@ -150,50 +150,65 @@ long long int s21_atoi(const char *str, char **pos, int width) {
 }
 
 
+int s21_hex_convert(const char *str, char **pos,int* width) {
+    printf("строка которая пришла - %s\n",str);
 
-int s21_hex_convert(const char *str, char **pos, int width) {
-    unsigned int res = 0;
+    int res = 0;
     int num = 0;
     int i = 0;
-    int hex_digits_read = 0;
-    int temp = 0;
-    int negative = 1;
-    while(str[temp]!= ' ' && str[temp] != '\0'){
-        temp ++;
+    int test =0;
+    int negative_num =1;
+    int temp =0;
+    int no_width = 0;
+    int full_str = 0;
+    int no_width_2=*width==0;
+    printf("ширина внутри хекса-%d\n",*width);
+
+    while(str[temp] !=' ' && str[temp]!= '\0'){
+        temp++;
+    }
+    if(*width >= temp){
+        full_str =1;
     }
 
-    if(width  <= 0){
-        width =temp;
+    if(*width == -100){
+        *width = temp;
+        no_width =1;
     }
 
-    // Пропуск начальных пробелов
+
+    // Пропуск начальных пробелов и знаков
     while (str[i] == ' ') {
         i++;
+
     }
     if (str[i] == '-') {
-        negative = -1;
+        negative_num = -1;
         i++;
+        (*width)--;
 
     } else if (str[i] == '+') {
         i++;
 
     }
-    // Проверка на префикс 0x или 0X
-    int prefix = (str[i] == '0' && (str[i + 1] == 'x' || str[i + 1] == 'X'));
-    if (prefix) {
-        i += 2; // Пропускаем "0x" или "0X"
+
+    if (str[i] == '0' && (str[i + 1] == 'x' || str[i + 1] == 'X') && (i< *width )) {
+        i += 2;
+        *width-=2;
+
     }
 
-    // Если ширина позволяет прочитать только префикс (или не весь префикс), возвращаем 0
-     if (prefix &&  width <= 2)  {
-        if (pos != NULL) {
-            *pos = (char *)(str + i);
-        }
-        return 0;
+    if(no_width ){
+        *width = temp;
     }
+    if(full_str){
+        *width = temp;
+    }
+    printf("ширина внутри хекса-%d\n",*width);
 
-    // Обработка шестнадцатеричных символов
-    while (str[i] != '\0' && (width == -1 || hex_digits_read < width - (prefix ? 2 : 0))) {
+    printf("это i-%d\n",i);
+
+    for (; str[i] != '\0' && str[i] != ' ' && (*width>0 || no_width_2); i++) {
         if (str[i] >= '0' && str[i] <= '9') {
             num = str[i] - '0';
         } else if (str[i] >= 'a' && str[i] <= 'f') {
@@ -201,21 +216,21 @@ int s21_hex_convert(const char *str, char **pos, int width) {
         } else if (str[i] >= 'A' && str[i] <= 'F') {
             num = 10 + (str[i] - 'A');
         } else {
-            break; // Некорректный символ, прерываем обработку
+            break;
         }
-
+        (*width)--;
         res = res * 16 + num;
-        i++;
-        hex_digits_read++;
     }
 
-    if (pos != NULL) {
-        *pos = (char *)(str + i);
-    }
 
-    res*=negative;
+
+   *pos = (char *)(str +i);
+    res*=negative_num;
     return res;
 }
+
+
+
 
 
 int s21_octal_convert(const char *str, char **pos) {
@@ -240,7 +255,6 @@ int s21_octal_convert(const char *str, char **pos) {
         if (str[i] >= '0' && str[i] <= '7') {
             num = str[i] - '0';
         } else {
-            // Некорректный символ, прерываем обработку
             break;
         }
 
@@ -262,8 +276,8 @@ unsigned long  long  s21_get_pointer(const char*str,char **pos){
         // Пропуск начальных пробелов и знаков
         while (str[i] == ' ' || str[i] == '+' || str[i] == '-') {
             i++;
-
         }
+
         if (str[i] == '0' && (str[i + 1] == 'x' || str[i + 1] == 'X')) {
             i += 2;
 
@@ -293,7 +307,7 @@ int s21_convert_str_to_int_auto_base(const char* str, char **pos,int width){
     if (str[0] == '0') {
         if (str[1] == 'x' || str[1] == 'X') {
             // Число в шестнадцатеричной системе
-            result = s21_hex_convert(str, pos,width);
+            result = s21_hex_convert(str, pos,&width);
         } else {
             // Число в восьмеричной системе
             result = s21_octal_convert(str, pos);
@@ -320,7 +334,7 @@ unsigned long long s21_get_unsigned_num(const char *str, char **pos) {
     }
 
     // Обновление pos
-    if (pos != NULL) {
+    if (pos != s21_NULL) {
         *pos = (char *)str;
     }
 
