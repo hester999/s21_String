@@ -3,18 +3,21 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "string.h"
 int to_number(const char **format);
 void set_format_spec(const char **format, va_list *arguments,
                      FormatSpecifier *temp_spec);
 void get_spec(const char **format,FormatSpecifier *get_spec);
 void  print_to_str(char **str,FormatSpecifier *full_spec,va_list *arguments,char *str_begin);
+void print_to_str_decimal(FormatSpecifier *full_spec,char **str,va_list *arguments,char *buf);
 int main() {
   char str[1000];
-  s21_sprintf(str, "%-+0#1000.4ld i% hd i%06.5f i%-.*Lc", 500700, 500, 300, 23.56,
-              "h");
+  s21_sprintf(str, "%.4d",4);
   printf("main str:%s",str);
-  return 0;
+    printf("\n%.4d",4);
+      return 0;
 }
+
 
 int s21_sprintf(char *str, const char *format, ...) {
   va_list arguments_to_format;
@@ -24,10 +27,6 @@ int s21_sprintf(char *str, const char *format, ...) {
     if (*format == '%') {
       FormatSpecifier format_spec = {0};
       set_format_spec(&format, &arguments_to_format, &format_spec);
-      printf("%c minus:%d plus:%d space:%d hash:%d  zero:%d width:%d accuracy:%d\n lengh:%c\n type:%c\n",
-       *format, format_spec.minus, format_spec.plus, format_spec.space,
-       format_spec.hash, format_spec.zero, format_spec.width,
-       format_spec.accuracy,format_spec.lenghtmode,format_spec.type);
       print_to_str(&str,&format_spec,&arguments_to_format,str_begin);
     } else {
       *str = *format;
@@ -102,34 +101,66 @@ int to_number(const char **format) {
 void get_spec(const char **format,FormatSpecifier *get_spec){
   char array_spec[18]="cdieEfFgGosuxXpn%";
 if (s21_strchr("cdieEfFgGosuxXpn%", **format)) {
-    get_spec->type= **format;
+    get_spec->sprintf_type= **format;
     (*format)++;
   }
 }
 
 void print_to_str(char **str,FormatSpecifier *full_spec,va_list *arguments,char *str_begin){
 char buf[7000];
-if (full_spec->type == 'd' || full_spec->type == 'i') {
-    //print_to_str_decimal(full_spec, str,arguments, buf);
-  } else if (full_spec->type == 'u'||  full_spec->type == 'o' ||
-             full_spec->type == 'x' || full_spec->type == 'X') {
+if (full_spec->sprintf_type == 'd' || full_spec->sprintf_type == 'i') {
+    print_to_str_decimal(full_spec, str,arguments, buf);
+  } else if (full_spec->sprintf_type == 'u'||  full_spec->sprintf_type == 'o' ||
+             full_spec->sprintf_type == 'x' || full_spec->sprintf_type == 'X') {
     //print_to_str_unsigned(full_spec, str,arguments, buf);
-  } else if (full_spec->type == 'c') {
+  } else if (full_spec->sprintf_type == 'c') {
     //print_to_str_symbol(full_spec, str, arguments);
-  } else if (full_spec->type == 's') {
+  } else if (full_spec->sprintf_type == 's') {
     //print_to_str_str(full_spec, str, arguments);
-  } else if (full_spec->type == 'p') {
+  } else if (full_spec->sprintf_type == 'p') {
     //print_to_str_unsigned(arguments, str, arguments, buf);
-  } else if (full_spec->type == 'n') {
+  } else if (full_spec->sprintf_type == 'n') {
     // int *n = (int *)va_arg(*arguments, int *);
     // *n = (int)(*str - str_begin);
-  } else if (full_spec->type == '%') {
+  } else if (full_spec->sprintf_type == '%') {
     //print_to_str_percent(full_spec, str, buf);
-  } else if (full_spec->type == 'f' || full_spec->type == 'F') {
+  } else if (full_spec->sprintf_type == 'f' || full_spec->sprintf_type == 'F') {
     //print_to_str_double(full_spec, str, arguments, buf);
-  } else if (full_spec->type == 'e' || full_spec->type == 'E') {
+  } else if (full_spec->sprintf_type == 'e' || full_spec->sprintf_type == 'E') {
     //print_to_str_e(full_spec, str, arguments, buf);
-  } else if (full_spec->type == 'g' || full_spec->type == 'G') {
+  } else if (full_spec->sprintf_type == 'g' || full_spec->sprintf_type == 'G') {
     //print_to_str_g(full_spec, str, arguments, buf);
   }
+}
+
+void print_to_str_decimal(FormatSpecifier *full_spec,char **str,va_list *arguments,char *buf){
+ long int number = 0;
+ char *buf_start = buf;
+if(full_spec->lenghtmode == 'l'){
+number = (long int)va_arg(*arguments,long int);
+}
+else if(full_spec->lenghtmode='h'){
+//number = (short int)va_arg(*arguments,short int);
+}{
+number = (int)va_arg(*arguments,int);
+}
+//  set_accuracy();
+//  set_with();
+//buf[0]=number;
+if(full_spec->accuracy){
+long int len = s21_strlen(buf);
+int i =0;
+long int add_accurcy = len-full_spec->accuracy;
+//printf("%d",add_accurcy);
+while(add_accurcy-->0){
+  buf[i]=0;
+  i=i+1;
+}
+printf("%d",i);
+//printf("%d",len);
+for(int i = 0; i<=*buf_start-*buf;i++){
+  printf("%d",*buf);
+}
+//*str = buf;
+}
 }
