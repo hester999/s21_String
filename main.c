@@ -7,9 +7,9 @@
 
 
 int main() {
-    int aaa;
+    int aaa = 0;
 
-    s21_sscanf("-10", "%d", &aaa);
+    s21_sscanf("abd", "%d", &aaa);
 
     printf("%d", aaa);
 
