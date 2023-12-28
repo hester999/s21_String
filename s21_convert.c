@@ -110,39 +110,53 @@ long double s21_strtof(const char *str, char **pos, int width) {
 
 
 long long int s21_atoi(const char *str, char **pos, int width) {
+    printf("строка которая пришла - %s\n",str);
     long long int number = 0;
     int sign = 1;
-    s21_size_t i = 0;
+    int i = 0;
     int temp = 0;
+    int no_width = 0;
+    int full_str = 0;
+    int no_width_2=width==0;
 
-    while (str[temp] != '\0' && (str[temp] >= '0' && str[temp] <= '9' || str[temp] == '+' || str[temp] == '-')) {
+    while (str[temp] != '\0' && str[temp] !=' ') {
         temp++;
     }
 
-    if (width <= 0 || width > temp) {
+    if(width >= temp){
+        full_str =1;
+    }
+
+    if(width == -100){
         width = temp;
+        no_width =1;
     }
 
     if (str[i] == '-') {
         sign = -1;
         i++;
-        if (width > 0) {
-            width--;
-        }
+        width--;
     }
 
-    s21_size_t digits_count = 0;
-
-    while (str[i] >= '0' && str[i] <= '9' && digits_count < width) {
-        number = number * 10 + (str[i] - '0');
-        if (number > (LLONG_MAX - number) / 10) {
-            number = (sign == 1) ? LLONG_MAX : LLONG_MIN;
-            break; //
-        }
-        i++;
-        digits_count++;
+    if(no_width ){
+        width = temp;
+    }
+    if(full_str){
+        width = temp;
     }
 
+    printf("это width-%d\n",width);
+ 
+    for (; str[i] != '\0' && str[i] != ' ' && (width>0 || no_width_2); i++){
+        if(str[i] >= '0' && str[i] <= '9'){
+            number = number * 10 + (str[i] - '0');
+            if (number > (LLONG_MAX - number) / 10) {
+                number = (sign == 1) ? LLONG_MAX : LLONG_MIN;
+                break; //
+            }
+        }
+        width--;
+    }
 
     *pos = (char *)(str + i);
 

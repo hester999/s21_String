@@ -13,11 +13,11 @@ int main() {
     int a1=0;
     int b1=0;
 
-    s21_sscanf("0xFA AF","%2x %x",&a,&b);
+    s21_sscanf("-123 -23","%2d %d",&a,&b);
 
-    sscanf("0xFA AF","%2x %x",&a1,&b1);
+    sscanf("-123 -23","%2d %d",&a1,&b1);
 
-    printf("%d %d\n%d %d",a,b,a1,b1);
+    printf("%d %d\n%d %d\n",a,b,a1,b1);
 
 
 
