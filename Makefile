@@ -11,7 +11,8 @@ all: object_files s21_string.a test gcov_report
 
 object_files:
 	$(CC) $(FLAGS) -c string_functions/*.c --coverage
-	$(CC) $(FLAGS) -c extra.c s21_convert.c
+	$(CC) $(FLAGS) -c s21_sscanf.c --coverage
+	$(CC) $(FLAGS) -c extra.c s21_convert.c s21_parse.c
 	gcc -c s21_test.c
 
 s21_string.a: object_files

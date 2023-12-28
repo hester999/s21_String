@@ -1,5 +1,6 @@
 #include "extra.h"
 #include <stdlib.h>
+#include <math.h>
 
 int digits_count(int number) {
     int res = 0;

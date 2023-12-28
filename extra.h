@@ -6,4 +6,5 @@
 int digits_count(int number);
 void* custom_calloc(s21_size_t memory, s21_size_t size);
 
+
 #endif
