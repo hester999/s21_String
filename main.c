@@ -1,17 +1,13 @@
-#include <string.h>
-#include "s21_string.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
 #include "s21_sscanf.h"
-
-
+#include "s21_string.h"
 
 int main() {
-    int aaa = 0;
+  printf("%s\n", strerror(-1));
+  printf("%s", s21_strerror(-1));
 
-    s21_sscanf("abd", "%d", &aaa);
-
-    printf("%d", aaa);
-
-    return 0;
+  return 0;
 }
