@@ -1,6 +1,9 @@
 #include "extra.h"
 
 int digits_count(int number) {
+    if (number < 0) {
+        return 1 + digits_count(-1 * number);
+    }
     int res = 0;
     if (number == 0)
         return 1;
