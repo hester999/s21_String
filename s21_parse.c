@@ -20,6 +20,12 @@ int parse(const char* format,FormatSpecifier **specs, int *len){
             (*specs)[numSpecs].is_star_flag = 0;
             int incrementFormat = 0;
             (*specs)[numSpecs].width = -100;
+
+             if (*format == '*') {
+                    (*specs)[numSpecs].is_star_flag = 1;
+                    format++;
+            }
+
             if (*format >= '0' && *format <= '9') {
                 while (*format >= '0' && *format <= '9') {
                     (*specs)[numSpecs].width = 0;
@@ -27,16 +33,13 @@ int parse(const char* format,FormatSpecifier **specs, int *len){
                     format++;
                 }
             }
-            if(s21_strchr("lLh*0123456789",*format)!= s21_NULL){
+            if(s21_strchr("lLh",*format)!= s21_NULL){
 
                 (*specs)[numSpecs].lenghtmode = 0;
                 if(*format =='h'){
                     (*specs)[numSpecs].lenghtmode  = 1;
                 }
-                if (*format == '*') {
-                    (*specs)[numSpecs].is_star_flag = 1;
-                    continue;
-                }
+               
                 if (*format == 'l') {
                     if (*(format + 1) == 'l') { // Правильная проверка второго символа
                         (*specs)[numSpecs].lenghtmode = 3;
@@ -49,6 +52,7 @@ int parse(const char* format,FormatSpecifier **specs, int *len){
                 if(*format == 'L'){
                     (*specs)[numSpecs].lenghtmode =4;
                 }
+                
                 if(incrementFormat == 0){
                     format++;
                 }

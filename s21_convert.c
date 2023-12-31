@@ -110,7 +110,7 @@ long double s21_strtof(const char *str, char **pos, int width) {
 
 
 long long int s21_atoi(const char *str, char **pos, int width) {
-    printf("строка которая пришла - %s\n",str);
+
     long long int number = 0;
     int sign = 1;
     int i = 0;
@@ -118,6 +118,11 @@ long long int s21_atoi(const char *str, char **pos, int width) {
     int no_width = 0;
     int full_str = 0;
     int no_width_2=width==0;
+
+    while(str[i] ==' '){
+        i++;
+    }
+
 
     while (str[temp] != '\0' && str[temp] !=' ') {
         temp++;
@@ -138,6 +143,8 @@ long long int s21_atoi(const char *str, char **pos, int width) {
         width--;
     }
 
+
+
     if(no_width ){
         width = temp;
     }
@@ -145,7 +152,7 @@ long long int s21_atoi(const char *str, char **pos, int width) {
         width = temp;
     }
 
-    printf("это width-%d\n",width);
+
  
     for (; str[i] != '\0' && str[i] != ' ' && (width>0 || no_width_2); i++){
         if(str[i] >= '0' && str[i] <= '9'){
@@ -164,8 +171,11 @@ long long int s21_atoi(const char *str, char **pos, int width) {
 }
 
 
+
+
+
 int s21_hex_convert(const char *str, char **pos,int* width) {
-    printf("строка которая пришла - %s\n",str);
+
 
     int res = 0;
     int num = 0;
@@ -176,7 +186,7 @@ int s21_hex_convert(const char *str, char **pos,int* width) {
     int no_width = 0;
     int full_str = 0;
     int no_width_2=*width==0;
-    printf("ширина внутри хекса-%d\n",*width);
+  
 
     while(str[temp] !=' ' && str[temp]!= '\0'){
         temp++;
@@ -218,9 +228,7 @@ int s21_hex_convert(const char *str, char **pos,int* width) {
     if(full_str){
         *width = temp;
     }
-    printf("ширина внутри хекса-%d\n",*width);
-
-    printf("это i-%d\n",i);
+   
 
     for (; str[i] != '\0' && str[i] != ' ' && (*width>0 || no_width_2); i++) {
         if (str[i] >= '0' && str[i] <= '9') {
@@ -236,8 +244,6 @@ int s21_hex_convert(const char *str, char **pos,int* width) {
         res = res * 16 + num;
     }
 
-
-
    *pos = (char *)(str +i);
     res*=negative_num;
     return res;
@@ -247,56 +253,115 @@ int s21_hex_convert(const char *str, char **pos,int* width) {
 
 
 
-int s21_octal_convert(const char *str, char **pos) {
+
+
+
+int s21_octal_convert(const char *str, char **pos,int width) {
     int res = 0;
     int num = 0;
     int i = 0;
     int negative_num = 1;
+    int temp=0;
     // Пропуск начальных пробелов и знаков
-    while (str[i] == ' ' || str[i] == '+' || str[i] == '-') {
+    while (str[i] == ' ') {
         i++;
 
     }
+
+    for(int i=0; str[i]!=' ' && str[i] != '\0';i++){
+        temp++;
+    }
+
+    if(width ==-100 || width > temp){
+        width = temp;
+    }
+
+ 
 
     if (str[i] == '-') {
         negative_num = -1;
         i++;
+        width--;
     } else if (str[i] == '+') {
         i++;
+        width--;
     }
 
-    for (; str[i] != '\0' && str[i] != ' '; i++) {
+
+    if(str[i] == '0'){
+        i++;
+        width--;
+    }
+
+    for (; str[i] != '\0' && str[i] != ' '&&(width >0); i++) {
         if (str[i] >= '0' && str[i] <= '7') {
             num = str[i] - '0';
         } else {
+            // Некорректный символ, прерываем обработку
             break;
         }
 
         res = res * 8 + num;
+        width--;
     }
-
+    
+    
     *pos = (char *)(str + i);
     res *=negative_num;
     return res;
 }
 
 
-unsigned long  long  s21_get_pointer(const char*str,char **pos){
 
-    unsigned long long res = 0;
+
+
+
+
+
+
+
+unsigned long  long  s21_get_pointer(const char*str,char **pos,int width){
+
+        unsigned long long res = 0;
         int num = 0;
         int i = 0;
+        int temp = 0;
+        int no_width = 0;
+        int full_str = 0;
+        int no_width_2=width==0;
 
-        // Пропуск начальных пробелов и знаков
-        while (str[i] == ' ' || str[i] == '+' || str[i] == '-') {
+        while(str[i] ==' '){
             i++;
         }
 
-        if (str[i] == '0' && (str[i + 1] == 'x' || str[i + 1] == 'X')) {
+
+        while (str[temp] != '\0' && str[temp] !=' ') {
+            temp++;
+        }
+
+        if(width >= temp){
+            full_str =1;
+        }
+
+        if(width == -100){
+            width = temp;
+            no_width =1;
+        }
+
+        if(no_width ){
+            width = temp;
+        }
+        if(full_str){
+            width = temp;
+        }
+        
+        
+        if (str[i] == '0' && (str[i + 1] == 'x' || str[i + 1] == 'X') && (i<width)) {
             i += 2;
+            width-=2;
 
         }
-        for (; str[i] != '\0' && str[i] != ' '; i++) {
+        for (; str[i] != '\0' && str[i] != ' ' &&(width>0 || no_width_2); i++) {
             if (str[i] >= '0' && str[i] <= '9') {
                 num = str[i] - '0';
             } else if (str[i] >= 'a' && str[i] <= 'f') {
@@ -307,13 +372,20 @@ unsigned long  long  s21_get_pointer(const char*str,char **pos){
                 // Некорректный символ, прерываем обработку
                 break;
             }
-
+            width--;
             res = res * 16 + num;
         }
 
         *pos = (char *)(str + i);
         return res;
 }
+
+
+
+
+
+
+
 
 
 int s21_convert_str_to_int_auto_base(const char* str, char **pos,int width){
@@ -324,7 +396,7 @@ int s21_convert_str_to_int_auto_base(const char* str, char **pos,int width){
             result = s21_hex_convert(str, pos,&width);
         } else {
             // Число в восьмеричной системе
-            result = s21_octal_convert(str, pos);
+            result = s21_octal_convert(str, pos,width);
         }
     } else {
         // Число в десятичной системе
@@ -333,18 +405,35 @@ int s21_convert_str_to_int_auto_base(const char* str, char **pos,int width){
     return result;
 }
 
-unsigned long long s21_get_unsigned_num(const char *str, char **pos) {
-    unsigned long long result = 0;
 
+
+
+
+
+
+
+
+unsigned long long s21_get_unsigned_num(const char *str, char **pos,int width) {
+    unsigned long long result = 0;
+    int temp = 0;
+   
     // Пропуск начальных пробелов
-    while (*str == ' ' || *str == '\t' || *str == '\n' || *str == '\v' || *str == '\f' || *str == '\r') {
+    while (*str == ' ') {
         str++;
     }
 
+    for(int i=0; str[i] !=' ' && str[i]!='\0';i++){
+        temp++;
+    }
+    if(width == -100 || width > temp){
+        width = temp;
+    }
+    
     // Чтение числа
-    while (*str >= '0' && *str <= '9') {
+    while (*str >= '0' && *str <= '9' && (width>0)) {
         result = result * 10 + (*str - '0');
         str++;
+        width--;
     }
 
     // Обновление pos
