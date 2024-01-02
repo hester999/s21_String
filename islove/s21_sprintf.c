@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "string.h"
 int to_number(const char **format);
+int to_char(int num,char *buf);
 void set_format_spec(const char **format, va_list *arguments,
                      FormatSpecifier *temp_spec);
 void get_spec(const char **format,FormatSpecifier *get_spec);
@@ -13,7 +14,7 @@ void print_to_str_decimal(FormatSpecifier *full_spec,char **str,va_list *argumen
 int main() {
   char str[1000];
   s21_sprintf(str, "%.4d",4);
-  printf("main str:%s",str);
+  //printf("main str:%s",str);
     printf("\n%.4d",4);
       return 0;
 }
@@ -89,8 +90,6 @@ void set_format_spec(const char **format, va_list *arguments,
 
 int to_number(const char **format) {
   int res = 0;
-  int mull_ten = 10;
-  int more_than_one = false;
   while (**format > 47 && **format < 58) {
     res = res * 10 + (**format - 48);
     (*format)++;
@@ -134,33 +133,83 @@ if (full_spec->sprintf_type == 'd' || full_spec->sprintf_type == 'i') {
 }
 
 void print_to_str_decimal(FormatSpecifier *full_spec,char **str,va_list *arguments,char *buf){
- long int number = 0;
- char *buf_start = buf;
+long int number = 0;
+int quantity = 0;
+int positive = true;
 if(full_spec->lenghtmode == 'l'){
 number = (long int)va_arg(*arguments,long int);
 }
 else if(full_spec->lenghtmode='h'){
-//number = (short int)va_arg(*arguments,short int);
-}{
+number = (int)va_arg(*arguments,int);
+}else{
 number = (int)va_arg(*arguments,int);
 }
-//  set_accuracy();
-//  set_with();
-//buf[0]=number;
+quantity = to_char(number,buf);//Для проверки количества чисел
 if(full_spec->accuracy){
-long int len = s21_strlen(buf);
-int i =0;
-long int add_accurcy = len-full_spec->accuracy;
-//printf("%d",add_accurcy);
+long int len = (long int)strlen(buf);
+long int add_accurcy = full_spec->accuracy-len;
 while(add_accurcy-->0){
-  buf[i]=0;
-  i=i+1;
+  buf[len]= '0';
+  len++;
 }
-printf("%d",i);
-//printf("%d",len);
-for(int i = 0; i<=*buf_start-*buf;i++){
-  printf("%d",*buf);
+
+  printf("buff print to str:%s\n",buf);
 }
-//*str = buf;
 }
+
+int  to_char(int num,char *buf){
+int quantity_of_sym = 0;
+int temp_num = num;
+char sym = '0';
+printf("num:%d\n",num);
+while(temp_num > 0){
+  sym = temp_num % 10 + 48;
+  printf("sym:%c\n temp_num:%d\n",sym,temp_num);
+  temp_num = temp_num /10;
+  buf[quantity_of_sym] = sym;
+   quantity_of_sym++;
+}
+
+ printf("buff:%s\n",buf);
+return quantity_of_sym;
+}
+
+
+void set_number_system(FormatSpecifier *format_spec){
+
+  if (s21_strchr("dieEfFgGu", format_spec->sprintf_type)) format_spec->number_system = 10;
+  if (s21_strchr("xXp", format_spec->sprintf_type)) format_spec->number_system = 16;
+  if (format_spec->sprintf_type == 'o') format_spec->number_system = 8;
+}
+
+// настройка под разные спецификаторы, убираем флаги которые не используются
+void off_on_specificators(FormatSpecifier *format_spec){
+  if (s21_strchr("oxXu",format_spec->sprintf_type)) {
+    format_spec->plus = 0;
+    format_spec->space= 0;
+  }
+  if (format_spec->sprintf_type == 'c') {
+    format_spec->plus= 0;
+    format_spec->space = 0;
+    format_spec->dot = 0;
+    format_spec->accuracy = 0;
+  }
+  if (format_spec->sprintf_type == 's') {
+    format_spec->plus = 0;
+    format_spec->space = 0;
+    format_spec->dot = 0;
+  }
+  if (format_spec->sprintf_type == 'p') {
+    format_spec->dot = 1;
+    format_spec->plus = 0;
+    format_spec->space = 0;
+    format_spec->lenghtmode = 'l';
+    format_spec->sprintf_type = 'x';
+  }
+  if (format_spec->sprintf_type == '%') {
+    format_spec->plus = 0;
+    format_spec->space = 0;
+    format_spec->dot = 0;
+    format_spec->accuracy = 0;
+  }
 }

@@ -21,6 +21,7 @@ typedef enum {
 
 typedef struct {
     SpecifierType type;
+    char sprintf_type;
     int minus;
     int plus;
     int space;
