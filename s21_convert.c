@@ -7,6 +7,7 @@
 
 
 long double s21_strtof(const char *str, char **pos, int width) {
+
     long double result = 0.0;
     long double fraction = 1.0;
     int decimal_point = 0;
@@ -20,47 +21,46 @@ long double s21_strtof(const char *str, char **pos, int width) {
         temp++;
     }
 
-    if(width<=0){
+    if(width ==-100 || width >temp){
         width = temp;
     }
 
 
     int i=0;
     // Пропуск пробелов
-    while (str[i] == ' ' && (width == -1 || i < (s21_size_t)width)) {
+    while (str[i] == ' ') {
         i++;
     }
 
     // Проверка на отрицательный знак
-    if ((str[i] == '-' || *str == '+') && (width == -1 || i < (s21_size_t)width)) {
+    if ((str[i] == '-' || *str == '+') && (width > 0)) {
         negative = (*str == '-');
         i++;
-
+        width--;
     }
 
     // Обработка специальных строк (inf, infinity, nan)
-    if ((str[0] == 'i' || str[0] == 'I') &&
-        (str[1] == 'n' || str[1] == 'N') &&
-        (str[2] == 'f' || str[2] == 'F') &&
-        (width == -1 || i + 3 <= (s21_size_t)width)) {
+    if ((str[0] == 'i' || str[0] == 'I') && (str[1] == 'n' || str[1] == 'N') && (str[2] == 'f' || str[2] == 'F') && (width>0)) {
         result = INFINITY;
         i += 3;
+        width-=3;
         // Проверка на "infinity"
         if ((str[0] == 'i' || str[0] == 'I') &&
             (str[1] == 'n' || str[1] == 'N') &&
             (str[2] == 'i' || str[2] == 'I') &&
             (str[3] == 't' || str[3] == 'T') &&
             (str[4] == 'y' || str[4] == 'Y') &&
-            (width == -1 || i + 5 <= (s21_size_t)width)) {
+            (width>0)) {
             i += 5;
-
+            width-=5;
         }
     } else if ((str[0] == 'n' || str[0] == 'N') &&
                (str[1] == 'a' || str[1] == 'A') &&
                (str[2] == 'n' || str[2] == 'N') &&
-               (width == -1 || i + 3 <= (s21_size_t)width)) {
+               (width > 0)) {
         result = NAN;
         i += 3;
+        width -=3;
     } else {
         // Чтение числа до точки или экспоненциальной части
         while (str[i] && (width == -1 || i < (s21_size_t)width)) {
@@ -87,7 +87,7 @@ long double s21_strtof(const char *str, char **pos, int width) {
         // Чтение экспоненциальной части
         if (exp_part) {
             int exp_value = 0;
-            while (str[i] && (width == -1 || i < (s21_size_t)width)) {
+            while (str[i] && (width > 0)) {
                 if (str[i] >= '0' && str[i] <= '9') {
                     exp_value = exp_value * 10 + (str[i] - '0');
                     i++;

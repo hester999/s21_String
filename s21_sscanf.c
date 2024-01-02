@@ -154,6 +154,7 @@ int s21_sscanf( const char *str, const char *format, ...) {
 
             case SPEC_SIGNED_INT: {
                 if(specs[i].is_star_flag == 1){
+                    width = specs[i].width;
                     s21_convert_str_to_int_auto_base(str, &pos,width);
                     str = pos;
                     count_spec++;
@@ -170,6 +171,7 @@ int s21_sscanf( const char *str, const char *format, ...) {
 
             case SPEC_EXP:{
                 if(specs[i].is_star_flag==1){
+                    width = specs[i].width;
                     s21_strtof(str,&pos,width);
                     count_spec++;
                 }
@@ -200,6 +202,7 @@ int s21_sscanf( const char *str, const char *format, ...) {
 
             case SPEC_EXP_WITH_E:{
                 if(specs[i].is_star_flag == 1){
+                    width = specs[i].width;
                     s21_strtof(str,&pos,width);
                     count_spec++;
                 }
@@ -230,6 +233,7 @@ int s21_sscanf( const char *str, const char *format, ...) {
 
             case SPEC_SORT_DEC:{
                 if(specs[i].is_star_flag==1){
+                    width = specs[i].width;
                     s21_strtof(str,&pos,width);
                     count_spec++;
                 }
@@ -276,6 +280,7 @@ int s21_sscanf( const char *str, const char *format, ...) {
 
             case SPEC_UNSIGNED_INT:{
                 if(specs[i].is_star_flag ==1 ){
+                    width = specs[i].width;
                     s21_get_unsigned_num(str, &pos,width);
                     count_spec++;
                 }
@@ -323,7 +328,7 @@ int s21_sscanf( const char *str, const char *format, ...) {
                     flag = 0;
                 }
 
-                printf("ширина-%d\n",width);
+            
                 if(specs[i].is_star_flag==1){
                     s21_hex_convert(str, &pos,&width);
                     str = pos;
@@ -345,6 +350,7 @@ int s21_sscanf( const char *str, const char *format, ...) {
             case SPEC_UNSIGNED_16X16_INT_UPPER: {
 
                 if(specs[i].is_star_flag==1){
+                    width = specs[i].width;
                     s21_hex_convert(str, &pos, &width);
                     str = pos;
                     count_spec++;
@@ -363,6 +369,7 @@ int s21_sscanf( const char *str, const char *format, ...) {
 
             case SPEC_POINTER:{
                 if(specs[i].is_star_flag == 1){
+                    width = specs[i].width;
                     (void*)s21_get_pointer(str, &pos,width);  
                     count_spec++;
                 }else{  
