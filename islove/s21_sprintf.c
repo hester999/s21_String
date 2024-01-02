@@ -11,11 +11,14 @@ void set_format_spec(const char **format, va_list *arguments,
 void get_spec(const char **format,FormatSpecifier *get_spec);
 void  print_to_str(char **str,FormatSpecifier *full_spec,va_list *arguments,char *str_begin);
 void print_to_str_decimal(FormatSpecifier *full_spec,char **str,va_list *arguments,char *buf);
+void save_buf_to_str(char **str, char *buf);
 int main() {
   char str[1000];
-  s21_sprintf(str, "%.4d",4);
-  //printf("main str:%s",str);
-    printf("\n%.4d",4);
+  char str1[1000];
+  sprintf(str1, "Hello %0+4d", 10);
+  printf("%s\n",str1);
+  s21_sprintf(str, "Hello %0+4d", 10);
+  printf("%s",str);
       return 0;
 }
 
@@ -36,6 +39,7 @@ int s21_sprintf(char *str, const char *format, ...) {
     } 
   }
   *str = '\0';
+
   s21_size_t quantity = *str_begin - *str;
   return quantity; 
 }
@@ -135,45 +139,88 @@ if (full_spec->sprintf_type == 'd' || full_spec->sprintf_type == 'i') {
 void print_to_str_decimal(FormatSpecifier *full_spec,char **str,va_list *arguments,char *buf){
 long int number = 0;
 int quantity = 0;
-int positive = true;
-if(full_spec->lenghtmode == 'l'){
+char sign = '+';
+if(full_spec->lenghtmode == 'l')
 number = (long int)va_arg(*arguments,long int);
-}
-else if(full_spec->lenghtmode='h'){
+else if(full_spec->lenghtmode='h')
 number = (int)va_arg(*arguments,int);
-}else{
+else
 number = (int)va_arg(*arguments,int);
+if(number<0){
+  number = number * (-1);
+  sign = '-';
 }
-quantity = to_char(number,buf);//Для проверки количества чисел
+quantity = to_char(number,buf);
+if(full_spec->space)
+  buf[quantity]=' ';
+if(full_spec->plus)
+  buf[quantity]=sign;
 if(full_spec->accuracy){
 long int len = (long int)strlen(buf);
 long int add_accurcy = full_spec->accuracy-len;
 while(add_accurcy-->0){
-  buf[len]= '0';
+  buf[len++]= '0';
+}
+}
+if(full_spec->width){
+long int len = (long int)strlen(buf);
+long int add_width = full_spec->width-len;
+if(full_spec->minus&&add_width>0){
+    for(int i =len-1;i>=0;i--){
+      buf[i+add_width]=buf[i];
+    }
+    for(int i =0;i<add_width;i++){
+      buf[i]=' ';
+    }
+}
+else{
+while(add_width-->0){
+  if(full_spec->zero){
+   buf[len]= '0';
+  }
+  else{
+  buf[len]= ' ';
+  }
   len++;
 }
-
-  printf("buff print to str:%s\n",buf);
 }
+}
+save_buf_to_str(str, buf);
 }
 
 int  to_char(int num,char *buf){
 int quantity_of_sym = 0;
 int temp_num = num;
 char sym = '0';
-printf("num:%d\n",num);
+//printf("num:%d\n",num);
+if(temp_num==0){
+  buf[quantity_of_sym]='0';
+  quantity_of_sym++;
+}
+else{
 while(temp_num > 0){
   sym = temp_num % 10 + 48;
-  printf("sym:%c\n temp_num:%d\n",sym,temp_num);
+  //printf("sym:%c\n temp_num:%d\n",sym,temp_num);
   temp_num = temp_num /10;
   buf[quantity_of_sym] = sym;
    quantity_of_sym++;
 }
-
- printf("buff:%s\n",buf);
+if(temp_num=0){
+  buf[quantity_of_sym]='0';
+  buf[quantity_of_sym]++;
+}
+}
+ //printf("buff:%s\n",buf);
 return quantity_of_sym;
 }
 
+void save_buf_to_str(char **str, char *buf){
+long int len = (long int)strlen(buf);
+for(int i = len-1; i>=0;i--){
+   *(*str)++ = buf[i];
+   //*str++;
+}
+}
 
 void set_number_system(FormatSpecifier *format_spec){
 
