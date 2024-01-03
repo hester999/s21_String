@@ -3,7 +3,9 @@
 #include "stdlib.h"
 int parse(const char* format,FormatSpecifier **specs, int *len){
     int numSpecs = 0;
+
     while(*format != '\0') {
+
         if (numSpecs >= *len) {
             *len *= 2;
             FormatSpecifier *tmp = (FormatSpecifier *)realloc(*specs, sizeof (FormatSpecifier) * *len);
@@ -11,23 +13,33 @@ int parse(const char* format,FormatSpecifier **specs, int *len){
                 free(specs);
                 exit(1);
             }
-
             *specs = tmp;
         }
-
         if (*format == '%') {
             format++;
             (*specs)[numSpecs].is_star_flag = 0;
             int incrementFormat = 0;
-            if(s21_strchr("lLh*",*format)!= s21_NULL){
+            (*specs)[numSpecs].width = -100;
+
+             if (*format == '*') {
+                    (*specs)[numSpecs].is_star_flag = 1;
+                    format++;
+            }
+
+            if (*format >= '0' && *format <= '9') {
+                while (*format >= '0' && *format <= '9') {
+                    (*specs)[numSpecs].width = 0;
+                    (*specs)[numSpecs].width = (*specs)[numSpecs].width * 10 + (*format - '0');
+                    format++;
+                }
+            }
+            if(s21_strchr("lLh",*format)!= s21_NULL){
+
                 (*specs)[numSpecs].lenghtmode = 0;
                 if(*format =='h'){
                     (*specs)[numSpecs].lenghtmode  = 1;
                 }
-                if (*format == '*') {
-                    (*specs)[numSpecs].is_star_flag = 1;
-                    continue;
-                }
+               
                 if (*format == 'l') {
                     if (*(format + 1) == 'l') { // Правильная проверка второго символа
                         (*specs)[numSpecs].lenghtmode = 3;
@@ -40,10 +52,10 @@ int parse(const char* format,FormatSpecifier **specs, int *len){
                 if(*format == 'L'){
                     (*specs)[numSpecs].lenghtmode =4;
                 }
+                
                 if(incrementFormat == 0){
                     format++;
                 }
-
             }
 
         }
