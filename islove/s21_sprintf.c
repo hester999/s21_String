@@ -5,7 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 int to_number(const char **format);
-int to_char(int num, char *buf);
+int to_char_int(int num, char *buf);
+int to_char_unsigned(unsigned int num, char *buf);
 void set_format_spec(const char **format, va_list *arguments,
                      FormatSpecifier *temp_spec);
 void get_spec(const char **format, FormatSpecifier *get_spec);
@@ -20,9 +21,9 @@ void save_buf_to_str(char **str, char *buf);
 int main() {
   char str[1000];
   char str1[1000];
-  sprintf(str1, "Hello %u %d %d", 10, 5, 7);
+  sprintf(str1, "Hello %hu %ld %d",-10, 2147483648, 7);
   printf("%s\n", str1);
-  s21_sprintf(str, "Hello %u %d %d", 10, 6, 7);
+  s21_sprintf(str, "Hello %u %ld %d", -10, 2147483648, 7);
   printf("%s", str);
   return 0;
 }
@@ -155,7 +156,7 @@ void print_to_str_decimal(FormatSpecifier *full_spec, char **str,
   if (number < 0) {
     number = number * (-1);
   }
-  quantity = to_char(number, buf);
+  quantity = to_char_int(number, buf);
   if (full_spec->space)
     buf[quantity] = ' ';
   if (full_spec->plus && !flag_minus)
@@ -193,11 +194,34 @@ void print_to_str_decimal(FormatSpecifier *full_spec, char **str,
   save_buf_to_str(str, buf);
 }
 
-int to_char(int num, char *buf) {
+int to_char_int(int  num, char *buf) {
   int quantity_of_sym = 0;
   int temp_num = num;
   char sym = '0';
-  // printf("num:%d\n",num);
+  if (temp_num == 0) {
+    buf[quantity_of_sym] = '0';
+    quantity_of_sym++;
+  } else {
+    while (temp_num > 0) {
+      sym = temp_num % 10 + 48;
+      // printf("sym:%c\n temp_num:%d\n",sym,temp_num);
+      temp_num = temp_num / 10;
+      buf[quantity_of_sym] = sym;
+      quantity_of_sym++;
+    }
+    if (temp_num = 0) {
+      buf[quantity_of_sym] = '0';
+      buf[quantity_of_sym]++;
+    }
+  }
+  // printf("buff:%s\n",buf);
+  return quantity_of_sym;
+}
+
+int to_char_unsigned(unsigned int num, char *buf) {
+  int quantity_of_sym = 0;
+  unsigned int temp_num = num;
+  char sym = '0';
   if (temp_num == 0) {
     buf[quantity_of_sym] = '0';
     quantity_of_sym++;
@@ -247,9 +271,9 @@ void print_to_str_unsigned(FormatSpecifier *full_spec, char **str,
   else
     number = (int)va_arg(*arguments, int);
   if (number < 0) {
-    number = number * (-1);
+    number = (unsigned int)number;
   }
-  quantity = to_char(number, buf);
+  quantity = to_char_unsigned(number, buf);
   if (full_spec->space)
     buf[quantity] = ' ';
   if (full_spec->accuracy) {
