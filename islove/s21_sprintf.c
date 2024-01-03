@@ -240,7 +240,6 @@ void print_to_str_unsigned(FormatSpecifier *full_spec, char **str,
                            va_list *arguments, char *buf) { 
   long int number = 0;
   int quantity = 0;
-  int flag_minus = false;
   if (full_spec->lenghtmode == 'l')
     number = (long int)va_arg(*arguments, long int);
   else if (full_spec->lenghtmode = 'h')
@@ -249,7 +248,6 @@ void print_to_str_unsigned(FormatSpecifier *full_spec, char **str,
     number = (int)va_arg(*arguments, int);
   if (number < 0) {
     number = number * (-1);
-    flag_minus = true;
   }
   quantity = to_char(number, buf);
   if (full_spec->space)
