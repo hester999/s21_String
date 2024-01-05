@@ -16,15 +16,19 @@ void print_to_str_decimal(FormatSpecifier *full_spec, char **str,
                           va_list *arguments, char *buf);
 void print_to_str_unsigned(FormatSpecifier *full_spec, char **str,
                            va_list *arguments, char *buf);
+void print_to_str_e(FormatSpecifier *full_spec, char **str,
+                          va_list *arguments, char *buf);
 void save_buf_to_str(char **str, char *buf);
+void double_to_str_exp(double number, int prec, char *str);
+double s21_round(double number, int prec);
 
 int main() {
-  char str[1000];
-  char str1[1000];
-  sprintf(str1, "Hello %u %ld %d",-10, 2147483648, 7);
-  printf("%s\n", str1);
-  s21_sprintf(str, "Hello %u %ld %d", -10, 2147483648, 7);
-  printf("%s", str);
+  char str1[1000], str2[1000];
+  double test_num = 0.123456;
+  sprintf(str1, "%.4e", test_num);
+  double_to_str_exp(test_num, 4, str2);
+  printf("Orig: %s\n", str1);
+  printf("Copy: %s\n", str2);
   return 0;
 }
 
@@ -95,6 +99,83 @@ void set_format_spec(const char **format, va_list *arguments,
     (*format)++;
   }
   get_spec(format, temp_spec);
+}
+
+double s21_round(double number, int prec) {
+    double factor = 1;
+    for (int i = 0; i < prec; ++i) {
+        factor *= 10;
+    }
+    double rounded = number * factor;
+    double integral = (double)((int)rounded);
+    double decimal = rounded - integral;
+    if (decimal >= 0.5) {
+        integral += 1.0;
+    }
+    return integral / factor;
+}
+
+void double_to_str_exp(double number, int prec, char *str) {
+    if (number < 0) {
+        *(str++) = '-';
+        number = -number;
+    }
+    int power = 0;
+    if (number >= 10) {
+        while (number >= 10) {
+            power++;
+            number /= 10;
+        }
+    } else {
+        while (number < 1) {
+            power--;
+            number *= 10;
+        }
+    }
+    number = s21_round(number, prec);
+    int number_int = (int)number;
+    double number_frac = number - number_int;
+    char temp_str[20];
+    int index = 0;
+    while (number_int > 0) {
+        temp_str[index++] = (char)((number_int % 10) + '0');
+        number_int /= 10;
+    }
+    if (index == 0) {
+        temp_str[index++] = '0';
+    }
+    while (index > 0) {
+        *(str++) = temp_str[--index];
+    }
+    *(str++) = '.';
+    for (int i = 0; i < prec; ++i) {
+        number_frac *= 10;
+        int digit = (int)number_frac;
+        *(str++) = (char)(digit + '0');
+        number_frac -= digit;
+    }
+    *(str++) = 'e';
+    if (power >= 0) {
+        *(str++) = '+';
+    } else {
+        *(str++) = '-';
+        power = -power;
+    }
+    if (power < 10) {
+        *(str++) = '0';
+    }
+    int exp_index = 0;
+    while (power > 0) {
+        temp_str[exp_index++] = (char)((power % 10) + '0');
+        power /= 10;
+    }
+    if (exp_index == 0) {
+        temp_str[exp_index++] = '0';
+    }
+    while (exp_index > 0) {
+        *(str++) = temp_str[--exp_index];
+    }
+    *str = 0;
 }
 
 int to_number(const char **format) {
@@ -301,6 +382,12 @@ void print_to_str_unsigned(FormatSpecifier *full_spec, char **str,
   }
   save_buf_to_str(str, buf);
 }
+
+// void print_to_str_e(FormatSpecifier *full_spec, char **str,
+//                     va_list *arguments, char *buf) {
+  
+// }
+
 // настройка под разные спецификаторы, убираем флаги которые не используются
 void off_on_specificators(FormatSpecifier *format_spec) {
   if (s21_strchr("oxXu", format_spec->sprintf_type)) {

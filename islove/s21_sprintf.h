@@ -1,5 +1,5 @@
-#ifndef S21_SSCNAF_H_
-#define S21_SSCNAF_H_
+#ifndef S21_SSCNAF_H
+#define S21_SSCNAF_H
 
 #include "s21_parse.h"
 #include <stdarg.h>

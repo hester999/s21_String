@@ -1,5 +1,5 @@
-#ifndef S21_PARSE_H_
-#define S21_PARSE_H_
+#ifndef S21_PARSE_H
+#define S21_PARSE_H
 
 typedef enum {
     SPEC_CHAR,
@@ -21,6 +21,7 @@ typedef enum {
 
 typedef struct {
     SpecifierType type;
+    char sprintf_type;
     int minus;
     int plus;
     int space;
