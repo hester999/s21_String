@@ -12,32 +12,18 @@ all: object_files s21_string.a test gcov_report
 object_files:
 	$(CC) $(FLAGS) -c string_functions/*.c --coverage
 	$(CC) -c s21_sscanf.c --coverage
+	$(CC) $(FLAGS) -c s21_sprintf.c --coverage
 	$(CC) -c extra.c s21_convert.c s21_parse.c
 	gcc -c s21_test.c
 
-ideal_object_files:
-	$(CC) $(FLAGS) -c string_functions/*.c --coverage
-	$(CC) -c s21_sscanf.c --coverage
-	$(CC) -c extra.c s21_convert.c s21_parse.c
-	gcc -c s21_ideal_test.c
-
 s21_string.a: object_files
-	ar rc s21_string.a $(OBJECT_STRINGS) extra.o s21_convert.o
+	ar rc s21_string.a $(OBJECT_STRINGS) extra.o s21_convert.o 
 
 test: object_files
 	gcc -o s21_test *.o -lcheck --coverage
 	./s21_test
 
-ideal_test: ideal_object_files
-	gcc -o s21_test *.o -lcheck --coverage
-	./s21_test
-
 gcov_report: object_files test
-	lcov -c -d . -o coverage.info
-	genhtml coverage.info -o coverage-html
-	open coverage-html/index.html
-
-ideal_gcov_report: ideal_object_files ideal_test
 	lcov -c -d . -o coverage.info
 	genhtml coverage.info -o coverage-html
 	open coverage-html/index.html
