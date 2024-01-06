@@ -18,13 +18,22 @@ void print_to_str_unsigned(FormatSpecifier *full_spec, char **str,
                            va_list *arguments, char *buf);
 void save_buf_to_str(char **str, char *buf);
 
+
+
+void print_to_hex(FormatSpecifier *full_spec, char **str,va_list *arguments, char *buf);
+void  hex_to_str(int  num, char *buf);
+void save_buf_no_reverse_to_str(char **str, char *buf);
+void reverse(char *str);
+
 int main() {
   char str[1000];
   char str1[1000];
-  sprintf(str1, "Hello %hu %ld %d",-10, 2147483648, 7);
-  printf("%s\n", str1);
-  s21_sprintf(str, "Hello %u %ld %d", -10, 2147483648, 7);
-  printf("%s", str);
+  s21_sprintf(str,"%#05x",15);
+//  s21_sprintf(str,"%d",10);
+  sprintf(str1,"%#05x",15);
+
+  printf("%s\n%s",str1,str);
+
   return 0;
 }
 
@@ -119,10 +128,12 @@ void print_to_str(char **str, FormatSpecifier *full_spec, va_list *arguments,
   char buf[7000];
   if (full_spec->sprintf_type == 'd' || full_spec->sprintf_type == 'i') {
     print_to_str_decimal(full_spec, str, arguments, buf);
-  } else if (full_spec->sprintf_type == 'u' || full_spec->sprintf_type == 'o' ||
-             full_spec->sprintf_type == 'x' || full_spec->sprintf_type == 'X') {
-    print_to_str_unsigned(full_spec, str, arguments, buf);//Только спецификатор u 
-  } else if (full_spec->sprintf_type == 'c') {
+  }
+  else if (full_spec->sprintf_type == 'x' || full_spec->sprintf_type == 'X' ){
+      print_to_hex(full_spec, str, arguments, buf);
+
+  }
+   else if (full_spec->sprintf_type == 'c') {
     // print_to_str_symbol(full_spec, str, arguments);
   } else if (full_spec->sprintf_type == 's') {
     // print_to_str_str(full_spec, str, arguments);
@@ -149,7 +160,7 @@ void print_to_str_decimal(FormatSpecifier *full_spec, char **str,
   int flag_minus = false;
   if (full_spec->lenghtmode == 'l')
     number = (long int)va_arg(*arguments, long int);
-  else if (full_spec->lenghtmode = 'h')
+  else if (full_spec->lenghtmode == 'h')
     number = (int)va_arg(*arguments, int);
   else
     number = (int)va_arg(*arguments, int);
@@ -172,6 +183,9 @@ void print_to_str_decimal(FormatSpecifier *full_spec, char **str,
     }
   }
   if (full_spec->width) {
+      if(full_spec->hash){
+          full_spec->width-=2;
+      }
     long int len = (long int)strlen(buf);
     long int add_width = full_spec->width - len;
     if (full_spec->minus && add_width > 0) {
@@ -209,14 +223,126 @@ int to_char_int(int  num, char *buf) {
       buf[quantity_of_sym] = sym;
       quantity_of_sym++;
     }
-    if (temp_num = 0) {
-      buf[quantity_of_sym] = '0';
-      buf[quantity_of_sym]++;
-    }
   }
   // printf("buff:%s\n",buf);
   return quantity_of_sym;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void print_to_hex(FormatSpecifier *full_spec, char **str, va_list *arguments, char *buf) {
+    int num = va_arg(*arguments, int);
+    char temp_buf[64];
+    hex_to_str(num, temp_buf);
+    int len = s21_strlen(temp_buf);
+    int buf_pos = 0;
+
+    int total_length = len + (full_spec->hash ? 2 : 0); // Общая длина с учетом префикса
+
+// Добавляем пробелы, если ширина больше длины и флаг zero не установлен
+    if (full_spec->width > total_length && !(full_spec->zero)) {
+        int padding = full_spec->width - total_length;
+        for (int i = 0; i < padding; i++) {
+            buf[buf_pos++] = ' ';
+        }
+    }
+
+// Добавляем префикс, если установлен флаг hash
+    if (full_spec->hash) {
+        buf[buf_pos++] = '0';
+        buf[buf_pos++] = 'x';
+    }
+
+// Добавляем нули, если установлен флаг zero
+    if (full_spec->width > total_length && full_spec->zero) {
+        int padding = full_spec->width - total_length;
+        for (int i = 0; i < padding; i++) {
+            buf[buf_pos++] = '0';
+        }
+    }
+
+// Копируем число
+    for (int i = 0; i < len; i++) {
+        buf[buf_pos++] = temp_buf[i];
+    }
+
+    buf[buf_pos] = '\0'; // Устанавливаем нуль-терминатор
+
+// Сохраняем результат в строку
+    save_buf_no_reverse_to_str(str, buf);
+}
+
+
+void hex_to_str(int num, char *buf) {
+    char hexDigits[] = "0123456789abcdef";
+    unsigned int unum = (unsigned int) num;
+    char tempBuffer[9];
+    int i = 0;
+    tempBuffer[8] = '\0';
+
+    if (unum == 0) {
+        tempBuffer[i++] = '0';
+    } else {
+        while (unum > 0) {
+            tempBuffer[i++] = hexDigits[unum % 16];
+            unum /= 16;
+        }
+    }
+
+    tempBuffer[i] = '\0'; // Устанавливаем нуль-терминатор
+
+    reverse(tempBuffer); // Переворачиваем строку
+
+    i = 0;
+    while (tempBuffer[i] != '\0') {
+        buf[i] = tempBuffer[i];
+        i++;
+    }
+    buf[i] = '\0'; // Устанавливаем нуль-терминатор в buf
+}
+
+
+
+void save_buf_no_reverse_to_str(char **str, char *buf){
+
+    int len = s21_strlen(buf);
+    // Копируем содержимое буфера в строку
+    for (int i = 0; i < len; i++) {
+        *(*str)++ = buf[i];
+    }
+
+    // Добавляем нуль-терминатор в конец строки
+    s21_memset(buf, 0, sizeof(buf));
+}
+
+
+void reverse(char *str) {
+    int len = strlen(str);
+    for (int i = 0; i < len / 2; i++) {
+        char temp = str[i];
+        str[i] = str[len - 1 - i];
+        str[len - 1 - i] = temp;
+    }
+}
+
+
+
+
+
+
+
 
 int to_char_unsigned(unsigned int num, char *buf) {
   int quantity_of_sym = 0;
@@ -233,7 +359,7 @@ int to_char_unsigned(unsigned int num, char *buf) {
       buf[quantity_of_sym] = sym;
       quantity_of_sym++;
     }
-    if (temp_num = 0) {
+    if (temp_num == 0) {
       buf[quantity_of_sym] = '0';
       buf[quantity_of_sym]++;
     }
@@ -266,7 +392,7 @@ void print_to_str_unsigned(FormatSpecifier *full_spec, char **str,
   int quantity = 0;
   if (full_spec->lenghtmode == 'l')
     number = (long int)va_arg(*arguments, long int);
-  else if (full_spec->lenghtmode = 'h')
+  else if (full_spec->lenghtmode == 'h')
     number = (int)va_arg(*arguments, int);
   else
     number = (int)va_arg(*arguments, int);
