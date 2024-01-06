@@ -667,6 +667,745 @@ START_TEST(trim_test7) {
 }
 END_TEST
 
+// TESTS FOR SSCANF
+// SPECIFIER c
+START_TEST(sscanf_c_test1) {
+  char buf1[100] = {0}, buf2[100] = {0};
+
+  ck_assert_int_eq(s21_sscanf("123", "%c", buf1), sscanf("123", "%c", buf2));
+  ck_assert_int_eq(buf1[0], buf2[0]);
+}
+END_TEST
+
+// test 2
+// test 3
+
+// SPECIFIER d
+START_TEST(sscanf_d_test1) {
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("123", "%d", &a), sscanf("123", "%d", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+START_TEST(sscanf_d_test2) {
+  short sa = 0, sb = 0;
+
+  ck_assert_int_eq(s21_sscanf("123456", "%hd", &sa),
+                   sscanf("123456", "%hd", &sb));
+  ck_assert_int_eq(sa, sb);
+}
+
+START_TEST(sscanf_d_test3) {
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("98765", "%3d", &a), sscanf("98765", "%3d", &b));
+  ck_assert_int_eq(a, b);
+}
+
+START_TEST(sscanf_d_test4) {
+  int a = 0, b = 0;
+  short sa = 0, sb = 0;
+
+  ck_assert_int_eq(s21_sscanf("98765", "%3hd%d", &sa, &a),
+                   sscanf("98765", "%3hd%d", &sb, &b));
+  ck_assert_int_eq(sa, sb);
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+// test 5
+
+// test 6
+
+// test 7
+
+START_TEST(sscanf_d_test8) {
+  int a = 0, b = 0, c = 0, d = 0;
+
+  ck_assert_int_eq(s21_sscanf("44", "%1d %1d", &a, &b),
+                   sscanf("44", "%1d %1d", &c, &d));
+  ck_assert_int_eq(a, c);
+  ck_assert_int_eq(b, d);
+}
+END_TEST
+
+START_TEST(sscanf_d_test9) {
+  int a = 0, b = 0, c = 0, d = 0;
+
+  ck_assert_int_eq(s21_sscanf("4 4", "%d%d", &a, &b),
+                   sscanf("4 4", "%d%d", &c, &d));
+  ck_assert_int_eq(a, c);
+  ck_assert_int_eq(b, d);
+}
+END_TEST
+
+// test 10
+
+// test 11
+
+// test 12
+
+// test 13
+
+// test 14
+
+START_TEST(sscanf_d_test15) {
+  short sa = 0, sb = 0, sc = 0, sd = 0;
+
+  ck_assert_int_eq(s21_sscanf("123456123", "%6hd%hd", &sa, &sb),
+                   sscanf("123456123", "%6hd%hd", &sc, &sd));
+  ck_assert_int_eq(sa, sc);
+  ck_assert_int_eq(sb, sd);
+}
+END_TEST
+
+START_TEST(sscanf_d_test16) {
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("12345678901", "%d", &a),
+                   sscanf("12345678901", "%d", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+START_TEST(sscanf_d_test17) {
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("-12345678901", "%d", &a),
+                   sscanf("-12345678901", "%d", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+START_TEST(sscanf_d_test18) {
+  long la = 0, lb = 0;
+
+  ck_assert_int_eq(s21_sscanf("-12345678901", "%ld", &la),
+                   sscanf("-12345678901", "%ld", &lb));
+  ck_assert_int_eq(la, lb);
+}
+END_TEST
+
+START_TEST(sscanf_d_test19) {
+  long la = 0, lb = 0;
+
+  ck_assert_int_eq(s21_sscanf("12345678901234567890", "%ld", &la),
+                   sscanf("12345678901234567890", "%ld", &lb));
+  ck_assert_int_eq(la, lb);
+}
+END_TEST
+
+START_TEST(sscanf_d_test20) {
+  long la = 0, lb = 0;
+
+  ck_assert_int_eq(s21_sscanf("-12345678901234567890", "%ld", &la),
+                   sscanf("-12345678901234567890", "%ld", &lb));
+  ck_assert_int_eq(la, lb);
+}
+END_TEST
+
+// test 21
+
+// понижение разряда при переполнении
+START_TEST(sscanf_d_test22) {
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("12345678901234567890", "%d", &a),
+                   sscanf("12345678901234567890", "%d", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+START_TEST(sscanf_d_test23) {
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("-12345678901234567890", "%d", &a),
+                   sscanf("-12345678901234567890", "%d", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+// long long
+START_TEST(sscanf_d_test24) {
+  long long lla = 0, llb = 0, llc = 0, lld = 0;
+
+  ck_assert_int_eq(s21_sscanf("123456789012345", "%lld", &lla),
+                   sscanf("123456789012345", "%lld", &llb));
+  ck_assert_int_eq(lla, llb);
+}
+END_TEST
+
+// test 25
+
+START_TEST(sscanf_d_test26) {
+  long long lla = 0, llb = 0;
+
+  ck_assert_int_eq(s21_sscanf("987654321", "%lld", &lla),
+                   sscanf("987654321", "%lld", &llb));
+  ck_assert_int_eq(lla, llb);
+}
+END_TEST
+
+// test 27
+
+// too big len
+START_TEST(sscanf_d_test28) {
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("123", "%5d", &a), sscanf("123", "%5d", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+// flag +
+START_TEST(sscanf_d_test29) {
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("+321", "%d", &a), sscanf("+321", "%d", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+// test 30
+
+// SPECIFIER i
+START_TEST(sscanf_i_test1) {
+  unsigned int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("1234567890", "%i", &a),
+                   sscanf("1234567890", "%i", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+// test 2
+
+// test 3
+
+START_TEST(sscanf_i_test4) {
+  unsigned int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("-1234567890", "%i", &a),
+                   sscanf("-1234567890", "%i", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+// test 5
+
+// test 6
+
+// test 7
+
+START_TEST(sscanf_i_test8) {
+  unsigned int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("123abcdef", "%i", &a),
+                   sscanf("123abcdef", "%i", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+// test 9
+
+// test 10
+
+// SPECIFIER e
+// nan
+START_TEST(sscanf_e_test1) {
+  float a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("nan", "%e", &a), sscanf("nan", "%e", &b));
+  ck_assert_float_nan(a);
+  ck_assert_float_nan(b);
+}
+END_TEST
+
+// test 2
+
+START_TEST(sscanf_e_test3) {
+  float a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("1.23e4", "%e", &a), sscanf("1.23e4", "%e", &b));
+  ck_assert_float_eq_tol(a, b, 0.000001);
+}
+END_TEST
+
+// SPECIFIER E
+// test 1
+
+// test 2
+
+// SPECIFIER f
+START_TEST(sscanf_f_test1) {
+  float a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("123.456", "%f", &a),
+                   sscanf("123.456", "%f", &b));
+  ck_assert_float_eq_tol(a, b, 0.000001);
+}
+END_TEST
+
+START_TEST(sscanf_f_test2) {
+  double da = 0, db = 0;
+
+  ck_assert_int_eq(s21_sscanf("123.456", "%lf", &da),
+                   sscanf("123.456", "%lf", &db));
+  ck_assert_double_eq_tol(da, db, 0.000001);
+}
+END_TEST
+
+START_TEST(sscanf_f_test3) {
+  long double lda = 0, ldb = 0;
+
+  ck_assert_int_eq(s21_sscanf("123.456", "%Lf", &lda),
+                   sscanf("123.456", "%Lf", &ldb));
+  ck_assert_ldouble_eq_tol(lda, ldb, 0.000001);
+}
+END_TEST
+
+// empty string
+START_TEST(sscanf_f_test4) {
+  float a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("", "%f", &a), sscanf("", "%f", &b));
+  ck_assert_float_eq_tol(a, b, 0.000001);
+}
+END_TEST
+
+START_TEST(sscanf_f_test5) {
+  float a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("123.456", "%6f", &a),
+                   sscanf("123.456", "%6f", &b));
+  ck_assert_float_eq_tol(a, b, 0.000001);
+}
+END_TEST
+
+START_TEST(sscanf_f_test6) {
+  float a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf(".", "%f", &a), sscanf(".", "%f", &b));
+  ck_assert_float_eq_tol(a, b, 0.000001);
+}
+END_TEST
+
+START_TEST(sscanf_f_test7) {
+  float a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("abc", "%f", &a), sscanf("abc", "%f", &b));
+  ck_assert_float_eq_tol(a, b, 0.000001);
+}
+END_TEST
+
+START_TEST(sscanf_f_test8) {
+  float a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("123.", "%f", &a), sscanf("123.", "%f", &b));
+  ck_assert_float_eq_tol(a, b, 0.000001);
+}
+END_TEST
+
+START_TEST(sscanf_f_test9) {
+  float a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf(".123", "%f", &a), sscanf(".123", "%f", &b));
+  ck_assert_float_eq_tol(a, b, 0.000001);
+}
+END_TEST
+
+START_TEST(sscanf_f_test10) {
+  float a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("123.abc", "%f", &a),
+                   sscanf("123.abc", "%f", &b));
+  ck_assert_float_eq_tol(a, b, 0.000001);
+}
+END_TEST
+
+START_TEST(sscanf_f_test11) {
+  float a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("222", "%f", &a), sscanf("222", "%f", &b));
+  ck_assert_float_eq_tol(a, b, 0.000001);
+}
+END_TEST
+
+START_TEST(sscanf_f_test12) {
+  float a = 0, b = 0, c = 0, d = 0;
+
+  sscanf("3.13 32.14", "%2f %f", &a, &b);
+  s21_sscanf("3.13 32.14", "%2f %f", &c, &d);
+
+  ck_assert_float_eq_tol(a, c, 0.000001);
+  ck_assert_float_eq_tol(b, d, 0.000001);
+}
+END_TEST
+
+START_TEST(sscanf_f_test13) {
+  float a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("123.456", "%10f", &a),
+                   sscanf("123.456", "%10f", &b));
+  ck_assert_float_eq_tol(a, b, 0.000001);
+}
+END_TEST
+
+// SPECIFIER g
+START_TEST(sscanf_g_test1) {
+  float a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("iNf", "%g", &a), sscanf("iNf", "%g", &b));
+  ck_assert(isinf(a));
+  ck_assert(isinf(b));
+}
+END_TEST
+
+// SPECIFIER G
+START_TEST(sscanf_G_test1) {
+  float a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("inf", "%G", &a), sscanf("inf", "%G", &b));
+  ck_assert(isinf(a));
+  ck_assert(isinf(b));
+}
+END_TEST
+
+// SPECIFIER o
+START_TEST(sscanf_o_test1) {
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("01234567", "%o", &a),
+                   sscanf("01234567", "%o", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+START_TEST(sscanf_o_test2) {
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("21234567", "%o", &a),
+                   sscanf("21234567", "%o", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+START_TEST(sscanf_o_test3) {
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("-01234567", "%o", &a),
+                   sscanf("-01234567", "%o", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+START_TEST(sscanf_o_test4) {
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("0-1234567", "%o", &a),
+                   sscanf("0-1234567", "%o", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+START_TEST(sscanf_o_test5) {
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("+01234567", "%o", &a),
+                   sscanf("+01234567", "%o", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+// SPECIFIER s
+START_TEST(sscanf_s_test1) {
+  char buf1[100] = {0}, buf2[100] = {0};
+
+  ck_assert_int_eq(s21_sscanf("1234567890", "%s", buf1),
+                   sscanf("1234567890", "%s", buf2));
+  ck_assert_str_eq(buf1, buf2);
+}
+END_TEST
+
+START_TEST(sscanf_s_test2) {
+  char buf1[100] = {0}, buf2[100] = {0};
+
+  ck_assert_int_eq(s21_sscanf("abcdefghk", "%5s", buf1),
+                   sscanf("abcdefghk", "%5s", buf2));
+  ck_assert_str_eq(buf1, buf2);
+}
+END_TEST
+
+START_TEST(sscanf_s_test3) {
+  char buf1[100] = {0}, buf2[100] = {0};
+
+  ck_assert_int_eq(s21_sscanf("", "%s", buf1), sscanf("", "%s", buf2));
+  ck_assert_str_eq(buf1, buf2);
+}
+END_TEST
+
+START_TEST(sscanf_s_test4) {
+  char buf1[100] = {0}, buf2[100] = {0}, buf3[100] = {0}, buf4[100] = {0};
+
+  ck_assert_int_eq(s21_sscanf("123 456", "%s %s", buf1, buf3),
+                   sscanf("123 456", "%s %s", buf2, buf4));
+  ck_assert_str_eq(buf1, buf2);
+  ck_assert_str_eq(buf3, buf4);
+}
+END_TEST
+
+// SPECIFIER u
+START_TEST(sscanf_u_test1) {
+  unsigned int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("1234567890", "%u", &a),
+                   sscanf("1234567890", "%u", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+START_TEST(sscanf_u_test2) {
+  unsigned int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("12345678901", "%u", &a),
+                   sscanf("12345678901", "%u", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+START_TEST(sscanf_u_test3) {
+  unsigned long long lla = 0, llb = 0;
+
+  ck_assert_int_eq(s21_sscanf("123456789012345678901", "%llu", &lla),
+                   sscanf("123456789012345678901", "%llu", &llb));
+  ck_assert_int_eq(lla, llb);
+}
+END_TEST
+
+START_TEST(sscanf_u_test4) {
+  unsigned long long lla = 0, llb = 0;
+
+  ck_assert_int_eq(s21_sscanf("12345678901234567890123", "%22llu", &lla),
+                   sscanf("12345678901234567890123", "%22llu", &llb));
+  ck_assert_int_eq(lla, llb);
+}
+END_TEST
+
+START_TEST(sscanf_u_test5) {
+  unsigned long la = 0, lb = 0;
+  unsigned short sa = 0, sb = 0;
+
+  ck_assert_int_eq(s21_sscanf("1234567890", "%5hu%lu", &sa, &la),
+                   sscanf("1234567890", "%5hu%lu", &sb, &lb));
+  ck_assert_int_eq(sa, sb);
+  ck_assert_int_eq(la, lb);
+}
+END_TEST
+
+START_TEST(sscanf_u_test6) {
+  unsigned int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("123", "%5u", &a), sscanf("123", "%5u", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+START_TEST(sscanf_u_test7) {
+  unsigned int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("-123", "%u", &a), sscanf("-123", "%u", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+// SPECIFIER x
+START_TEST(sscanf_x_test1) {
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("0x1234567890", "%x", &a),
+                   sscanf("0x1234567890", "%x", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+START_TEST(sscanf_x_test2) {
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("0X1234567890", "%x", &a),
+                   sscanf("0X1234567890", "%x", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+START_TEST(sscanf_x_test3) {
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("0x1234567890", "%x", &a),
+                   sscanf("0x1234567890", "%x", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+START_TEST(sscanf_x_test4) {
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("0X1234567890", "%x", &a),
+                   sscanf("0X1234567890", "%x", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+START_TEST(sscanf_x_test5) {
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("0x1aBcDeF", "%x", &a),
+                   sscanf("0x1AbCdEf", "%x", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+START_TEST(sscanf_x_test6) {
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("01aBcDeF", "%x", &a),
+                   sscanf("01AbCdEf", "%x", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+START_TEST(sscanf_x_test7) {
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("x1aBcDeF", "%x", &a),
+                   sscanf("x1AbCdEf", "%x", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+START_TEST(sscanf_x_test8) {
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("+0x1aBcDeF", "%x", &a),
+                   sscanf("+0x1AbCdEf", "%x", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+START_TEST(sscanf_x_test9) {
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("-0x1aBcDeF", "%x", &a),
+                   sscanf("-0x1AbCdEf", "%x", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+// SPECIFIER X
+START_TEST(sscanf_X_test1) {
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("0x1abcdef", "%X", &a),
+                   sscanf("0x1abcdef", "%X", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+START_TEST(sscanf_X_test2) {
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("0x1abcdef", "%X", &a),
+                   sscanf("0x1abcdef", "%X", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+START_TEST(sscanf_X_test3) {
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("0X1ACDEF", "%X", &a),
+                   sscanf("0X1ACDEF", "%X", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+START_TEST(sscanf_X_test4) {
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("01aBcDeF", "%X", &a),
+                   sscanf("01AbCdEf", "%X", &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+// SPECIFIER p
+START_TEST(sscanf_p_test1) {
+  void *a = NULL, *b = NULL;
+
+  ck_assert_int_eq(s21_sscanf("0x1234567890", "%p", &a),
+                   sscanf("0x1234567890", "%p", &b));
+  ck_assert_ptr_eq(a, b);
+}
+END_TEST
+
+START_TEST(sscanf_p_test2) {
+  void *a = NULL, *b = NULL;
+
+  ck_assert_int_eq(s21_sscanf("0xabc", "%p", &a), sscanf("0xabc", "%p", &b));
+  ck_assert_ptr_eq(a, b);
+}
+END_TEST
+
+START_TEST(sscanf_p_test3) {
+  void *a = NULL, *b = NULL;
+
+  ck_assert_int_eq(s21_sscanf("1234567890", "%p", &a),
+                   sscanf("1234567890", "%p", &b));
+  ck_assert_ptr_eq(a, b);
+}
+END_TEST
+
+START_TEST(sscanf_p_test4) {
+  void *a = NULL, *b = NULL;
+
+  ck_assert_int_eq(s21_sscanf("-1234567890", "%p", &a),
+                   sscanf("-1234567890", "%p", &b));
+  ck_assert_ptr_eq(a, b);
+}
+// END_TEST
+
+// SPECIFIER n
+START_TEST(sscanf_n_test1) {
+  char buf1[100] = {0}, buf2[100] = {0};
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("1234567890", "%5s%n", buf1, &a),
+                   sscanf("1234567890", "%5s%n", buf2, &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+START_TEST(sscanf_n_test2) {
+  char buf1[100] = {0}, buf2[100] = {0};
+  int a = 0, b = 0;
+
+  ck_assert_int_eq(s21_sscanf("", "%s%n", buf1, &a),
+                   sscanf("", "%s%n", buf2, &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
+START_TEST(sscanf_n_test3) {
+  char buf1[100] = {0}, buf2[100] = {0};
+  int a = 0, b = 0, i = 0, j = 0;
+
+  ck_assert_int_eq(s21_sscanf("123456", "%*3d%d%n", &i, &a),
+                   sscanf("123456", "%*3d%d%n", &j, &b));
+  ck_assert_int_eq(a, b);
+}
+END_TEST
+
 Suite *string_suite() {
   Suite *s1 = suite_create("STRING_TESTS");
   TCase *memchr_tests = tcase_create("MEMCHR");
@@ -829,15 +1568,164 @@ Suite *string_sharp_suite() {
   return s2;
 }
 
+Suite *sscanf_suite() {
+  Suite *s3 = suite_create("SSCANF_TESTS");
+  TCase *sscanf_c_tests = tcase_create("SPEC c (SSCANF)");
+  suite_add_tcase(s3, sscanf_c_tests);
+  tcase_add_test(sscanf_c_tests, sscanf_c_test1);
+  // tcase_add_test(sscanf_c_tests, sscanf_c_test2);
+  // tcase_add_test(sscanf_c_tests, sscanf_c_test3);
+
+  TCase *sscanf_d_tests = tcase_create("SPEC d (SSCANF)");
+  suite_add_tcase(s3, sscanf_d_tests);
+  tcase_add_test(sscanf_d_tests, sscanf_d_test1);
+  tcase_add_test(sscanf_d_tests, sscanf_d_test2);
+  tcase_add_test(sscanf_d_tests, sscanf_d_test3);
+  tcase_add_test(sscanf_d_tests, sscanf_d_test4);
+  // tcase_add_test(sscanf_d_tests, sscanf_d_test5);
+  // tcase_add_test(sscanf_d_tests, sscanf_d_test6);
+  // tcase_add_test(sscanf_d_tests, sscanf_d_test7);
+  tcase_add_test(sscanf_d_tests, sscanf_d_test8);
+  tcase_add_test(sscanf_d_tests, sscanf_d_test9);
+  // tcase_add_test(sscanf_d_tests, sscanf_d_test10);
+  // tcase_add_test(sscanf_d_tests, sscanf_d_test11);
+  // tcase_add_test(sscanf_d_tests, sscanf_d_test12);
+  // tcase_add_test(sscanf_d_tests, sscanf_d_test13);
+  // tcase_add_test(sscanf_d_tests, sscanf_d_test14);
+  tcase_add_test(sscanf_d_tests, sscanf_d_test15);
+  tcase_add_test(sscanf_d_tests, sscanf_d_test16);
+  tcase_add_test(sscanf_d_tests, sscanf_d_test17);
+  tcase_add_test(sscanf_d_tests, sscanf_d_test18);
+  tcase_add_test(sscanf_d_tests, sscanf_d_test19);
+  tcase_add_test(sscanf_d_tests, sscanf_d_test20);
+  // tcase_add_test(sscanf_d_tests, sscanf_d_test21);
+  tcase_add_test(sscanf_d_tests, sscanf_d_test22);
+  tcase_add_test(sscanf_d_tests, sscanf_d_test23);
+  tcase_add_test(sscanf_d_tests, sscanf_d_test24);
+  // tcase_add_test(sscanf_d_tests, sscanf_d_test25);
+  tcase_add_test(sscanf_d_tests, sscanf_d_test26);
+  // tcase_add_test(sscanf_d_tests, sscanf_d_test27);
+  tcase_add_test(sscanf_d_tests, sscanf_d_test28);
+  tcase_add_test(sscanf_d_tests, sscanf_d_test29);
+  // tcase_add_test(sscanf_d_tests, sscanf_d_test30);
+
+  TCase *sscanf_i_tests = tcase_create("SPEC i (SSCANF)");
+  suite_add_tcase(s3, sscanf_i_tests);
+  tcase_add_test(sscanf_i_tests, sscanf_i_test1);
+  // tcase_add_test(sscanf_i_tests, sscanf_i_test2);
+  // tcase_add_test(sscanf_i_tests, sscanf_i_test3);
+  tcase_add_test(sscanf_i_tests, sscanf_i_test4);
+  // tcase_add_test(sscanf_i_tests, sscanf_i_test5);
+  // tcase_add_test(sscanf_i_tests, sscanf_i_test6);
+  // tcase_add_test(sscanf_i_tests, sscanf_i_test7);
+  tcase_add_test(sscanf_i_tests, sscanf_i_test8);
+  // tcase_add_test(sscanf_i_tests, sscanf_i_test9);
+  // tcase_add_test(sscanf_i_tests, sscanf_i_test10);
+
+  TCase *sscanf_e_tests = tcase_create("SPEC e (SSCANF)");
+  suite_add_tcase(s3, sscanf_e_tests);
+  tcase_add_test(sscanf_e_tests, sscanf_e_test1);
+  // tcase_add_test(sscanf_e_tests, sscanf_e_test2);
+  tcase_add_test(sscanf_e_tests, sscanf_e_test3);
+
+  TCase *sscanf_E_tests = tcase_create("SPEC E (SSCANF)");
+  suite_add_tcase(s3, sscanf_E_tests);
+  // tcase_add_test(sscanf_E_tests, sscanf_E_test1);
+  // tcase_add_test(sscanf_E_tests, sscanf_E_test2);
+
+  TCase *sscanf_f_tests = tcase_create("SPEC f (SSCANF)");
+  suite_add_tcase(s3, sscanf_f_tests);
+  tcase_add_test(sscanf_f_tests, sscanf_f_test1);
+  tcase_add_test(sscanf_f_tests, sscanf_f_test2);
+  tcase_add_test(sscanf_f_tests, sscanf_f_test3);
+  // tcase_add_test(sscanf_f_tests, sscanf_f_test4);
+  tcase_add_test(sscanf_f_tests, sscanf_f_test5);
+  // tcase_add_test(sscanf_f_tests, sscanf_f_test6);
+  // tcase_add_test(sscanf_f_tests, sscanf_f_test7);
+  tcase_add_test(sscanf_f_tests, sscanf_f_test8);
+  tcase_add_test(sscanf_f_tests, sscanf_f_test9);
+  tcase_add_test(sscanf_f_tests, sscanf_f_test10);
+  tcase_add_test(sscanf_f_tests, sscanf_f_test11);
+  tcase_add_test(sscanf_f_tests, sscanf_f_test12);
+  // tcase_add_test(sscanf_f_tests, sscanf_f_test13);
+
+  TCase *sscanf_g_tests = tcase_create("SPEC g (SSCANF)");
+  suite_add_tcase(s3, sscanf_g_tests);
+  tcase_add_test(sscanf_g_tests, sscanf_g_test1);
+
+  TCase *sscanf_G_tests = tcase_create("SPEC G (SSCANF)");
+  suite_add_tcase(s3, sscanf_G_tests);
+  tcase_add_test(sscanf_G_tests, sscanf_G_test1);
+
+  TCase *sscanf_o_tests = tcase_create("SPEC o (SSCANF)");
+  suite_add_tcase(s3, sscanf_o_tests);
+  tcase_add_test(sscanf_o_tests, sscanf_o_test1);
+  tcase_add_test(sscanf_o_tests, sscanf_o_test2);
+  tcase_add_test(sscanf_o_tests, sscanf_o_test3);
+  tcase_add_test(sscanf_o_tests, sscanf_o_test4);
+  tcase_add_test(sscanf_o_tests, sscanf_o_test5);
+
+  TCase *sscanf_s_tests = tcase_create("SPEC s (SSCANF)");
+  suite_add_tcase(s3, sscanf_s_tests);
+  tcase_add_test(sscanf_s_tests, sscanf_s_test1);
+  tcase_add_test(sscanf_s_tests, sscanf_s_test2);
+  // tcase_add_test(sscanf_s_tests, sscanf_s_test3);
+  tcase_add_test(sscanf_s_tests, sscanf_s_test4);
+
+  TCase *sscanf_u_tests = tcase_create("SPEC u (SSCANF)");
+  suite_add_tcase(s3, sscanf_u_tests);
+  tcase_add_test(sscanf_u_tests, sscanf_u_test1);
+  tcase_add_test(sscanf_u_tests, sscanf_u_test2);
+  // tcase_add_test(sscanf_u_tests, sscanf_u_test3);
+  // tcase_add_test(sscanf_u_tests, sscanf_u_test4);
+  tcase_add_test(sscanf_u_tests, sscanf_u_test5);
+  tcase_add_test(sscanf_u_tests, sscanf_u_test6);
+  // tcase_add_test(sscanf_u_tests, sscanf_u_test7);
+
+  TCase *sscanf_x_tests = tcase_create("SPEC x (SSCANF)");
+  suite_add_tcase(s3, sscanf_x_tests);
+  tcase_add_test(sscanf_x_tests, sscanf_x_test1);
+  tcase_add_test(sscanf_x_tests, sscanf_x_test2);
+  tcase_add_test(sscanf_x_tests, sscanf_x_test3);
+  tcase_add_test(sscanf_x_tests, sscanf_x_test4);
+  tcase_add_test(sscanf_x_tests, sscanf_x_test5);
+  tcase_add_test(sscanf_x_tests, sscanf_x_test6);
+  // tcase_add_test(sscanf_x_tests, sscanf_x_test7);
+  tcase_add_test(sscanf_x_tests, sscanf_x_test8);
+  tcase_add_test(sscanf_x_tests, sscanf_x_test9);
+
+  TCase *sscanf_X_tests = tcase_create("SPEC X (SSCANF)");
+  suite_add_tcase(s3, sscanf_X_tests);
+  // tcase_add_test(sscanf_X_tests, sscanf_X_test1);
+  // tcase_add_test(sscanf_X_tests, sscanf_X_test2);
+  // tcase_add_test(sscanf_X_tests, sscanf_X_test3);
+  tcase_add_test(sscanf_X_tests, sscanf_X_test4);
+
+  TCase *sscanf_p_tests = tcase_create("SPEC p (SSCANF)");
+  suite_add_tcase(s3, sscanf_p_tests);
+  tcase_add_test(sscanf_p_tests, sscanf_p_test1);
+  tcase_add_test(sscanf_p_tests, sscanf_p_test2);
+  tcase_add_test(sscanf_p_tests, sscanf_p_test3);
+  // tcase_add_test(sscanf_p_tests, sscanf_p_test4);
+
+  TCase *sscanf_n_tests = tcase_create("SPEC n (SSCANF)");
+  suite_add_tcase(s3, sscanf_n_tests);
+  // tcase_add_test(sscanf_n_tests, sscanf_n_test1);
+  // tcase_add_test(sscanf_n_tests, sscanf_n_test2);
+  // tcase_add_test(sscanf_n_tests, sscanf_n_test3);
+
+  return s3;
+}
+
 int main() {
   Suite *s1 = string_suite();
   Suite *s2 = string_sharp_suite();
-  // Suite *s3 = sscanf_suite();
+  Suite *s3 = sscanf_suite();
   // Suite *s4 = sprintf_suite();
 
   SRunner *runner_string = srunner_create(s1);
   SRunner *runner_c_sharp = srunner_create(s2);
-  // SRunner *runner_sscanf = srunner_create(s3);
+  SRunner *runner_sscanf = srunner_create(s3);
   // SRunner *runner_sprintf = srunner_create(s4);
 
   int number_fails;
@@ -849,9 +1737,9 @@ int main() {
   number_fails += srunner_ntests_failed(runner_c_sharp);
   srunner_free(runner_c_sharp);
 
-  // srunner_run_all(runner_sscanf, CK_NORMAL);
-  // number_fails += srunner_ntests_failed(runner_sscanf);
-  // srunner_free(runner_sscanf);
+  srunner_run_all(runner_sscanf, CK_NORMAL);
+  number_fails += srunner_ntests_failed(runner_sscanf);
+  srunner_free(runner_sscanf);
 
   // srunner_run_all(runner_sprintf, CK_NORMAL);
   // number_fails += srunner_ntests_failed(runner_sprintf);
