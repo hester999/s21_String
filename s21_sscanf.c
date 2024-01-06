@@ -87,20 +87,24 @@ int s21_sscanf( const char *str, const char *format, ...) {
             }
             case SPEC_CHAR: {
                 char *p = NULL;
+                int width = specs[i].width > 0 ? specs[i].width : 1; // Получение ширины, используйте 1, если ширина не указана
 
                 if (specs[i].is_star_flag != 1) {
                     p = va_arg(args, char*);
                 }
-                if (*str != '\0') {
+
+                for (int j = 0; j < width && *str != '\0'; j++) {
                     if (p != NULL) {
-                        *p = *str;
+                        *p++ = *str; // Сохранение символа и переход к следующему месту в буфере
                     }
                     str++;
                 }
+
                 pos = (char*)str;
                 count_spec++;
                 break;
             }
+
 
 
 
