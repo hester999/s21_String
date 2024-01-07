@@ -431,28 +431,42 @@ int s21_convert_str_to_int_auto_base(const char* str, char **pos,int width){
 
 
 
-unsigned long long s21_get_unsigned_num(const char *str, char **pos,int width) {
+unsigned long long s21_get_unsigned_num(const char *str, char **pos, int width) {
     unsigned long long result = 0;
+    long long signedResult = 0; // Для временного хранения знакового результата
     int temp = 0;
-   
+    int negative = 0; // Флаг отрицательности числа
+
     // Пропуск начальных пробелов
     while (*str == ' ') {
         str++;
     }
 
-    for(int i=0; str[i] !=' ' && str[i]!='\0';i++){
+    // Проверка на отрицательное число
+    if (*str == '-') {
+        negative = 1;
+        str++;
+    }
+
+    for (int i = 0; str[i] != ' ' && str[i] != '\0'; i++) {
         temp++;
     }
-    if(width == -100 || width > temp){
+    if (width == -100 || width > temp) {
         width = temp;
     }
-    
+
     // Чтение числа
-    while (*str >= '0' && *str <= '9' && (width>0)) {
-        result = result * 10 + (*str - '0');
+    while (*str >= '0' && *str <= '9' && (width > 0)) {
+        signedResult = signedResult * 10 + (*str - '0');
         str++;
         width--;
     }
+
+    // Конвертация в unsigned long long
+    if (negative) {
+        signedResult = -signedResult;
+    }
+    result = (unsigned long long)signedResult;
 
     // Обновление pos
     if (pos != s21_NULL) {
