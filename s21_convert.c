@@ -431,18 +431,18 @@ int s21_convert_str_to_int_auto_base(const char* str, char **pos,int width){
 
 
 
+
+
+
 unsigned long long s21_get_unsigned_num(const char *str, char **pos, int width) {
     unsigned long long result = 0;
-    long long signedResult = 0; // Для временного хранения знакового результата
     int temp = 0;
-    int negative = 0; // Флаг отрицательности числа
+    int negative = 0;
 
-    // Пропуск начальных пробелов
     while (*str == ' ') {
         str++;
     }
 
-    // Проверка на отрицательное число
     if (*str == '-') {
         negative = 1;
         str++;
@@ -455,23 +455,61 @@ unsigned long long s21_get_unsigned_num(const char *str, char **pos, int width) 
         width = temp;
     }
 
-    // Чтение числа
+    int check = s21_support_to_ull(str);
+
+    if(check ==1){
+        result = ULLONG_MAX;
+        *pos = (char *)str+temp;
+        return result;
+    }
+
     while (*str >= '0' && *str <= '9' && (width > 0)) {
-        signedResult = signedResult * 10 + (*str - '0');
+        // Проверка на переполнение перед умножением
+        if (result > ULLONG_MAX / 10 || (result == ULLONG_MAX / 10 && (*str - '0') > ULLONG_MAX % 10)) {
+            // Обработка переполнения
+            result = ULLONG_MAX;
+            break;
+        }
+
+        result = result * 10 + (*str - '0');
         str++;
         width--;
     }
 
-    // Конвертация в unsigned long long
+    // В случае отрицательного числа, возвращаем ULLONG_MAX
     if (negative) {
-        signedResult = -signedResult;
+        result = ULLONG_MAX;
     }
-    result = (unsigned long long)signedResult;
 
-    // Обновление pos
     if (pos != s21_NULL) {
         *pos = (char *)str;
     }
 
     return result;
 }
+
+
+
+
+int s21_support_to_ull(const char *str) {
+    unsigned long long result = 0;
+
+    // Пропуск начальных пробелов
+    while (*str == ' ') {
+        str++;
+    }
+
+    // Чтение и конвертация числа
+    while (*str >= '0' && *str <= '9') {
+        // Проверка на переполнение перед умножением
+        if (result > ULLONG_MAX / 10 || (result == ULLONG_MAX / 10 && (*str - '0') > ULLONG_MAX % 10)) {
+            return 1; // Переполнение обнаружено
+        }
+
+        result = result * 10 + (*str - '0');
+        str++;
+    }
+
+    return 0; // Переполнение не обнаружено
+}
+
