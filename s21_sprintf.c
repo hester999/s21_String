@@ -69,7 +69,7 @@ int s21_sprintf(char *str, const char *format, ...) {
   }
   *str = '\0';
 
-  s21_size_t quantity = *str_begin - *str;
+  s21_size_t quantity = (int)(str - str_begin);
   return quantity;
 }
 

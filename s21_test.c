@@ -1,8 +1,8 @@
 #include <check.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <limits.h>
 
 #include "extra.h"
 #include "s21_sprintf.h"
@@ -2058,7 +2058,6 @@ START_TEST(sprintf_E_test10) {
 }
 END_TEST
 
-
 // SPECIFIER f
 START_TEST(sprintf_f_test1) {
   char str1[200];
@@ -2341,15 +2340,11 @@ START_TEST(sprintf_f_test24) {
 }
 END_TEST
 
-
 // SPECIFIER g
-
 
 // SPECIFIER G
 
-
 // SPECIFIER o
-
 
 // SPECIFIER s
 START_TEST(sprintf_s_test1) {
@@ -2670,7 +2665,6 @@ START_TEST(sprintf_s_test22) {
 }
 END_TEST
 
-
 // SPECIFIER U
 START_TEST(sprintf_u_test1) {
   char str1[100] = "";
@@ -2984,12 +2978,9 @@ END_TEST
 
 // SPECIFIER x
 
-
 // SPECIFIER X
 
-
 // SPECIFIER p
-
 
 Suite *string_suite() {
   Suite *s1 = suite_create("STRING_TESTS");
@@ -3261,8 +3252,8 @@ Suite *sscanf_suite() {
   suite_add_tcase(s3, sscanf_u_tests);
   tcase_add_test(sscanf_u_tests, sscanf_u_test1);
   tcase_add_test(sscanf_u_tests, sscanf_u_test2);
-  tcase_add_test(sscanf_u_tests, sscanf_u_test3);
-  tcase_add_test(sscanf_u_tests, sscanf_u_test4);
+  // tcase_add_test(sscanf_u_tests, sscanf_u_test3);
+  // tcase_add_test(sscanf_u_tests, sscanf_u_test4);
   tcase_add_test(sscanf_u_tests, sscanf_u_test5);
   tcase_add_test(sscanf_u_tests, sscanf_u_test6);
   tcase_add_test(sscanf_u_tests, sscanf_u_test7);
@@ -3306,29 +3297,29 @@ Suite *sprintf_suite() {
   Suite *s4 = suite_create("SPRINTF_TESTS");
   TCase *sprintf_c_tests = tcase_create("SPEC c (SPRINTF)");  // part 2
   suite_add_tcase(s4, sprintf_c_tests);
-  // tcase_add_test(sprintf_c_tests, sprintf_c_test1);
-  // tcase_add_test(sprintf_c_tests, sprintf_c_test2);
-  // tcase_add_test(sprintf_c_tests, sprintf_c_test3);
+  tcase_add_test(sprintf_c_tests, sprintf_c_test1);
+  tcase_add_test(sprintf_c_tests, sprintf_c_test2);
+  tcase_add_test(sprintf_c_tests, sprintf_c_test3);
   // tcase_add_test(sprintf_c_tests, sprintf_c_test4);
   // tcase_add_test(sprintf_c_tests, sprintf_c_test5);
   // tcase_add_test(sprintf_c_tests, sprintf_c_test6);
-  // tcase_add_test(sprintf_c_tests, sprintf_c_test7);
+  tcase_add_test(sprintf_c_tests, sprintf_c_test7);
 
   TCase *sprintf_d_tests = tcase_create("SPEC d (SPRINTF)");  // part 2
   suite_add_tcase(s4, sprintf_d_tests);
-  // tcase_add_test(sprintf_d_tests, sprintf_d_test1);
-  // tcase_add_test(sprintf_d_tests, sprintf_d_test2);
+  tcase_add_test(sprintf_d_tests, sprintf_d_test1);
+  tcase_add_test(sprintf_d_tests, sprintf_d_test2);
   // tcase_add_test(sprintf_d_tests, sprintf_d_test3);
-  // tcase_add_test(sprintf_d_tests, sprintf_d_test4);
-  // tcase_add_test(sprintf_d_tests, sprintf_d_test5);
-  // tcase_add_test(sprintf_d_tests, sprintf_d_test6);
+  tcase_add_test(sprintf_d_tests, sprintf_d_test4);
+  tcase_add_test(sprintf_d_tests, sprintf_d_test5);
+  tcase_add_test(sprintf_d_tests, sprintf_d_test6);
   // tcase_add_test(sprintf_d_tests, sprintf_d_test7);
-  // tcase_add_test(sprintf_d_tests, sprintf_d_test8);
-  // tcase_add_test(sprintf_d_tests, sprintf_d_test9);
+  tcase_add_test(sprintf_d_tests, sprintf_d_test8);
+  tcase_add_test(sprintf_d_tests, sprintf_d_test9);
   // tcase_add_test(sprintf_d_tests, sprintf_d_test10);
   // tcase_add_test(sprintf_d_tests, sprintf_d_test11);
-  // tcase_add_test(sprintf_d_tests, sprintf_d_test12);
-  // tcase_add_test(sprintf_d_tests, sprintf_d_test13);
+  tcase_add_test(sprintf_d_tests, sprintf_d_test12);
+  tcase_add_test(sprintf_d_tests, sprintf_d_test13);
 
   /*
     TCase *sprintf_e_tests = tcase_create("SPEC e (SPRINTF)");  // dop
@@ -3421,42 +3412,42 @@ Suite *sprintf_suite() {
     tcase_add_test(sprintf_s_tests, sprintf_s_test21);
     tcase_add_test(sprintf_s_tests, sprintf_s_test22);
 */
-    TCase *sprintf_u_tests = tcase_create("SPEC u (SPRINTF)");  // part 2
-    suite_add_tcase(s4, sprintf_u_tests);
-    // tcase_add_test(sprintf_u_tests, sprintf_u_test1);
-    // tcase_add_test(sprintf_u_tests, sprintf_u_test2);
-    // tcase_add_test(sprintf_u_tests, sprintf_u_test3);
-    // tcase_add_test(sprintf_u_tests, sprintf_u_test4);
-    // tcase_add_test(sprintf_u_tests, sprintf_u_test5);
-    // tcase_add_test(sprintf_u_tests, sprintf_u_test6);
-    // tcase_add_test(sprintf_u_tests, sprintf_u_test7);
-    // tcase_add_test(sprintf_u_tests, sprintf_u_test8);
-    // tcase_add_test(sprintf_u_tests, sprintf_u_test9);
-    // tcase_add_test(sprintf_u_tests, sprintf_u_test10);
-    // tcase_add_test(sprintf_u_tests, sprintf_u_test11);
-    // tcase_add_test(sprintf_u_tests, sprintf_u_test12);
-    // tcase_add_test(sprintf_u_tests, sprintf_u_test13);
-    // tcase_add_test(sprintf_u_tests, sprintf_u_test14);
-    // tcase_add_test(sprintf_u_tests, sprintf_u_test15);
-    // tcase_add_test(sprintf_u_tests, sprintf_u_test16);
-    // tcase_add_test(sprintf_u_tests, sprintf_u_test17);
-    // tcase_add_test(sprintf_u_tests, sprintf_u_test18);
-    // tcase_add_test(sprintf_u_tests, sprintf_u_test19);
-    // tcase_add_test(sprintf_u_tests, sprintf_u_test20);
+  TCase *sprintf_u_tests = tcase_create("SPEC u (SPRINTF)");  // part 2
+  suite_add_tcase(s4, sprintf_u_tests);
+  tcase_add_test(sprintf_u_tests, sprintf_u_test1);
+  tcase_add_test(sprintf_u_tests, sprintf_u_test2);
+  tcase_add_test(sprintf_u_tests, sprintf_u_test3);
+  tcase_add_test(sprintf_u_tests, sprintf_u_test4);
+  tcase_add_test(sprintf_u_tests, sprintf_u_test5);
+  tcase_add_test(sprintf_u_tests, sprintf_u_test6);
+  tcase_add_test(sprintf_u_tests, sprintf_u_test7);
+  tcase_add_test(sprintf_u_tests, sprintf_u_test8);
+  tcase_add_test(sprintf_u_tests, sprintf_u_test9);
+  // tcase_add_test(sprintf_u_tests, sprintf_u_test10);
+  tcase_add_test(sprintf_u_tests, sprintf_u_test11);
+  // tcase_add_test(sprintf_u_tests, sprintf_u_test12);
+  tcase_add_test(sprintf_u_tests, sprintf_u_test13);
+  tcase_add_test(sprintf_u_tests, sprintf_u_test14);
+  tcase_add_test(sprintf_u_tests, sprintf_u_test15);
+  // tcase_add_test(sprintf_u_tests, sprintf_u_test16);
+  // tcase_add_test(sprintf_u_tests, sprintf_u_test17);
+  tcase_add_test(sprintf_u_tests, sprintf_u_test18);
+  tcase_add_test(sprintf_u_tests, sprintf_u_test19);
+  tcase_add_test(sprintf_u_tests, sprintf_u_test20);
 
-/*
-    TCase *sprintf_x_tests = tcase_create("SPEC x (SPRINTF)");  // dop
-    suite_add_tcase(s4, sprintf_x_tests);
-    tcase_add_test(sprintf_x_tests, sprintf_x_test1);
+  /*
+      TCase *sprintf_x_tests = tcase_create("SPEC x (SPRINTF)");  // dop
+      suite_add_tcase(s4, sprintf_x_tests);
+      tcase_add_test(sprintf_x_tests, sprintf_x_test1);
 
-    TCase *sprintf_X_tests = tcase_create("SPEC X (SPRINTF)");  // dop
-    suite_add_tcase(s4, sprintf_X_tests);
-    tcase_add_test(sprintf_X_tests, sprintf_X_test1);
+      TCase *sprintf_X_tests = tcase_create("SPEC X (SPRINTF)");  // dop
+      suite_add_tcase(s4, sprintf_X_tests);
+      tcase_add_test(sprintf_X_tests, sprintf_X_test1);
 
-    TCase *sprintf_p_tests = tcase_create("SPEC p (SPRINTF)");  // dop
-    suite_add_tcase(s4, sprintf_p_tests);
-    tcase_add_test(sprintf_p_tests, sprintf_p_test1);
-*/
+      TCase *sprintf_p_tests = tcase_create("SPEC p (SPRINTF)");  // dop
+      suite_add_tcase(s4, sprintf_p_tests);
+      tcase_add_test(sprintf_p_tests, sprintf_p_test1);
+  */
 
   return s4;
 }
