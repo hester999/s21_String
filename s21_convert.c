@@ -142,6 +142,10 @@ long long int s21_atoi(const char *str, char **pos, int width) {
         sign = -1;
         i++;
         width--;
+    }else if(str[i] == '+'){
+        sign = 1;
+        i++;
+        width--;
     }
 
     if (no_width) {
@@ -400,11 +404,10 @@ unsigned long long s21_get_pointer(const char *str, char **pos, int width) {
 int s21_convert_str_to_int_auto_base(const char* str, char **pos,int width){
     int result = 0;
     int i=0;
-    while (str[i]!='0' && str[i]!=' ' && str[i]!='\0');
-    {
+    while (str[i] == ' ' || str[i] == '+' || str[i] == '-') {
         i++;
     }
-    
+
     if (str[i] == '0') {
         if (str[i+1] == 'x' || str[i+1] == 'X') {
             // Число в шестнадцатеричной системе

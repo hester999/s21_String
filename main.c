@@ -19,12 +19,13 @@ int main() {
     // s21_sscanf("-0xFF 0xAAA", "%3p %p", &a,&a1);
     // sscanf("-0xFF 0xAAA", "%3p %p", &b,&b1);
     // printf("%p %p\n%p %p\n",a,a1,b,b1);
-     int flag=0;
-    for(int i =0; i<= 3;i++){
-         flag = 1 << 1;
-         ~flag;
-    }
-    printf("%d\n",flag);
+   int a,b;
+
+    s21_sscanf("+321","%i",&a);
+    sscanf("+321","%i",&b);
+
+    printf("%d %d",a,b);
+
     return 0;
 }
 
