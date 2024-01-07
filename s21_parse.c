@@ -43,7 +43,7 @@ int parse(const char *format, FormatSpecifier **specs, int *len) {
         }
 
         if (*format == 'l') {
-          if (*(format + 1) == 'l') {  // Правильная проверка второго символа
+          if (*(format + 1) == 'l') {  
             (*specs)[numSpecs].lenghtmode = 3;
             incrementFormat = 1;
             format++;
@@ -60,6 +60,7 @@ int parse(const char *format, FormatSpecifier **specs, int *len) {
         }
       }
     }
+
     switch (*format) {
       case 'c':
         (*specs)[numSpecs++].type = SPEC_CHAR;

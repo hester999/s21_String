@@ -1,5 +1,48 @@
 SSCANF
 
+ver 07/01
+
+Running suite(s): SSCANF_TESTS
+74%: Checks: 99, Failures: 24, Errors: 1
+
+RETURN
+sscanf_d_test6:0: Assertion 's21_sscanf("222%222", "%d %d", &a, &b) == sscanf("222%222", "%d %d", &c, &d)' failed: s21_sscanf("222%222", "%d %d", &a, &b) == 2, sscanf("222%222", "%d %d", &c, &d) == 1
+sscanf_d_test10:0: Assertion 's21_sscanf(" ", "%%") == sscanf(" ", "%%")' failed: s21_sscanf(" ", "%%") == 0, sscanf(" ", "%%") == -1
+sscanf_d_test11:0: Assertion 's21_sscanf("", "%d", &a) == sscanf("", "%d", &b)' failed: s21_sscanf("", "%d", &a) == 1, sscanf("", "%d", &b) == -1
+sscanf_d_test12:0: Assertion 's21_sscanf(" ", "%d", &a) == sscanf(" ", "%d", &b)' failed: s21_sscanf(" ", "%d", &a) == 1, sscanf(" ", "%d", &b) == -1
+sscanf_d_test14:0: Assertion 's21_sscanf("123", "%a", &a) == -1' failed: s21_sscanf("123", "%a", &a) == 0, -1 == -1
+sscanf_d_test21:0: Assertion 's21_sscanf("19223372036854775807", "%ld%ld", &la, &lb) == sscanf("19223372036854775807", "%ld%ld", &lc, &ld)' failed: s21_sscanf("19223372036854775807", "%ld%ld", &la, &lb) == 2, sscanf("19223372036854775807", "%ld%ld", &lc, &ld) == 1
+sscanf_d_test27:0: Assertion 's21_sscanf("abc", "%d", &a) == sscanf("abc", "%d", &b)' failed: s21_sscanf("abc", "%d", &a) == 1, sscanf("abc", "%d", &b) == 0
+sscanf_i_test7:0: Assertion 's21_sscanf("--1234567890", "%i", &a) == sscanf("--1234567890", "%i", &b)' failed: s21_sscanf("--1234567890", "%i", &a) == 1, sscanf("--1234567890", "%i", &b) == 0
+sscanf_i_test9:0: Assertion 's21_sscanf("a123abcdef", "%i", &a) == sscanf("a123abcdef", "%i", &b)' failed: s21_sscanf("a123abcdef", "%i", &a) == 1, sscanf("a123abcdef", "%i", &b) == 0
+sscanf_f_test4:0: Assertion 's21_sscanf("", "%f", &a) == sscanf("", "%f", &b)' failed: s21_sscanf("", "%f", &a) == 1, sscanf("", "%f", &b) == -1
+sscanf_f_test6:0: Assertion 's21_sscanf(".", "%f", &a) == sscanf(".", "%f", &b)' failed: s21_sscanf(".", "%f", &a) == 1, sscanf(".", "%f", &b) == 0
+sscanf_f_test7:0: Assertion 's21_sscanf("abc", "%f", &a) == sscanf("abc", "%f", &b)' failed: s21_sscanf("abc", "%f", &a) == 1, sscanf("abc", "%f", &b) == 0
+sscanf_s_test3:0: Assertion 's21_sscanf("", "%s", buf1) == sscanf("", "%s", buf2)' failed: s21_sscanf("", "%s", buf1) == 1, sscanf("", "%s", buf2) == -1
+sscanf_x_test7:0: Assertion 's21_sscanf("x1aBcDeF", "%x", &a) == sscanf("x1AbCdEf", "%x", &b)' failed: s21_sscanf("x1aBcDeF", "%x", &a) == 1, sscanf("x1AbCdEf", "%x", &b) == 0
+sscanf_n_test2:0: Assertion 's21_sscanf("", "%s%n", buf1, &a) == sscanf("", "%s%n", buf2, &b)' failed: s21_sscanf("", "%s%n", buf1, &a) == 1, sscanf("", "%s%n", buf2, &b) == -1
+
+
+Other errors:
+sscanf_d_test5:0: Assertion 'b == d' failed: b == 0, d == 111
+sscanf_d_test7:0: (after this point) Received signal 10 (Bus error: 10)
+sscanf_d_test25:0: Assertion 'lla == llc' failed: lla == 0, llc == -9223372036854775808
+sscanf_e_test2:0: Assertion 'fabsl(b - a) < 0.000001' failed: a == 12300, b == 0.000123, 0.000001 == 1e-06
+sscanf_E_test1:0: Assertion '( sizeof(a) == sizeof(float) ? __inline_isinff((float)(a)) : sizeof(a) == sizeof(double) ? __inline_isinfd((double)(a)) : __inline_isinfl((long double)(a)))' failed
+sscanf_E_test2:0: Assertion 'fabsl(b - a) < 0.000001' failed: a == 1.23e+10, b == 12.3, 0.000001 == 1e-06
+sscanf_f_test13:0: Assertion 'fabsl(b - a) < 0.000001' failed: a == 0, b == 123.456, 0.000001 == 1e-06
+sscanf_u_test3:0: Assertion 'lla == llb' failed: lla == -5670419503621182411, llb == -1
+sscanf_u_test4:0: Assertion 'lla == llb' failed: lla == 12, llb == -1
+sscanf_u_test7:0: Assertion 'a == b' failed: a == 0, b == 4294967173
+
+
+
+
+
+
+
+ver 06/01
+
 ~~~~~~~~~~~~~~~~~ Спецификатор %с: проблемы с длиной ~~~~~~~~~~~~~~~~~
 Пройдено тестов: 1/3
 
