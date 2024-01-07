@@ -20,10 +20,21 @@ typedef enum {
 } SpecifierType;
 
 typedef struct {
-  SpecifierType type;
-  int width;
-  int lenghtmode;
-  int is_star_flag;
+    SpecifierType type;
+    SpecifierType sprintf_type;
+    int minus;
+    int plus;
+    int space;
+    int hash;
+    int zero;
+    int width;
+    int accuracy;
+    int number_system;
+    int lenghtmode;
+    int upper_case;
+    int dot;
+    int flag_to_size;
+    int is_star_flag;
 } FormatSpecifier;
 
 int parse(const char *format, FormatSpecifier **specs, int *len);

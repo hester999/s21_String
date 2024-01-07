@@ -9,7 +9,6 @@
 #define S21_STRING_H
 
 #define s21_NULL (void*)0
-#define s21_sprintf sprintf // !!!!!!!!
 
 typedef unsigned long long s21_size_t;
 
