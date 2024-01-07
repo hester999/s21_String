@@ -22,7 +22,7 @@ int s21_sscanf( const char *str, const char *format, ...) {
                 if(specs[i].is_star_flag == 1){
                     width = specs[i].width;
                     s21_atoi(str,&pos,width);
-                    count_spec++;
+                   
                 }
 
                 else if(specs[i].lenghtmode == 0){
@@ -62,7 +62,7 @@ int s21_sscanf( const char *str, const char *format, ...) {
                     width = specs[i].width;
                     s21_strtof(str,&pos,width);
 //                    str = pos;
-                    count_spec++;
+                    
                 }
                 else if(specs[i].lenghtmode ==0 ){
                     float *p = va_arg(args, float *);
@@ -161,9 +161,11 @@ int s21_sscanf( const char *str, const char *format, ...) {
                     width = specs[i].width;
                     s21_convert_str_to_int_auto_base(str, &pos,width);
                     str = pos;
-                    count_spec++;
+                    
                 }else{
+                    
                     int *p = va_arg(args, int *);
+                    width = specs[i].width;
                     *p = s21_convert_str_to_int_auto_base(str, &pos,width);
                     str = pos;
                     count_spec++;
@@ -208,7 +210,7 @@ int s21_sscanf( const char *str, const char *format, ...) {
                 if(specs[i].is_star_flag == 1){
                     width = specs[i].width;
                     s21_strtof(str,&pos,width);
-                    count_spec++;
+            
                 }
                 else if(specs[i].lenghtmode ==0 ){
                     float *p = va_arg(args, float *);
@@ -361,6 +363,7 @@ int s21_sscanf( const char *str, const char *format, ...) {
                 }
                 else{
                     int *p = va_arg(args, int*);
+                    width = specs[i].width;
                     *p = s21_hex_convert(str, &pos,&width);
                     str = pos;
                     count_spec++;
@@ -375,7 +378,7 @@ int s21_sscanf( const char *str, const char *format, ...) {
                 if(specs[i].is_star_flag == 1){
                     width = specs[i].width;
                     (void*)s21_get_pointer(str, &pos,width);  
-                    count_spec++;
+                
                 }else{  
                     void **p = va_arg(args, void**);
                     width = specs[i].width;
@@ -390,7 +393,7 @@ int s21_sscanf( const char *str, const char *format, ...) {
                 if (specs[i].is_star_flag !=1){
                     int *p = va_arg(args, int*);
                     *p = pos - begin;
-                    count_spec++;
+                    
                 }
                 break;
             }

@@ -110,57 +110,58 @@ long double s21_strtof(const char *str, char **pos, int width) {
 
 
 long long int s21_atoi(const char *str, char **pos, int width) {
-
     long long int number = 0;
     int sign = 1;
     int i = 0;
     int temp = 0;
     int no_width = 0;
     int full_str = 0;
-    int no_width_2=width==0;
+    int no_width_2 = width == 0;
 
-    while(str[i] ==' '){
+    // Пропуск пробельных символов
+    while (str[i] == ' ') {
         i++;
     }
 
-
-    while (str[temp] != '\0' && str[temp] !=' ') {
+    // Определение длины числа в строке
+    while (str[temp] != '\0' && str[temp] != ' ') {
         temp++;
     }
 
-    if(width >= temp){
-        full_str =1;
+    if (width >= temp) {
+        full_str = 1;
     }
 
-    if(width == -100){
+    if (width == -100) {
         width = temp;
-        no_width =1;
+        no_width = 1;
     }
 
+    // Обработка знака
     if (str[i] == '-') {
         sign = -1;
         i++;
         width--;
     }
 
-
-
-    if(no_width ){
+    if (no_width) {
         width = temp;
     }
-    if(full_str){
+    if (full_str) {
         width = temp;
     }
 
-
- 
-    for (; str[i] != '\0' && str[i] != ' ' && (width>0 || no_width_2); i++){
-        if(str[i] >= '0' && str[i] <= '9'){
+    
+    for (; str[i] != '\0' && str[i] != ' ' && (width > 0 || no_width_2); i++) {
+        if (str[i] >= '0' && str[i] <= '9') {
             number = number * 10 + (str[i] - '0');
             if (number > (LLONG_MAX - number) / 10) {
                 number = (sign == 1) ? LLONG_MAX : LLONG_MIN;
-                break; //
+                break; 
             }
+        } else {
+            
+            break;
         }
         width--;
     }
@@ -320,64 +321,72 @@ int s21_octal_convert(const char *str, char **pos,int width) {
 
 
 
-unsigned long  long  s21_get_pointer(const char*str,char **pos,int width){
+unsigned long long s21_get_pointer(const char *str, char **pos, int width) {
+    unsigned long long res = 0;
+    int num = 0;
+    int i = 0;
+    int temp = 0;
+    int no_width = 0;
+    int full_str = 0;
+    int no_width_2 = width == 0;
+    int isNegative = 0;  // Флаг для отрицательного числа
 
-        unsigned long long res = 0;
-        int num = 0;
-        int i = 0;
-        int temp = 0;
-        int no_width = 0;
-        int full_str = 0;
-        int no_width_2=width==0;
+    while (str[i] == ' ') {
+        i++;
+    }
 
-        while(str[i] ==' '){
-            i++;
+    // Проверка на отрицательный знак
+    if (str[i] == '-') {
+        isNegative = 1;
+        i++;
+        if (width != -100) width--; // Уменьшаем width, если он задан
+    }
+
+    while (str[temp] != '\0' && str[temp] != ' ') {
+        temp++;
+    }
+
+    if (width >= temp) {
+        full_str = 1;
+    }
+
+    if (width == -100) {
+        width = temp;
+        no_width = 1;
+    }
+
+    if (no_width) {
+        width = temp;
+    }
+    if (full_str) {
+        width = temp;
+    }
+
+    if (str[i] == '0' && (str[i + 1] == 'x' || str[i + 1] == 'X') && (i < width)) {
+        i += 2;
+        width -= 2;
+    }
+    for (; str[i] != '\0' && str[i] != ' ' && (width > 0 || no_width_2); i++) {
+        if (str[i] >= '0' && str[i] <= '9') {
+            num = str[i] - '0';
+        } else if (str[i] >= 'a' && str[i] <= 'f') {
+            num = 10 + (str[i] - 'a');
+        } else if (str[i] >= 'A' && str[i] <= 'F') {
+            num = 10 + (str[i] - 'A');
+        } else {
+            break; // Некорректный символ, прерываем обработку
         }
+        width--;
+        res = res * 16 + num;
+    }
 
+    // Преобразование в отрицательное значение, если необходимо
+    if (isNegative) {
+        res = ~(res - 1);
+    }
 
-        while (str[temp] != '\0' && str[temp] !=' ') {
-            temp++;
-        }
-
-        if(width >= temp){
-            full_str =1;
-        }
-
-        if(width == -100){
-            width = temp;
-            no_width =1;
-        }
-
-        if(no_width ){
-            width = temp;
-        }
-        if(full_str){
-            width = temp;
-        }
-        
-        
-        if (str[i] == '0' && (str[i + 1] == 'x' || str[i + 1] == 'X') && (i<width)) {
-            i += 2;
-            width-=2;
-
-        }
-        for (; str[i] != '\0' && str[i] != ' ' &&(width>0 || no_width_2); i++) {
-            if (str[i] >= '0' && str[i] <= '9') {
-                num = str[i] - '0';
-            } else if (str[i] >= 'a' && str[i] <= 'f') {
-                num = 10 + (str[i] - 'a');
-            } else if (str[i] >= 'A' && str[i] <= 'F') {
-                num = 10 + (str[i] - 'A');
-            } else {
-                // Некорректный символ, прерываем обработку
-                break;
-            }
-            width--;
-            res = res * 16 + num;
-        }
-
-        *pos = (char *)(str + i);
-        return res;
+    *pos = (char *)(str + i);
+    return res;
 }
 
 
@@ -390,8 +399,14 @@ unsigned long  long  s21_get_pointer(const char*str,char **pos,int width){
 
 int s21_convert_str_to_int_auto_base(const char* str, char **pos,int width){
     int result = 0;
-    if (str[0] == '0') {
-        if (str[1] == 'x' || str[1] == 'X') {
+    int i=0;
+    while (str[i]!='0' && str[i]!=' ' && str[i]!='\0');
+    {
+        i++;
+    }
+    
+    if (str[i] == '0') {
+        if (str[i+1] == 'x' || str[i+1] == 'X') {
             // Число в шестнадцатеричной системе
             result = s21_hex_convert(str, pos,&width);
         } else {
