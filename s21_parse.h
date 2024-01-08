@@ -16,6 +16,7 @@ typedef enum {
     SPEC_UNSIGNED_16X16_INT_UPPER, //X
     SPEC_POINTER, //p
     SPEC_COUNT_SIMBOL, //n
+    SPEC_PERCENT
 
 } SpecifierType;
 
