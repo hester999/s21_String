@@ -20,18 +20,11 @@ int main() {
     // sscanf("-0xFF 0xAAA", "%3p %p", &b,&b1);
     // printf("%p %p\n%p %p\n",a,a1,b,b1);
 
+    float a,b;
 
-    unsigned long long a = 0, b = 0;
-
-    s21_sscanf("18446744073709551615", "%2llu", &a);
-    sscanf("18446744073709551615", "%2llu", &b);
-
-    printf("%llu\n%llu", a,b);
-//    unsigned int a,b;
-//    s21_sscanf("-123","%d",&a);
-//    sscanf("-123","%d",&b);
-//    printf("%u\n%u",a,b);
-    //18446744073709551615
+    s21_sscanf("1.23e+2", "%e", &a);
+    sscanf("1.23e+2", "%e", &b);
+    printf("%e\n%e",a,b);
     return 0;
 }
 

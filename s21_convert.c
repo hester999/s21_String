@@ -6,64 +6,53 @@
 #include "limits.h"
 
 
-long double s21_strtof(const char *str, char **pos, int width) {
 
+
+long double s21_strtof(const char *str, char **pos, int width) {
     long double result = 0.0;
     long double fraction = 1.0;
     int decimal_point = 0;
     int exp_part = 0;
     int exp_sign = 1;
     int negative = 0;
-    int temp =0;
+    int temp = 0;
 
-
-    while(str[temp] != ' ' && str[temp] !='\0'){
+    while (str[temp] != ' ' && str[temp] != '\0') {
         temp++;
     }
 
-    if(width ==-100 || width >temp){
+    if (width == -100 || width > temp) {
         width = temp;
     }
 
-
-    int i=0;
-    // Пропуск пробелов
+    int i = 0;
     while (str[i] == ' ') {
         i++;
     }
 
-    // Проверка на отрицательный знак
-    if ((str[i] == '-' || *str == '+') && (width > 0)) {
-        negative = (*str == '-');
+    if ((str[i] == '-' || str[i] == '+') && (width > 0)) {
+        negative = (str[i] == '-');
         i++;
         width--;
     }
 
-    // Обработка специальных строк (inf, infinity, nan)
-    if ((str[0] == 'i' || str[0] == 'I') && (str[1] == 'n' || str[1] == 'N') && (str[2] == 'f' || str[2] == 'F') && (width>0)) {
+    // Обработка специальных значений (inf, infinity, nan)
+    if ((str[i] == 'i' || str[i] == 'I') && (str[i + 1] == 'n' || str[i + 1] == 'N') && (str[i + 2] == 'f' || str[i + 2] == 'F') && (width > 0)) {
         result = INFINITY;
         i += 3;
-        width-=3;
-        // Проверка на "infinity"
-        if ((str[0] == 'i' || str[0] == 'I') &&
-            (str[1] == 'n' || str[1] == 'N') &&
-            (str[2] == 'i' || str[2] == 'I') &&
-            (str[3] == 't' || str[3] == 'T') &&
-            (str[4] == 'y' || str[4] == 'Y') &&
-            (width>0)) {
+        width -= 3;
+        if ((str[i] == 'i' || str[i] == 'I') && (str[i + 1] == 'n' || str[i + 1] == 'N') && (str[i + 2] == 'i' || str[i + 2] == 'I') && (str[i + 3] == 't' || str[i + 3] == 'T') && (str[i + 4] == 'y' || str[i + 4] == 'Y') && (width > 0)) {
             i += 5;
-            width-=5;
+            width -= 5;
         }
-    } else if ((str[0] == 'n' || str[0] == 'N') &&
-               (str[1] == 'a' || str[1] == 'A') &&
-               (str[2] == 'n' || str[2] == 'N') &&
-               (width > 0)) {
+        if (negative) result = -result;
+    } else if ((str[i] == 'n' || str[i] == 'N') && (str[i + 1] == 'a' || str[i + 1] == 'A') && (str[i + 2] == 'n' || str[i + 2] == 'N') && (width > 0)) {
         result = NAN;
         i += 3;
-        width -=3;
+        width -= 3;
+        if (negative) result = -result;
     } else {
-        // Чтение числа до точки или экспоненциальной части
-        while (str[i] && (width == -1 || i < (s21_size_t)width)) {
+        while (str[i] && (width == -1 || i < width)) {
             if (str[i] >= '0' && str[i] <= '9') {
                 result = result * 10.0 + (str[i] - '0');
                 if (decimal_point) fraction *= 10.0;
@@ -72,8 +61,8 @@ long double s21_strtof(const char *str, char **pos, int width) {
             } else if ((str[i] == 'e' || str[i] == 'E') && !exp_part) {
                 exp_part = 1;
                 i++;
-
-                if ((str[i] == '-' || str[i] == '+') && (width == -1 || i < (s21_size_t)width)) {
+                if ((str[i] == '-' || str[i] == '+') && (width == -1 || i < width)) {
+                    exp_sign = (str[i] == '-') ? -1 : 1;
                     i++;
                 }
                 break;
@@ -81,17 +70,14 @@ long double s21_strtof(const char *str, char **pos, int width) {
                 break;
             }
             i++;
-
         }
 
-        // Чтение экспоненциальной части
         if (exp_part) {
             int exp_value = 0;
-            while (str[i] && (width > 0)) {
+            while (str[i] && (width == -1 || i < width)) {
                 if (str[i] >= '0' && str[i] <= '9') {
                     exp_value = exp_value * 10 + (str[i] - '0');
                     i++;
-
                 } else {
                     break;
                 }
@@ -102,8 +88,9 @@ long double s21_strtof(const char *str, char **pos, int width) {
         result = result / fraction;
     }
 
-    *pos = (char *)str+i;
-
+    if (pos != s21_NULL) {
+        *pos = (char *)str + i;
+    }
 
     return result;
 }
