@@ -168,7 +168,7 @@ long long int s21_atoi(const char *str, char **pos, int width,int *count_spec) {
 
 
 
-int s21_hex_convert(const char *str, char **pos,int* width) {
+int s21_hex_convert(const char *str, char **pos,int* width,int *count_spec) {
 
 
     int res = 0;
@@ -231,14 +231,16 @@ int s21_hex_convert(const char *str, char **pos,int* width) {
         } else if (str[i] >= 'A' && str[i] <= 'F') {
             num = 10 + (str[i] - 'A');
         } else {
+            *count_spec = 0;
             break;
         }
         (*width)--;
         res = res * 16 + num;
     }
 
-   *pos = (char *)(str +i);
+    *pos = (char *)(str +i);
     res*=negative_num;
+    *count_spec +=1;
 
     return res;
 }
@@ -250,7 +252,7 @@ int s21_hex_convert(const char *str, char **pos,int* width) {
 
 
 
-int s21_octal_convert(const char *str, char **pos,int width) {
+int s21_octal_convert(const char *str, char **pos,int width,int *count_spec) {
     int res = 0;
     int num = 0;
     int i = 0;
@@ -291,7 +293,7 @@ int s21_octal_convert(const char *str, char **pos,int width) {
         if (str[i] >= '0' && str[i] <= '7') {
             num = str[i] - '0';
         } else {
-            // Некорректный символ, прерываем обработку
+            *count_spec =0;
             break;
         }
 
@@ -302,6 +304,7 @@ int s21_octal_convert(const char *str, char **pos,int width) {
     
     *pos = (char *)(str + i);
     res *=negative_num;
+    *count_spec+=1;
     return res;
 }
 
@@ -314,7 +317,7 @@ int s21_octal_convert(const char *str, char **pos,int width) {
 
 
 
-unsigned long long s21_get_pointer(const char *str, char **pos, int width) {
+unsigned long long s21_get_pointer(const char *str, char **pos, int width,int *count_spec) {
     unsigned long long res = 0;
     int num = 0;
     int i = 0;
@@ -367,6 +370,7 @@ unsigned long long s21_get_pointer(const char *str, char **pos, int width) {
         } else if (str[i] >= 'A' && str[i] <= 'F') {
             num = 10 + (str[i] - 'A');
         } else {
+            *count_spec =0;
             break; // Некорректный символ, прерываем обработку
         }
         width--;
@@ -379,6 +383,7 @@ unsigned long long s21_get_pointer(const char *str, char **pos, int width) {
     }
 
     *pos = (char *)(str + i);
+    *count_spec =+1;
     return res;
 }
 
@@ -397,10 +402,10 @@ int s21_convert_str_to_int_auto_base(const char* str, char **pos,int width,int *
     if (str[i] == '0') {
         if (str[i+1] == 'x' || str[i+1] == 'X') {
             // Число в шестнадцатеричной системе
-            result = s21_hex_convert(str, pos,&width);
+            result = s21_hex_convert(str, pos,&width,count_spec);
         } else {
             // Число в восьмеричной системе
-            result = s21_octal_convert(str, pos,width);
+            result = s21_octal_convert(str, pos,width,count_spec);
         }
     } else {
         // Число в десятичной системе
@@ -420,7 +425,7 @@ int s21_convert_str_to_int_auto_base(const char* str, char **pos,int width,int *
 
 
 
-unsigned long long s21_get_unsigned_num(const char *str, char **pos, int width) {
+unsigned long long s21_get_unsigned_num(const char *str, char **pos, int width,int *count_spec) {
     unsigned long long result = 0;
     int temp = 0;
     int negative = 0;
@@ -471,6 +476,7 @@ unsigned long long s21_get_unsigned_num(const char *str, char **pos, int width) 
         *pos = (char *)str;
     }
 
+    *count_spec+=1;
     return result;
 }
 

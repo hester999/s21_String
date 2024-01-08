@@ -335,8 +335,6 @@ int s21_sscanf( const char *str, const char *format, ...) {
 
 
 
-
-
             case SPEC_UNSIGNED_16X16_INT: {
                 if(width ==0 && flag == 0 ){
                     width= specs[i].width;
@@ -405,21 +403,17 @@ int s21_sscanf( const char *str, const char *format, ...) {
         
                 break;
             }
-            case SPEC_PERCENT:
-                if(s21_strchr(str, '%') != s21_NULL){
-                    str++;
-
-                }else{
+            case SPEC_PERCENT: {
+                if (s21_strchr(str, '%') == s21_NULL) {
                     return count_spec;
                 }
-                pos = str;
+                str++;
                 break;
-
+            }
             case SPEC_COUNT_SIMBOL:{
                 if (specs[i].is_star_flag !=1){
                     int *p = va_arg(args, int*);
                     *p = pos - begin;
-                    
                 }
                 break;
             }
