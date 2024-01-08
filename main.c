@@ -11,20 +11,17 @@
 // подумать над nan и inf c шириной
 
 
-// Main function to run the tests
+
 int main() {
-    
-    // void *a,*b;
-    // void *a1,*b1;
-    // s21_sscanf("-0xFF 0xAAA", "%3p %p", &a,&a1);
-    // sscanf("-0xFF 0xAAA", "%3p %p", &b,&b1);
-    // printf("%p %p\n%p %p\n",a,a1,b,b1);
+//    double a,b;
+//    double a1,b1;
+//    int o1= s21_sscanf("3.14 32.332","%*lf %lf",&a,&b);
+//    int o2 = sscanf("3.14 32.332","%*lf %lf",&a1,&b1);
+//    printf("%d\n%d\n",o1,o2);
+    char str[100];
+   int a=  s21_sscanf("qwe","%2c",str);
+    printf("%d\n%s",a,str);
 
-    float a,b;
-
-    s21_sscanf("1.23e+2", "%e", &a);
-    sscanf("1.23e+2", "%e", &b);
-    printf("%e\n%e",a,b);
     return 0;
 }
 

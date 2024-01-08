@@ -8,7 +8,7 @@
 
 
 
-long double s21_strtof(const char *str, char **pos, int width) {
+long double s21_strtof(const char *str, char **pos, int width,int *count_spec) {
     long double result = 0.0;
     long double fraction = 1.0;
     int decimal_point = 0;
@@ -79,6 +79,7 @@ long double s21_strtof(const char *str, char **pos, int width) {
                     exp_value = exp_value * 10 + (str[i] - '0');
                     i++;
                 } else {
+                    *count_spec = 0;
                     break;
                 }
             }
@@ -92,11 +93,12 @@ long double s21_strtof(const char *str, char **pos, int width) {
         *pos = (char *)str + i;
     }
 
+    *count_spec+=1;
     return result;
 }
 
 
-long long int s21_atoi(const char *str, char **pos, int width) {
+long long int s21_atoi(const char *str, char **pos, int width,int *count_spec) {
     long long int number = 0;
     int sign = 1;
     int i = 0;
@@ -151,14 +153,14 @@ long long int s21_atoi(const char *str, char **pos, int width) {
                 break; 
             }
         } else {
-            
+            *count_spec=0;
             break;
         }
         width--;
     }
 
     *pos = (char *)(str + i);
-
+    *count_spec+=1;
     return number * sign;
 }
 
@@ -172,7 +174,6 @@ int s21_hex_convert(const char *str, char **pos,int* width) {
     int res = 0;
     int num = 0;
     int i = 0;
-    int test =0;
     int negative_num =1;
     int temp =0;
     int no_width = 0;
@@ -238,6 +239,7 @@ int s21_hex_convert(const char *str, char **pos,int* width) {
 
    *pos = (char *)(str +i);
     res*=negative_num;
+
     return res;
 }
 
@@ -385,10 +387,7 @@ unsigned long long s21_get_pointer(const char *str, char **pos, int width) {
 
 
 
-
-
-
-int s21_convert_str_to_int_auto_base(const char* str, char **pos,int width){
+int s21_convert_str_to_int_auto_base(const char* str, char **pos,int width,int *count_spec){
     int result = 0;
     int i=0;
     while (str[i] == ' ' || str[i] == '+' || str[i] == '-') {
@@ -405,7 +404,7 @@ int s21_convert_str_to_int_auto_base(const char* str, char **pos,int width){
         }
     } else {
         // Число в десятичной системе
-        result = s21_atoi(str, pos,width);
+        result = s21_atoi(str, pos,width,count_spec);
     }
     return result;
 }
@@ -452,7 +451,7 @@ unsigned long long s21_get_unsigned_num(const char *str, char **pos, int width) 
 
     while (*str >= '0' && *str <= '9' && (width > 0)) {
         // Проверка на переполнение перед умножением
-        if (result > ULLONG_MAX / 10 || (result == ULLONG_MAX / 10 && (*str - '0') > ULLONG_MAX % 10)) {
+        if (result > ULLONG_MAX / 10 || (result == ULLONG_MAX / 10 && (unsigned long long)(*str - '0') > ULLONG_MAX % 10)) {
             // Обработка переполнения
             result = ULLONG_MAX;
             break;
@@ -489,7 +488,7 @@ int s21_support_to_ull(const char *str) {
     // Чтение и конвертация числа
     while (*str >= '0' && *str <= '9') {
         // Проверка на переполнение перед умножением
-        if (result > ULLONG_MAX / 10 || (result == ULLONG_MAX / 10 && (*str - '0') > ULLONG_MAX % 10)) {
+        if (result > ULLONG_MAX / 10 || (result == ULLONG_MAX / 10 && (unsigned long long)(*str - '0') > ULLONG_MAX % 10)) {
             return 1; // Переполнение обнаружено
         }
 
