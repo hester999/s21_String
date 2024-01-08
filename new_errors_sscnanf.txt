@@ -1,0 +1,90 @@
+СПЕЦИФИКАТОР d
+
+s21_test.c:761:F:SPEC d (SSCANF):sscanf_d_test7:0: Assertion 's21_sscanf("333abcde333", "%dabcde%d", &a, &b) == sscanf("333abcde333", "%dabcde%d", &c, &d)' failed: s21_sscanf("333abcde333", "%dabcde%d", &a, &b) == 1, sscanf("333abcde333", "%dabcde%d", &c, &d) == 2
+s21_test.c:788:F:SPEC d (SSCANF):sscanf_d_test10:0: Assertion 's21_sscanf(" ", "%%") == sscanf(" ", "%%")' failed: s21_sscanf(" ", "%%") == 0, sscanf(" ", "%%") == -1
+s21_test.c:796:F:SPEC d (SSCANF):sscanf_d_test11:0: Assertion 's21_sscanf("", "%d", &a) == sscanf("", "%d", &b)' failed: s21_sscanf("", "%d", &a) == 1, sscanf("", "%d", &b) == -1
+s21_test.c:806:F:SPEC d (SSCANF):sscanf_d_test12:0: Assertion 's21_sscanf(" ", "%d", &a) == sscanf(" ", "%d", &b)' failed: s21_sscanf(" ", "%d", &a) == 1, sscanf(" ", "%d", &b) == -1
+s21_test.c:888:F:SPEC d (SSCANF):sscanf_d_test21:0: Assertion 's21_sscanf("19223372036854775807", "%ld%ld", &la, &lb) == sscanf("19223372036854775807", "%ld%ld", &lc, &ld)' failed: s21_sscanf("19223372036854775807", "%ld%ld", &la, &lb) == 2, sscanf("19223372036854775807", "%ld%ld", &lc, &ld) == 1
+s21_test.c:918:F:SPEC d (SSCANF):sscanf_d_test24:0: Assertion 's21_sscanf("123456789012345", "%lld", &lla) == sscanf("123456789012345", "%lld", &llb)' failed: s21_sscanf("123456789012345", "%lld", &lla) == -1, sscanf("123456789012345", "%lld", &llb) == 1
+s21_test.c:928:F:SPEC d (SSCANF):sscanf_d_test25:0: Assertion 's21_sscanf("-123456789012345678901", "%21lld%lld", &lla, &llb) == sscanf("-123456789012345678901", "%21lld%lld", &llc, &lld)' failed: s21_sscanf("-123456789012345678901", "%21lld%lld", &lla, &llb) == -1, sscanf("-123456789012345678901", "%21lld%lld", &llc, &lld) == 2
+s21_test.c:938:F:SPEC d (SSCANF):sscanf_d_test26:0: Assertion 's21_sscanf("987654321", "%lld", &lla) == sscanf("987654321", "%lld", &llb)' failed: s21_sscanf("987654321", "%lld", &lla) == -1, sscanf("987654321", "%lld", &llb) == 1
+s21_test.c:947:F:SPEC d (SSCANF):sscanf_d_test27:0: Assertion 's21_sscanf("abc", "%d", &a) == sscanf("abc", "%d", &b)' failed: s21_sscanf("abc", "%d", &a) == 1, sscanf("abc", "%d", &b) == 0
+
+СПЕЦИФИКАТОР i
+
+s21_test.c:1038:F:SPEC i (SSCANF):sscanf_i_test7:0: Assertion 's21_sscanf("--1234567890", "%i", &a) == sscanf("--1234567890", "%i", &b)' failed: s21_sscanf("--1234567890", "%i", &a) == 1, sscanf("--1234567890", "%i", &b) == 0
+s21_test.c:1056:F:SPEC i (SSCANF):sscanf_i_test9:0: Assertion 's21_sscanf("a123abcdef", "%i", &a) == sscanf("a123abcdef", "%i", &b)' failed: s21_sscanf("a123abcdef", "%i", &a) == 1, sscanf("a123abcdef", "%i", &b) == 0
+
+СПЕЦИФИКАТОР e и E
+
+s21_test.c:1083:F:SPEC e (SSCANF):sscanf_e_test2:0: Assertion 'a == b' failed: a == -123.45, b == -123.456
+s21_test.c:1100:F:SPEC e (SSCANF):sscanf_e_test4:0: Assertion 'a == b' failed: a == 0, b == 42.1
+s21_test.c:1108:F:SPEC e (SSCANF):sscanf_e_test5:0: Assertion 'a == b' failed: a == 2.1425, b == 1.26444e+11
+s21_test.c:1134:F:SPEC e (SSCANF):sscanf_e_test8:0: Assertion 'a == b' failed: a == -3.07945, b == -1.08547e-29
+s21_test.c:1142:F:SPEC e (SSCANF):sscanf_e_test9:0: Assertion 'a == b' failed: a == 2.1425, b == 1.26444e+11
+s21_test.c:1150:F:SPEC e (SSCANF):sscanf_e_test10:0: Assertion 'a == b' failed: a == 4.60254, b == 0
+s21_test.c:1195:F:SPEC E (SSCANF):sscanf_E_test2:0: Assertion 'a == b' failed: a == -123.45, b == -123.456
+s21_test.c:1212:F:SPEC E (SSCANF):sscanf_E_test4:0: Assertion 'a == b' failed: a == 0, b == 42.1
+s21_test.c:1220:F:SPEC E (SSCANF):sscanf_E_test5:0: Assertion 'a == b' failed: a == 2.1425, b == 1.26444e+11
+s21_test.c:1246:F:SPEC E (SSCANF):sscanf_E_test8:0: Assertion 'a == b' failed: a == -3.07945, b == -1.08547e-29
+s21_test.c:1254:F:SPEC E (SSCANF):sscanf_E_test9:0: Assertion 'a == b' failed: a == 2.1425, b == 1.26444e+11
+s21_test.c:1262:F:SPEC E (SSCANF):sscanf_E_test10:0: Assertion 'a == b' failed: a == 4.60254, b == 0
+
+СПЕЦИФИКАТОР f
+
+s21_test.c:1315:F:SPEC f (SSCANF):sscanf_f_test4:0: Assertion 's21_sscanf("", "%f", &a) == sscanf("", "%f", &b)' failed: s21_sscanf("", "%f", &a) == 1, sscanf("", "%f", &b) == -1
+s21_test.c:1332:F:SPEC f (SSCANF):sscanf_f_test6:0: Assertion 's21_sscanf(".", "%f", &a) == sscanf(".", "%f", &b)' failed: s21_sscanf(".", "%f", &a) == 1, sscanf(".", "%f", &b) == 0
+s21_test.c:1340:F:SPEC f (SSCANF):sscanf_f_test7:0: Assertion 's21_sscanf("abc", "%f", &a) == sscanf("abc", "%f", &b)' failed: s21_sscanf("abc", "%f", &a) == 1, sscanf("abc", "%f", &b) == 0
+s21_test.c:1394:F:SPEC f (SSCANF):sscanf_f_test13:0: Assertion 'fabsl(b - a) < 0.000001' failed: a == 0, b == 123.456, 0.000001 == 1e-06
+s21_test.c:1402:F:SPEC f (SSCANF):sscanf_f_test14:0: Assertion 's21_sscanf("123.456", "%*f", &a) == sscanf("123.456", "%*f", &b)' failed: s21_sscanf("123.456", "%*f", &a) == -1, sscanf("123.456", "%*f", &b) == 0
+
+СПЕЦИФИКАТОР п
+
+s21_test.c:1421:F:SPEC g (SSCANF):sscanf_g_test2:0: Assertion 'a == b' failed: a == -123.45, b == -123.456
+s21_test.c:1438:F:SPEC g (SSCANF):sscanf_g_test4:0: Assertion 'a == b' failed: a == 0, b == 42.1
+s21_test.c:1446:F:SPEC g (SSCANF):sscanf_g_test5:0: Assertion 'a == b' failed: a == 2.1425, b == 1.26444e+11
+s21_test.c:1472:F:SPEC g (SSCANF):sscanf_g_test8:0: Assertion 'a == b' failed: a == -3.07945, b == -1.08547e-29
+s21_test.c:1480:F:SPEC g (SSCANF):sscanf_g_test9:0: Assertion 'a == b' failed: a == 2.1425, b == 1.26444e+11
+s21_test.c:1488:F:SPEC g (SSCANF):sscanf_g_test10:0: Assertion 'a == b' failed: a == 4.60254, b == 0
+s21_test.c:1515:F:SPEC G (SSCANF):sscanf_G_test2:0: Assertion 'a == b' failed: a == -123.45, b == -123.456
+s21_test.c:1532:F:SPEC G (SSCANF):sscanf_G_test4:0: Assertion 'a == b' failed: a == 0, b == 42.1
+s21_test.c:1540:F:SPEC G (SSCANF):sscanf_G_test5:0: Assertion 'a == b' failed: a == 2.1425, b == 1.26444e+11
+s21_test.c:1566:F:SPEC G (SSCANF):sscanf_G_test8:0: Assertion 'a == b' failed: a == -3.07945, b == -1.08547e-29
+s21_test.c:1574:F:SPEC G (SSCANF):sscanf_G_test9:0: Assertion 'a == b' failed: a == 2.1425, b == 1.26444e+11
+s21_test.c:1582:F:SPEC G (SSCANF):sscanf_G_test10:0: Assertion 'a == b' failed: a == 4.60254, b == 0
+
+СПЕЦИФИКАТОР s
+
+s21_test.c:1663:F:SPEC s (SSCANF):sscanf_s_test3:0: Assertion 's21_sscanf("", "%s", buf1) == sscanf("", "%s", buf2)' failed: s21_sscanf("", "%s", buf1) == 1, sscanf("", "%s", buf2) == -1
+s21_test.c:1683:F:SPEC u (SSCANF):sscanf_u_test1:0: Assertion 's21_sscanf("1234567890", "%u", &a) == sscanf("1234567890", "%u", &b)' failed: s21_sscanf("1234567890", "%u", &a) == 2, sscanf("1234567890", "%u", &b) == 1
+
+СПЕЦИФИКАТОР u
+
+s21_test.c:1692:F:SPEC u (SSCANF):sscanf_u_test2:0: Assertion 's21_sscanf("12345678901", "%u", &a) == sscanf("12345678901", "%u", &b)' failed: s21_sscanf("12345678901", "%u", &a) == 2, sscanf("12345678901", "%u", &b) == 1
+s21_test.c:1701:F:SPEC u (SSCANF):sscanf_u_test3:0: Assertion 's21_sscanf("123456789012345678901", "%llu", &lla) == sscanf("123456789012345678901", "%llu", &llb)' failed: s21_sscanf("123456789012345678901", "%llu", &lla) == -1, sscanf("123456789012345678901", "%llu", &llb) == 1
+s21_test.c:1710:F:SPEC u (SSCANF):sscanf_u_test4:0: Assertion 's21_sscanf("12345678901234567890123", "%22llu", &lla) == sscanf("12345678901234567890123", "%22llu", &llb)' failed: s21_sscanf("12345678901234567890123", "%22llu", &lla) == -1, sscanf("12345678901234567890123", "%22llu", &llb) == 1
+s21_test.c:1720:F:SPEC u (SSCANF):sscanf_u_test5:0: Assertion 's21_sscanf("1234567890", "%5hu%lu", &sa, &la) == sscanf("1234567890", "%5hu%lu", &sb, &lb)' failed: s21_sscanf("1234567890", "%5hu%lu", &sa, &la) == 4, sscanf("1234567890", "%5hu%lu", &sb, &lb) == 2
+s21_test.c:1729:F:SPEC u (SSCANF):sscanf_u_test6:0: Assertion 's21_sscanf("123", "%5u", &a) == sscanf("123", "%5u", &b)' failed: s21_sscanf("123", "%5u", &a) == 2, sscanf("123", "%5u", &b) == 1
+s21_test.c:1737:F:SPEC u (SSCANF):sscanf_u_test7:0: Assertion 's21_sscanf("-123", "%u", &a) == sscanf("-123", "%u", &b)' failed: s21_sscanf("-123", "%u", &a) == 2, sscanf("-123", "%u", &b) == 1
+
+СПЕЦИФИКАТОР x и X
+
+s21_test.c:1747:F:SPEC x (SSCANF):sscanf_x_test1:0: Assertion 's21_sscanf("0x1234567890", "%x", &a) == sscanf("0x1234567890", "%x", &b)' failed: s21_sscanf("0x1234567890", "%x", &a) == 2, sscanf("0x1234567890", "%x", &b) == 1
+s21_test.c:1756:F:SPEC x (SSCANF):sscanf_x_test2:0: Assertion 's21_sscanf("0X1234567890", "%x", &a) == sscanf("0X1234567890", "%x", &b)' failed: s21_sscanf("0X1234567890", "%x", &a) == 2, sscanf("0X1234567890", "%x", &b) == 1
+s21_test.c:1765:F:SPEC x (SSCANF):sscanf_x_test3:0: Assertion 's21_sscanf("0x1234567890", "%x", &a) == sscanf("0x1234567890", "%x", &b)' failed: s21_sscanf("0x1234567890", "%x", &a) == 2, sscanf("0x1234567890", "%x", &b) == 1
+s21_test.c:1774:F:SPEC x (SSCANF):sscanf_x_test4:0: Assertion 's21_sscanf("0X1234567890", "%x", &a) == sscanf("0X1234567890", "%x", &b)' failed: s21_sscanf("0X1234567890", "%x", &a) == 2, sscanf("0X1234567890", "%x", &b) == 1
+s21_test.c:1783:F:SPEC x (SSCANF):sscanf_x_test5:0: Assertion 's21_sscanf("0x1aBcDeF", "%x", &a) == sscanf("0x1AbCdEf", "%x", &b)' failed: s21_sscanf("0x1aBcDeF", "%x", &a) == 2, sscanf("0x1AbCdEf", "%x", &b) == 1
+s21_test.c:1792:F:SPEC x (SSCANF):sscanf_x_test6:0: Assertion 's21_sscanf("01aBcDeF", "%x", &a) == sscanf("01AbCdEf", "%x", &b)' failed: s21_sscanf("01aBcDeF", "%x", &a) == 2, sscanf("01AbCdEf", "%x", &b) == 1
+s21_test.c:1801:F:SPEC x (SSCANF):sscanf_x_test7:0: Assertion 's21_sscanf("x1aBcDeF", "%x", &a) == sscanf("x1AbCdEf", "%x", &b)' failed: s21_sscanf("x1aBcDeF", "%x", &a) == 2, sscanf("x1AbCdEf", "%x", &b) == 0
+s21_test.c:1810:F:SPEC x (SSCANF):sscanf_x_test8:0: Assertion 's21_sscanf("+0x1aBcDeF", "%x", &a) == sscanf("+0x1AbCdEf", "%x", &b)' failed: s21_sscanf("+0x1aBcDeF", "%x", &a) == 2, sscanf("+0x1AbCdEf", "%x", &b) == 1
+s21_test.c:1819:F:SPEC x (SSCANF):sscanf_x_test9:0: Assertion 's21_sscanf("-0x1aBcDeF", "%x", &a) == sscanf("-0x1AbCdEf", "%x", &b)' failed: s21_sscanf("-0x1aBcDeF", "%x", &a) == 2, sscanf("-0x1AbCdEf", "%x", &b) == 1
+s21_test.c:1829:F:SPEC X (SSCANF):sscanf_X_test1:0: Assertion 's21_sscanf("0x1abcdef", "%X", &a) == sscanf("0x1abcdef", "%X", &b)' failed: s21_sscanf("0x1abcdef", "%X", &a) == 2, sscanf("0x1abcdef", "%X", &b) == 1
+s21_test.c:1838:F:SPEC X (SSCANF):sscanf_X_test2:0: Assertion 's21_sscanf("0x1abcdef", "%X", &a) == sscanf("0x1abcdef", "%X", &b)' failed: s21_sscanf("0x1abcdef", "%X", &a) == 2, sscanf("0x1abcdef", "%X", &b) == 1
+s21_test.c:1847:F:SPEC X (SSCANF):sscanf_X_test3:0: Assertion 's21_sscanf("0X1ACDEF", "%X", &a) == sscanf("0X1ACDEF", "%X", &b)' failed: s21_sscanf("0X1ACDEF", "%X", &a) == 2, sscanf("0X1ACDEF", "%X", &b) == 1
+s21_test.c:1856:F:SPEC X (SSCANF):sscanf_X_test4:0: Assertion 's21_sscanf("01aBcDeF", "%X", &a) == sscanf("01AbCdEf", "%X", &b)' failed: s21_sscanf("01aBcDeF", "%X", &a) == 2, sscanf("01AbCdEf", "%X", &b) == 1
+
+
+
+СПЕЦИФИКАТОР n
+
+s21_test.c:1913:F:SPEC n (SSCANF):sscanf_n_test2:0: Assertion 's21_sscanf("", "%s%n", buf1, &a) == sscanf("", "%s%n", buf2, &b)' failed: s21_sscanf("", "%s%n", buf1, &a) == 1, sscanf("", "%s%n", buf2, &b) == -1
