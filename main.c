@@ -14,20 +14,13 @@
 
 int main() {
     int a,b;
-    int c,d;
-    int n,n1;
-    int q = s21_sscanf("10%24", "%d%%%d %n", &a, &b,&n);
-    int q1 = sscanf("10%24 ", "%d%%%d %n", &c,&d,&n1);
-    printf("%d\n%d\n",q,q1);
-    printf("%d %d\n%d %d\n",a,b,c,d);
-    printf("%d\n%d\n",n,n1);
 
-//    int a = 0, b = 0, c = 0, d = 0;
 
-//   int q= s21_sscanf("111%111", "%d%%%d", &a, &b);
-//   int q1 =  sscanf("111%111", "%d%%%d", &c, &d);
-//    printf("%d %d\n",q,q1);
-//    printf("%d %d\n%d %d",a,b,c,d);
+    int q =s21_sscanf("0x1234567890", "%x", &a);
+    int q1 = sscanf("0x1234567890", "%X", &b);
+    printf("%d %d\n",q,q1);
+    printf("%d %d",a,b);
+
     return 0;
 }
 

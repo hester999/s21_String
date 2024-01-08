@@ -170,7 +170,6 @@ long long int s21_atoi(const char *str, char **pos, int width,int *count_spec) {
 
 int s21_hex_convert(const char *str, char **pos,int* width,int *count_spec) {
 
-
     int res = 0;
     int num = 0;
     int i = 0;

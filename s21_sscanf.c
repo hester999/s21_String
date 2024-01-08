@@ -353,7 +353,6 @@ int s21_sscanf( const char *str, const char *format, ...) {
                     int *p = va_arg(args, int*);
                     *p = s21_hex_convert(str, &pos,&width,&count_spec);
                     str = pos;
-                    count_spec++;
                 }
                 break;
             }
@@ -376,7 +375,6 @@ int s21_sscanf( const char *str, const char *format, ...) {
                     width = specs[i].width;
                     *p = s21_hex_convert(str, &pos,&width,&count_spec);
                     str = pos;
-                    count_spec++;
                 }
                 break;
             }
@@ -397,7 +395,6 @@ int s21_sscanf( const char *str, const char *format, ...) {
                     void **p = va_arg(args, void**);
                     width = specs[i].width;
                     *(void **)p = (void*)s21_get_pointer(str, &pos,width,&count_spec);
-
                 }
                 str = pos;
         
