@@ -9,5 +9,6 @@ unsigned long  long  s21_get_pointer(const char*str,char **pos,int width,int *co
 int s21_convert_str_to_int_auto_base(const char* str, char **pos,int width,int *count_spec);
 unsigned long long s21_get_unsigned_num(const char*str,char **pos,int width,int *count_spec);
 int s21_support_to_ull(const char *str);
+int s21_support_to_atoi(const char *str);
 
 #endif

@@ -135,8 +135,7 @@ long double s21_strtof(const char *str, char **pos, int width,int *count_spec) {
 }
 
 
-long long int s21_atoi(const char *str, char **pos, int width,int *count_spec) {
-    
+long long int s21_atoi(const char *str, char **pos, int width, int *count_spec) {
     long long int number = 0;
     int sign = 1;
     int i = 0;
@@ -145,83 +144,71 @@ long long int s21_atoi(const char *str, char **pos, int width,int *count_spec) {
     int full_str = 0;
     int no_width_2 = width == 0;
     int wrong_write = 0;
-    int local_count = 0; 
+    int local_count = 0;
     int empty_str = 0;
-
-  
-    
-    if (str == s21_NULL || *str == '\0') {
-        empty_str =1;
-    }
 
     // Пропуск пробельных символов
     while (str[i] == ' ') {
         i++;
-        
     }
-    
 
-    if (str[i] == '\0') {
-        empty_str = 1;
-        
-    }
     temp = i;
     // Определение длины числа в строке
     while (str[temp] != '\0' && str[temp] != ' ') {
         temp++;
     }
 
-    if (width >= temp) {
+    if (width >= temp - i) {
         full_str = 1;
     }
 
     if (width == -100) {
-        width = temp;
+        width = temp - i;
         no_width = 1;
     }
 
     // Обработка знака
     if (str[i] == '-') {
-        
         sign = -1;
         i++;
         width--;
-    }else if(str[i] == '+'){
-       
-        sign = 1;
+    } else if (str[i] == '+') {
         i++;
         width--;
     }
 
-   
-
     if (no_width) {
-        width = temp;
+        width = temp - i;
     }
     if (full_str) {
-        width = temp;
+        width = temp - i;
     }
 
-   
-    
+    int check = s21_support_to_atoi(str + i);
+    if (check == 1) {
+        number = (sign == 1) ? LLONG_MAX : LLONG_MIN;
+        *pos = (char *)str + temp;
+        *count_spec = 1;
+        return number;
+    }
+
     for (; str[i] != '\0' && str[i] != ' ' && (width > 0 || no_width_2); i++) {
         if (str[i] >= '0' && str[i] <= '9') {
             number = number * 10 + (str[i] - '0');
             if (number > (LLONG_MAX - number) / 10) {
                 number = (sign == 1) ? LLONG_MAX : LLONG_MIN;
-                break; 
+                break;
             }
         } else {
-            wrong_write =1;
+            wrong_write = 1;
             break;
         }
         width--;
     }
 
-
     if (wrong_write) {
-        while (str[i] != '\0' && str[i] != ' ' && (str[i-1] >= '0' && str[i-1]<='9')) {
-            if ((str[i] >= 'a' ) && (str[i] <= 'z')) {
+        while (str[i] != '\0' && str[i] != ' ' && (str[i - 1] >= '0' && str[i - 1] <= '9')) {
+            if ((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z')) {
                 wrong_write = 0;
                 break;
             }
@@ -229,21 +216,22 @@ long long int s21_atoi(const char *str, char **pos, int width,int *count_spec) {
         }
     }
 
-
-
-
-    if(!wrong_write){
-        local_count +=1;
+    if (!wrong_write) {
+        local_count = 1;
     }
-  
-    if (local_count > 0 && empty_str == 0) {
-        *count_spec += local_count; 
-    } 
-    if(empty_str == 1){
+
+    if (str[i] == '\0') {
+        empty_str = 1;
+    }
+
+    if (local_count > 0 && !empty_str) {
+        *count_spec += local_count;
+    } else if (empty_str && local_count == 0) {
         *count_spec = -1;
     }
+
     *pos = (char *)(str + i);
-  
+
     return number * sign;
 }
 
@@ -665,3 +653,45 @@ int s21_support_to_ull(const char *str) {
     return 0; 
 }
 
+
+
+
+
+int s21_support_to_atoi(const char *str) {
+    long long int result = 0;
+    int sign = 1;
+
+    // Пропуск пробелов
+    while (*str == ' ') {
+        str++;
+    }
+
+    // Проверка на знак
+    if (*str == '-') {
+        sign = -1;
+        str++;
+    } else if (*str == '+') {
+        str++;
+    }
+
+
+    while (*str >= '0' && *str <= '9') {
+        if (sign == 1 && (result > LLONG_MAX / 10 || (result == LLONG_MAX / 10 && (unsigned long long)(*str - '0') > LLONG_MAX % 10))) {
+            return 1;
+        }
+        if (sign == -1 && (result > -(LLONG_MIN / 10) || (result == -(LLONG_MIN / 10) && (unsigned long long)(*str - '0') > -(unsigned long long)(LLONG_MIN % 10)))) {
+            return 1;
+        }
+
+        result = result * 10 + (*str - '0');
+        str++;
+    }
+
+    result *= sign;
+
+    if (result == LLONG_MAX || result == LLONG_MIN) {
+        return 1;
+    }
+
+    return 0; // Возвращаем 0, если число не достигает максимальных значений
+}
