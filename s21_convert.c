@@ -105,6 +105,16 @@ long double s21_strtof(const char *str, char **pos, int width,int *count_spec) {
         result = result / fraction;
     }
 
+    if (wrong_write) {
+        while (str[i] != '\0' && str[i] != ' ' && ((str[i-1] >= '0' && str[i-1]<='9') || str[i-1]=='.')) {
+            if ((str[i] >= 'a' ) && (str[i] <= 'z')) {
+                wrong_write = 0;
+                break;
+            }
+            i++;
+        }
+    }
+
     if (pos != s21_NULL) {
         *pos = (char *)str + i;
     }
@@ -137,6 +147,7 @@ long long int s21_atoi(const char *str, char **pos, int width,int *count_spec) {
     int wrong_write = 0;
     int local_count = 0; 
     int empty_str = 0;
+
   
     
     if (str == s21_NULL || *str == '\0') {
@@ -206,7 +217,19 @@ long long int s21_atoi(const char *str, char **pos, int width,int *count_spec) {
         }
         width--;
     }
-    
+
+
+    if (wrong_write) {
+        while (str[i] != '\0' && str[i] != ' ' && (str[i-1] >= '0' && str[i-1]<='9')) {
+            if ((str[i] >= 'a' ) && (str[i] <= 'z')) {
+                wrong_write = 0;
+                break;
+            }
+            i++;
+        }
+    }
+
+
 
 
     if(!wrong_write){

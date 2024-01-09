@@ -13,8 +13,6 @@ int s21_sscanf( const char *str, const char *format, ...) {
     va_list args;
     va_start(args, format);
     int width = 0;
-    int isstar =0;
-    int flag=0;
     char* pos;
     int count_spec=0;
     for (int i = 0; i < numSpecs; i++) {
@@ -25,7 +23,7 @@ int s21_sscanf( const char *str, const char *format, ...) {
                     width = specs[i].width;
                     s21_atoi(str,&pos,width,&count_spec);
                     count_spec--;
-                    isstar = 1;
+
                 }
                 else if(specs[i].lenghtmode == 0){
                     int *p = va_arg(args, int*);
@@ -47,7 +45,6 @@ int s21_sscanf( const char *str, const char *format, ...) {
 
                 }
                 else if(specs[i].lenghtmode ==3){
-                    printf("TUT\n");
                     long long int *p = va_arg(args, long long  int*);
                     width = specs[i].width;
                     *p = s21_atoi(str,&pos,width,&count_spec);
@@ -65,7 +62,7 @@ int s21_sscanf( const char *str, const char *format, ...) {
                     width = specs[i].width;
                     s21_strtof(str,&pos,width,&count_spec);
 //                    str = pos;
-                    isstar =1;
+
                     count_spec--;
                     
                 }
@@ -168,7 +165,7 @@ int s21_sscanf( const char *str, const char *format, ...) {
                     s21_convert_str_to_int_auto_base(str, &pos,width,&count_spec);
                     str = pos;
                     count_spec--;
-                    isstar = 1;
+
                     
                 }else{
                     
@@ -187,7 +184,7 @@ int s21_sscanf( const char *str, const char *format, ...) {
                     width = specs[i].width;
                     s21_strtof(str,&pos,width,&count_spec);
                     count_spec--;
-                    isstar = 1;
+
                 }
                 else if(specs[i].lenghtmode ==0 ){
                     float *p = va_arg(args, float *);
@@ -219,7 +216,7 @@ int s21_sscanf( const char *str, const char *format, ...) {
                     width = specs[i].width;
                     s21_strtof(str,&pos,width,&count_spec);
                     count_spec--;
-                    isstar = 1;
+
             
                 }
                 else if(specs[i].lenghtmode ==0 ){
@@ -282,7 +279,7 @@ int s21_sscanf( const char *str, const char *format, ...) {
                     width = specs[i].width;
                     s21_octal_convert(str, &pos,width,&count_spec);
                     count_spec--;
-                    isstar = 1;
+
                 }else{
                     int *p = va_arg(args, int*);
                     width = specs[i].width;
@@ -300,7 +297,7 @@ int s21_sscanf( const char *str, const char *format, ...) {
                     width = specs[i].width;
                     s21_get_unsigned_num(str, &pos,width,&count_spec);
                     count_spec--;
-                    isstar = 1;
+
                 }
                 else if(specs[i].lenghtmode == 0){
                     unsigned int *p = va_arg(args, unsigned int *);
@@ -340,7 +337,6 @@ int s21_sscanf( const char *str, const char *format, ...) {
                     s21_hex_convert(str, &pos,width,&count_spec);
                     str = pos;
                     count_spec--;
-                    isstar = 1;
                 }
                 else{
                     int *p = va_arg(args, int*);
@@ -362,7 +358,7 @@ int s21_sscanf( const char *str, const char *format, ...) {
                     s21_hex_convert(str, &pos, width,&count_spec);
                     str = pos;
                     count_spec--;
-                    isstar = 1;
+
                 }
                 else{
                     int *p = va_arg(args, int*);
@@ -383,7 +379,7 @@ int s21_sscanf( const char *str, const char *format, ...) {
                     *(void **)a = (void*)s21_get_pointer(str, &pos,width,&count_spec);
                     if(a){};
                     count_spec--;
-                    isstar = 1;
+
                 
                 }else{  
                     void **p = va_arg(args, void**);
@@ -397,7 +393,6 @@ int s21_sscanf( const char *str, const char *format, ...) {
             case SPEC_PERCENT: {
                 if (s21_strchr(str, '%') == s21_NULL) {
                     count_spec-=1;
-                    
                 }
                 str++;
                 break;

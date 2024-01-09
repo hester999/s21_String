@@ -22,18 +22,18 @@
 
 int main() {
      
-    //  float a,b;
-    //  float a1,b1;
+//      float a=0,b=0;
+//      float a1=0,b1=0;
      int q,q1;
-     long int a=0,b=0;
-    long int a1=0,b1=0;
+     int long long a=0,b=0,a1=0,b1=0;
 
-    q = s21_sscanf("19223372036854775807", "%ld%ld", &a, &b);
-    q1 = sscanf("19223372036854775807", "%ld %ld", &a1, &b1);
-    printf("%ld %ld\n%ld %ld\n",a,b,a1,b1);
-    printf("%d\n%d\n",q,q1);
+    q = s21_sscanf("-9223372036854775808", "%lld", &a);
+    q1 =sscanf("-9223372036854775808", "%lld", &a1);
 
-    if(a==a1 && q==q1){
+     printf("%lld %lld\n%lld %lld\n",a,b,a1,b1);
+     printf("%d %d\n",q,q1);
+
+    if((a==a1)  && q==q1){
         printf("SUCCES\n");
     }else{
         printf("FAIL\n");

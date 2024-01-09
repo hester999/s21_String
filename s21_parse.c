@@ -5,7 +5,6 @@
 
 int parse(const char *format, FormatSpecifier **specs, int *len) {
   int numSpecs = 0;
-
   while (*format != '\0') {
     if (numSpecs >= *len) {
       *len *= 2;
@@ -61,6 +60,9 @@ int parse(const char *format, FormatSpecifier **specs, int *len) {
         }
       }
     }
+//  }else if(*format!=' ' && *format!='%' && s21_strchr("lLh0123456789",*format)!=s21_NULL){
+//        break;
+//    }
 
     switch (*format) {
       case 'c':
