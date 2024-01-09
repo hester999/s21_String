@@ -11,7 +11,7 @@ int parse(const char *format, FormatSpecifier **specs, int *len) {
       *len *= 2;
       FormatSpecifier *tmp =
           (FormatSpecifier *)realloc(*specs, sizeof(FormatSpecifier) * *len);
-      if (tmp == NULL) {
+      if (tmp == s21_NULL) {
         free(specs);
         exit(1);
       }
@@ -60,10 +60,7 @@ int parse(const char *format, FormatSpecifier **specs, int *len) {
           format++;
         }
       }
-    } else if(*format!='%' && *format!=' ') {
-        break;
     }
-
 
     switch (*format) {
       case 'c':
