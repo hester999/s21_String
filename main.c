@@ -25,18 +25,19 @@ int main() {
 //      float a=0,b=0;
 //      float a1=0,b1=0;
      int q,q1;
-     int long long lla=0,llb=0,lla1=0,llb1=0;
+     int  a=0 ,b=0;
+//     int  a1=0,b1=0;
 
-    q = s21_sscanf("123456789012345678901", "%21lld %lld", &lla, &llb);
-    q1 =  sscanf("123456789012345678901", "%21lld %lld", &lla1, &llb1);
+    q = s21_sscanf("+98765", "%*5d%d", &a);
+    q1 = sscanf("+98765", "%*5d%d", &b);
 
-    printf("%lld %lld\n%lld %lld\n",lla,llb,lla1,llb1);
+    printf("%d\n%d\n",a,b);
 
     printf("%d %d\n",q,q1);
 
 
 
-    if((lla==lla1)  && q==q1){
+    if((a==b)  && q==q1){
         printf("SUCCES\n");
     }else{
         printf("FAIL\n");

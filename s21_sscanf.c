@@ -22,7 +22,7 @@ int s21_sscanf( const char *str, const char *format, ...) {
                 if(specs[i].is_star_flag == 1){
                     width = specs[i].width;
                     s21_atoi(str,&pos,width,&count_spec);
-                    count_spec--;
+//                    count_spec--;
 
                 }
                 else if(specs[i].lenghtmode == 0){
