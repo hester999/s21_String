@@ -43,7 +43,7 @@ int parse(const char *format, FormatSpecifier **specs, int *len) {
         }
 
         if (*format == 'l') {
-          if (*(format + 1) == 'l') {  
+          if (*(format + 1) == 'l') {
             (*specs)[numSpecs].lenghtmode = 3;
             incrementFormat = 1;
             format++;
@@ -59,6 +59,8 @@ int parse(const char *format, FormatSpecifier **specs, int *len) {
           format++;
         }
       }
+    } else if (*format != '%' && *format != ' ') {
+      break;
     }
 
     switch (*format) {
@@ -120,6 +122,10 @@ int parse(const char *format, FormatSpecifier **specs, int *len) {
 
       case 'n':
         (*specs)[numSpecs++].type = SPEC_COUNT_SIMBOL;
+        break;
+
+      case '%':
+        (*specs)[numSpecs++].type = SPEC_PERCENT;
         break;
     }
 

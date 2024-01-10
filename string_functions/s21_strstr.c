@@ -1,24 +1,23 @@
 #include "../s21_string.h"
 
-
 char *s21_strstr(const char *haystack, const char *needle) {
-    if (!*needle) {
-        return (char *)haystack;
+  if (!*needle) {
+    return (char *)haystack;
+  }
+
+  for (; *haystack; haystack++) {
+    const char *h = haystack;
+    const char *n = needle;
+
+    while (*h && *n && *h == *n) {
+      h++;
+      n++;
     }
 
-    for (; *haystack; haystack++) {
-        const char *h = haystack;
-        const char *n = needle;
-
-        while (*h && *n && *h == *n) {
-            h++;
-            n++;
-        }
-
-        if (!*n) {
-            return (char *)haystack;
-        }
+    if (!*n) {
+      return (char *)haystack;
     }
+  }
 
-    return s21_NULL;
+  return s21_NULL;
 }

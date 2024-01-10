@@ -1,5 +1,5 @@
 CC = gcc
-FLAGS = -Wall -Werror -Wextra -std=c99
+FLAGS = -Wall -Werror -Wextra -std=c11
 
 OBJECT_STRINGS = s21_insert.o s21_memchr.o s21_memcmp.o s21_memcpy.o s21_memset.o \
 								s21_strchr.o s21_strspn.o s21_strerror.o s21_strlen.o s21_strncat.o \

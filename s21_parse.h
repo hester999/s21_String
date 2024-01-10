@@ -16,25 +16,26 @@ typedef enum {
   SPEC_UNSIGNED_16X16_INT_UPPER,  // X
   SPEC_POINTER,                   // p
   SPEC_COUNT_SIMBOL,              // n
+  SPEC_PERCENT
 
 } SpecifierType;
 
 typedef struct {
-    SpecifierType type;
-    SpecifierType sprintf_type;
-    int minus;
-    int plus;
-    int space;
-    int hash;
-    int zero;
-    int width;
-    int accuracy;
-    int number_system;
-    int lenghtmode;
-    int upper_case;
-    int dot;
-    int flag_to_size;
-    int is_star_flag;
+  SpecifierType type;
+  SpecifierType sprintf_type;
+  int minus;
+  int plus;
+  int space;
+  int hash;
+  int zero;
+  int width;
+  int accuracy;
+  int number_system;
+  int lenghtmode;
+  int upper_case;
+  int dot;
+  int flag_to_size;
+  int is_star_flag;
 } FormatSpecifier;
 
 int parse(const char *format, FormatSpecifier **specs, int *len);

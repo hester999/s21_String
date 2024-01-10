@@ -1,3 +1,0 @@
-/Users/hester/Documents/Clion/String/cmake-build-debug/CMakeFiles/String.dir
-/Users/hester/Documents/Clion/String/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/hester/Documents/Clion/String/cmake-build-debug/CMakeFiles/rebuild_cache.dir

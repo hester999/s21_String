@@ -1,5 +1,5 @@
-#include "../s21_string.h"
 #include "../s21_sprintf.h"
+#include "../s21_string.h"
 
 char *s21_strerror(int errnum) {
   static char *errlist[] = ERRLIST;
