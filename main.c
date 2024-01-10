@@ -26,18 +26,22 @@ int main() {
 //      float a1=0,b1=0;
      int q,q1;
      int  a=0 ,b=0;
+     int  a1=0 ,b1=0;
 //     int  a1=0,b1=0;
 
-    q = s21_sscanf("+98765", "%*5d%d", &a);
-    q1 = sscanf("+98765", "%*5d%d", &b);
+// Проверка ситуации, когда одно из чисел отсутствует
+q = s21_sscanf("   123\t  456", "%d %d", &a, &b);
+q1 = sscanf("   123\t  456", "%d %d", &a1, &b1);
+// Проверяем a, b, a1, b1, q и q1
 
-    printf("%d\n%d\n",a,b);
+
+    printf("%d %d\n%d %d\n",a,b,a1,b1);
 
     printf("%d %d\n",q,q1);
 
 
 
-    if((a==b)  && q==q1){
+    if((a==a1) && (b==b1) && q==q1){
         printf("SUCCES\n");
     }else{
         printf("FAIL\n");

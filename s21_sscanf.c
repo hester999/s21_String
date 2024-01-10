@@ -13,7 +13,7 @@ int s21_sscanf( const char *str, const char *format, ...) {
     va_list args;
     va_start(args, format);
     int width = 0;
-    char* pos;
+    char* pos =s21_NULL;
     int count_spec=0;
     for (int i = 0; i < numSpecs; i++) {
         switch (specs[i].type) 
@@ -22,7 +22,7 @@ int s21_sscanf( const char *str, const char *format, ...) {
                 if(specs[i].is_star_flag == 1){
                     width = specs[i].width;
                     s21_atoi(str,&pos,width,&count_spec);
-//                    count_spec--;
+                    count_spec--;
 
                 }
                 else if(specs[i].lenghtmode == 0){

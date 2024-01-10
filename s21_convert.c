@@ -147,6 +147,11 @@ long long int s21_atoi(const char *str, char **pos, int width, int *count_spec) 
     int local_count = 0;
     int empty_str = 0;
 
+     if (str == s21_NULL || *str == '\0') {
+        empty_str =1;
+    }
+   
+
     // Пропуск пробельных символов
     while (str[i] == ' ') {
         i++;
@@ -220,9 +225,9 @@ long long int s21_atoi(const char *str, char **pos, int width, int *count_spec) 
         local_count = 1;
     }
 
-    if (str[i] == '\0') {
-        empty_str = 1;
-    }
+    // if (str[i] == '\0') {
+    //     empty_str = 1;
+    // }
 
     if (local_count > 0 && !empty_str) {
         *count_spec += local_count;
@@ -247,13 +252,12 @@ int s21_hex_convert(const char *str, char **pos, int width, int *count_spec) {
     int temp = 0;
     int wrong_write = 0;
     int local_count = 0;
-    int effective_width = width;
-
     int empty_str = 0;
 
     if (str == s21_NULL || *str == '\0') {
         empty_str =1;
     }
+   
 
 
     // Пропуск начальных пробелов
@@ -270,28 +274,32 @@ int s21_hex_convert(const char *str, char **pos, int width, int *count_spec) {
         temp++;
     }
 
-    // Обновление effective_width
+    // Обновление width
     if (width == -100 || width > temp - i) {
-        effective_width = temp - i;
-    } else {
-        effective_width = width;
-    }
+        width = temp - i;
+    } 
 
     // Обработка знака
-    if ((str[i] == '-' || str[i] == '+') && (effective_width > 0)) {
+    if ((str[i] == '-' || str[i] == '+') && (width > 0)) {
         negative_num = (str[i] == '-') ? -1 : 1;
         i++;
-        effective_width--;
+        width--;
     }
-
+    
     // Обработка префикса 0x или 0X
-    if (str[i] == '0' && (str[i + 1] == 'x' || str[i + 1] == 'X') && (effective_width > 0)) {
-        i += 2;
-        effective_width -= 2;
+    if (str[i] == '0' && (str[i + 1] == 'x' || str[i + 1] == 'X') && (width > 0)) {
+        if(width ==1){
+             i += 1;
+             width -= 1;
+        }else{
+             i += 2;
+            width -= 2;
+        }
+       
     }
 
     // Цикл преобразования числа
-    for (; str[i] != '\0' && str[i] != ' ' && effective_width > 0; i++, effective_width--) {
+    for (; str[i] != '\0' && str[i] != ' ' && width > 0; i++, width--) {
         if (str[i] >= '0' && str[i] <= '9') {
             num = str[i] - '0';
         } else if (str[i] >= 'a' && str[i] <= 'f') {
