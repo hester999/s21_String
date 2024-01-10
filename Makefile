@@ -10,15 +10,15 @@ all: s21_string.a test gcov_report
 
 s21_string.a:
 	$(CC) $(FLAGS) -c string_functions/*.c
-	$(CC) $(FLAGS) -c s21_other_sscanf.c
+	$(CC) $(FLAGS) -c s21_sscanf.c
 	$(CC) $(FLAGS) -c s21_sprintf.c
 	$(CC) $(FLAGS) -c extra.c s21_convert.c s21_parse.c
-	ar rc s21_string.a $(OBJECT_STRINGS) extra.o s21_convert.o s21_other_sscanf.o s21_sprintf.o parse.o
+	ar rc s21_string.a $(OBJECT_STRINGS) extra.o s21_convert.o s21_sscanf.o s21_sprintf.o parse.o
 	rm -rf *.o
 
 test:
 	$(CC) $(FLAGS) -c string_functions/*.c --coverage
-	$(CC) -c s21_other_sscanf.c --coverage
+	$(CC) -c s21_sscanf.c --coverage
 	$(CC) $(FLAGS) -c s21_sprintf.c --coverage
 	$(CC) -c extra.c s21_convert.c s21_parse.c
 	$(CC) -c s21_test.c 

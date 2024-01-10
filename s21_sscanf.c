@@ -16,7 +16,7 @@ int s21_sscanf(const char *str, const char *format, ...) {
   int width = 0;
   int isstar = 0;
   int flag = 0;
-  char *pos;
+  char *pos = s21_NULL;
   int count_spec = 0;
   for (int i = 0; i < numSpecs; i++) {
     switch (specs[i].type) {
